@@ -70,7 +70,7 @@ class Participants
 
     /**
      * @var integer
-     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sites", inversedBy="participants")
      * @ORM\Column(name="sites_no_site", type="integer", nullable=false)
      */
     private $sitesNoSite;

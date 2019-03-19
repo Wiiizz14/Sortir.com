@@ -29,6 +29,12 @@ class Sites
     private $noSite;
 
     /**
+     * @var
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Participants", mappedBy="sitesNoSite")
+     */
+    private $participants;
+
+    /**
      * @return string
      */
     public function getNomSite()
