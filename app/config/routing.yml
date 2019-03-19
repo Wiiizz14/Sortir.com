@@ -1,7 +1,8 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
 eni_admin:
     resource: "@eniAdminBundle/Resources/config/routing.xml"
     prefix:   /
 
-app:
-    resource: '@AppBundle/Controller/'
-    type: annotation

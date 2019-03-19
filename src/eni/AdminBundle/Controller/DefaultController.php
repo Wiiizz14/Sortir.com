@@ -8,6 +8,6 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('eniAdminBundle:Default:index.html.twig');
+        return $this->render('@eniAdmin/Default/index.html.twig');
     }
 }
