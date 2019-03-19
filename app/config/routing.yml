@@ -3,6 +3,6 @@ app:
     type: annotation
 
 eni_admin:
-    resource: "@eniAdminBundle/Resources/config/routing.xml"
-    prefix:   /
+    resource: "@eniAdminBundle/Controller/"
+    prefix: /admin
 

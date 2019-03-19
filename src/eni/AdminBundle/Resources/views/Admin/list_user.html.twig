@@ -1,7 +1,21 @@
-{% extends "::base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block title %}eniAdminBundle:Admin:listUser{% endblock %}
+{% block title %}Gestion Du Site{% endblock %}
+{% block pagetitle %}Gestion du site{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Admin:listUser page</h1>
+    <p><a href="{{ path('createUser') }}">ajouter un utilisateur</a></p>
+    {%  for participant in listeParticipants %}
+    <div>
+        <p>{{ participant.username }}</p>
+    </div>
+    <a href="{{  path('detailUser', {"id": participant.id}) }}">detail</a>
+    <a href="{{  path('updateUser', {"id": participant.id}) }}">modifier</a>
+    <a href="{{ path('deleteUser', {"id": participant.id}) }}">Supprimer</a>
+    {%  else %}
+        <p>aucun participants... :(</p>
+    {% endfor %}
+
 {% endblock %}
+
+

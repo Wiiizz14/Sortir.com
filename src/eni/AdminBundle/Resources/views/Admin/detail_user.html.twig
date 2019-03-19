@@ -1,7 +1,21 @@
-{% extends "::base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block title %}eniAdminBundle:Admin:detailUser{% endblock %}
+{% block title %}Gestion Du Site{% endblock %}
+{% block pagetitle %}Gestion du site{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Admin:detailUser page</h1>
+    <p>je suis dans le detailUser du bundle admin</p>
+
+
+        <p>Username : {{ participant.username }}</p>
+        <p>Nom : {{ participant.nom }}</p>
+        <p>Prenom : {{ participant.prenom }}</p>
+        <p>Email : {{ participant.email }}</p>
+        <p>Administrateur : {{ participant.isAdministrateur ? "oui" : "non" }}</p>
+        <p>Téléphone : {{ participant.telephone }}</p>
+
+    <div><a href="{{ path('listUser') }}">Retour</a></div>
+
 {% endblock %}
+
+
