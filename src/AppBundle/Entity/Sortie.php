@@ -24,7 +24,7 @@ class Sortie
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="string", length=30)
+     * @ORM\Column(name="nom", type="string", length=80)
      */
     private $nom;
 

@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block title %}Gestion Du Site{% endblock %}
 {% block pagetitle %}Gestion du site{% endblock %}
 
@@ -8,6 +8,6 @@
 
     {{ form(form) }}
 
-    <div><a href="{{ path('listUser') }}">Retour</a></div>
+    <div><a href="{{ path('admin_listUser') }}">Retour</a></div>
 
 {% endblock %}

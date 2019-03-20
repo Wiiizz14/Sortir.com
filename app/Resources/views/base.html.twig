@@ -18,14 +18,14 @@
 <body>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="#"><img src="{{ asset('Images/logoLaGarderie.png') }}"></a>
+  <a class="navbar-brand" href="#"><img src="{{ asset('Images/logoLaGarderieTiny.png') }}"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="#">Accueil</a>
+        <a class="nav-link" href="{{ path('homepage') }}">Accueil</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Ville</a>
@@ -34,12 +34,12 @@
         <a class="nav-link" href="#">Sites</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ path('listUser') }}">Participants</a>
+        <a class="nav-link" href="{{ path('admin_listUser') }}">Participants</a>
       </li>
          <li class="nav-item">
         <a class="nav-link" href="#">Mon Profil</a>
          <li class="nav-item">
-        <a class="nav-link" href="#">Se déconnecter</a>
+        <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
       </li>    
       </li>    
     </ul>
@@ -49,8 +49,10 @@
 <div class="jumbotron text-center" style="margin-bottom:0">
   <h1>{% block pagetitle %}parent{% endblock %}</h1>
 </div>
+{% for message in app.flashes("success") %}
 
-    
+{% else %}
+{%   endfor %}
 <div>
   {% block body %}
     <p>dossier body parent</p>

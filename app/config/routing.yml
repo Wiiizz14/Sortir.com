@@ -4,5 +4,5 @@ app:
 
 eni_admin:
     resource: "@eniAdminBundle/Controller/"
-    prefix: /admin
+    type: annotation
 

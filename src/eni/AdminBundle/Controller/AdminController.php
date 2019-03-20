@@ -8,17 +8,25 @@ use AppBundle\Form\ParticipantType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class AdminController
+ * @package eni\AdminBundle\Controller
+ * @Route("/admin", name="admin_")
+ */
 class AdminController extends Controller
 {
     /**
      * @Route("/createUser", name="createUser")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createUserAction(Request $request)
     {
+        $passwordEncoder = $this->get('security.password_encoder');
         $participant = new Participant();
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
@@ -27,9 +35,11 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $participant->setIsActif(true);
             $participant->getIsAdministrateur() ?
-                $participant->setRoles(['ADMIN_ROLE']) : $participant->setRoles(['PARTICIPANT_ROLE']);
+                $participant->setRoles(['ADMIN_ROLE']) : $participant->setRoles(['ROLE_PARTICIPANT']);
             // TODO : générer le salt de manière plus complexe
             $participant->setSalt("poivre");
+            $toSavePassword = $passwordEncoder->encodePassword($participant, $participant->getPassword());
+            $participant->setPassword($toSavePassword);
             $em->persist($participant);
             $em->flush();
 
@@ -90,7 +100,7 @@ class AdminController extends Controller
             $em->flush();
 
             $this->addFlash("success", "Le participant a bien été modifié.");
-            return $this->redirectToRoute("detailUser", [
+            return $this->redirectToRoute("admin_detailUser", [
                 "participant"=>$participant->getId()
             ]);
         }
@@ -119,7 +129,7 @@ class AdminController extends Controller
             $em->flush();
 
             $this->addFlash("success", "Le participant a bien été supprimé.");
-            return $this->redirectToRoute("listUser", [
+            return $this->redirectToRoute("admin_listUser", [
             ]);
         }
         return $this->render('@eniAdmin/Admin/delete_user.html.twig', [

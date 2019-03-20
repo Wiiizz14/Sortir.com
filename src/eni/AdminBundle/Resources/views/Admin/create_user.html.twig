@@ -1,12 +1,16 @@
 {% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}Gestion Du Site{% endblock %}
 {% block pagetitle %}Gestion du site{% endblock %}
 
 {% block body %}
     <p>je suis dans le createUser du bundle admin</p>
+
     {{ form(form) }}
+
+    <div><a href="{{ path('admin_listUser') }}">Retour</a></div>
 {% endblock %}
 
-{% block retour %}{{ path('listUser') }}{% endblock %}
+{% block retour %}{{ path('admin_listUser') }}{% endblock %}
 
