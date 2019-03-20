@@ -1,7 +1,13 @@
-{% extends "::base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block title %}eniAdminBundle:Admin:deleteUser{% endblock %}
+{% block title %}Gestion Du Site{% endblock %}
+{% block pagetitle %}Gestion du site{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Admin:deleteUser page</h1>
+    <p>Etes vous sur de vouloir supprimer le compte de {{ participant.username }}?</p>
+
+    {{ form(form) }}
+
+    <div><a href="{{ path('listUser') }}">Retour</a></div>
+
 {% endblock %}

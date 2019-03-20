@@ -4,10 +4,13 @@ namespace eni\AdminBundle\Controller;
 
 use AppBundle\Entity\Participant;
 use AppBundle\Form\ParticipantType;
-use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends Controller
 {
@@ -30,9 +33,9 @@ class AdminController extends Controller
             $em->persist($participant);
             $em->flush();
 
-            $this->addFlash("success", "Le participant a bien été enregistré");
+            $this->addFlash("success", "Le participant a bien été enregistré.");
             return $this->redirectToRoute("detailUser", [
-                "participant"=>$participant
+                "participant"=>$participant->getId()
             ]);
         }
         return $this->render('@eniAdmin/Admin/create_user.html.twig', [
@@ -43,7 +46,7 @@ class AdminController extends Controller
     /**
      * @Route("/listUser", name="listUser")
      */
-    public function listUserAction(Request $request)
+    public function listUserAction()
     {
         $em = $this->getDoctrine()->getManager();
         $repoListeParticipants = $em->getRepository(Participant::class);
@@ -54,9 +57,11 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/detailUser/{id}", name="detailUser")
+     * @Route("/detailUser/{participant}", name="detailUser")
+     * @param Participant $participant
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function detailUserAction(Request $request, Participant $participant)
+    public function detailUserAction(Participant $participant)
     {
 
         return $this->render('@eniAdmin/Admin/detail_user.html.twig', [
@@ -65,23 +70,62 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/updateUser", name="updateUser")
+     * @Route("/updateUser/{participant}", name="updateUser")
+     * @param Request $request
+     * @param Participant $participant
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function updateUserAction()
+    public function updateUserAction(Request $request, Participant $participant)
     {
-        return $this->render('@eniAdmin/Admin/update_user.html.twig', array(
-            // ...
-        ));
+        $form = $this->createForm(ParticipantType::class, $participant);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $participant->setIsActif(true);
+            $participant->getIsAdministrateur() ?
+                $participant->setRoles(['ADMIN_ROLE']) : $participant->setRoles(['PARTICIPANT_ROLE']);
+            $em->persist($participant);
+            $em->flush();
+
+            $this->addFlash("success", "Le participant a bien été modifié.");
+            return $this->redirectToRoute("detailUser", [
+                "participant"=>$participant->getId()
+            ]);
+        }
+
+        return $this->render('@eniAdmin/Admin/update_user.html.twig', [
+            "form"=>$form->createView()
+        ]);
     }
 
     /**
-     * @Route("/deleteUser", name="deleteUser")
+     * @Route("/deleteUser/{participant}", name="deleteUser")
+     * @param Participant $participant
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function deleteUserAction()
+    public function deleteUserAction(Request $request, Participant $participant)
     {
-        return $this->render('@eniAdmin/Admin/delete_user.html.twig', array(
-            // ...
-        ));
+        $deleteForm = $this->createFormBuilder()
+            ->add('Confirmer', SubmitType::class);
+        $form = $deleteForm->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($participant);
+            $em->flush();
+
+            $this->addFlash("success", "Le participant a bien été supprimé.");
+            return $this->redirectToRoute("listUser", [
+            ]);
+        }
+        return $this->render('@eniAdmin/Admin/delete_user.html.twig', [
+            'form'=>$form->createView(),
+            "participant"=>$participant
+        ]);
     }
 
 }

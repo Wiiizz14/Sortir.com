@@ -4,16 +4,16 @@
 {% block pagetitle %}Gestion du site{% endblock %}
 
 {% block body %}
-    <p><a href="{{ path('createUser') }}">ajouter un utilisateur</a></p>
+    <p><a href="{{ path('createUser') }}">Ajouter un participant</a></p>
     {%  for participant in listeParticipants %}
     <div>
         <p>{{ participant.username }}</p>
     </div>
-    <a href="{{  path('detailUser', {"id": participant.id}) }}">detail</a>
-    <a href="{{  path('updateUser', {"id": participant.id}) }}">modifier</a>
-    <a href="{{ path('deleteUser', {"id": participant.id}) }}">Supprimer</a>
+    <a href="{{  path('detailUser', {"participant": participant.id}) }}">detail</a>
+    <a href="{{  path('updateUser', {"participant": participant.id}) }}">modifier</a>
+    <a href="{{ path('deleteUser', {"participant": participant.id}) }}">Supprimer</a>
     {%  else %}
-        <p>aucun participants... :(</p>
+        <p>Aucun participants... :(</p>
     {% endfor %}
 
 {% endblock %}
