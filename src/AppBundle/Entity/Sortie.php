@@ -85,6 +85,11 @@ class Sortie
      */
     private $lieu;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Site", inversedBy="sorties")
+     */
+    private $site;
+
 
     /**
      * Get id
@@ -307,6 +312,24 @@ class Sortie
     public function setLieu($lieu)
     {
         $this->lieu = $lieu;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSite()
+    {
+        return $this->site;
+    }
+
+    /**
+     * @param mixed $site
+     * @return Sortie
+     */
+    public function setSite($site)
+    {
+        $this->site = $site;
         return $this;
     }
 

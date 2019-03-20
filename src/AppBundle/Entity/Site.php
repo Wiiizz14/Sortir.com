@@ -33,6 +33,11 @@ class Site
      */
     private $participants;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sortie", mappedBy="site")
+     */
+    private $sorties;
+
 
     /**
      * Get id
@@ -83,6 +88,24 @@ class Site
     public function setParticipants($participants)
     {
         $this->participants = $participants;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSorties()
+    {
+        return $this->sorties;
+    }
+
+    /**
+     * @param mixed $sorties
+     * @return Site
+     */
+    public function setSorties($sorties)
+    {
+        $this->sorties = $sorties;
         return $this;
     }
 
