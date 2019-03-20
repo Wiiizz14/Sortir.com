@@ -12,6 +12,9 @@ security:
                 class: AppBundle:Participant
                 property: username
 
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -39,4 +42,5 @@ security:
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-        - { path: ^/, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/, roles: ROLE_USER }

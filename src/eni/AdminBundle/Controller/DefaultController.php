@@ -9,7 +9,7 @@ class DefaultController extends Controller
 {
     /**
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/", name="homeAdmin")
+     * @Route("/admin/", name="homeAdmin")
      */
     public function indexAction()
     {

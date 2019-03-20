@@ -35,7 +35,7 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $participant->setIsActif(true);
             $participant->getIsAdministrateur() ?
-                $participant->setRoles(['ADMIN_ROLE']) : $participant->setRoles(['ROLE_PARTICIPANT']);
+                $participant->setRoles(['ROLE_ADMIN']) : $participant->setRoles(['ROLE_USER']);
             // TODO : générer le salt de manière plus complexe
             $participant->setSalt("poivre");
             $toSavePassword = $passwordEncoder->encodePassword($participant, $participant->getPassword());
@@ -44,7 +44,7 @@ class AdminController extends Controller
             $em->flush();
 
             $this->addFlash("success", "Le participant a bien été enregistré.");
-            return $this->redirectToRoute("detailUser", [
+            return $this->redirectToRoute("admin_detailUser", [
                 "participant"=>$participant->getId()
             ]);
         }
@@ -95,7 +95,7 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $participant->setIsActif(true);
             $participant->getIsAdministrateur() ?
-                $participant->setRoles(['ADMIN_ROLE']) : $participant->setRoles(['PARTICIPANT_ROLE']);
+                $participant->setRoles(['ROLE_ADMIN']) : $participant->setRoles(['ROLE_USER']);
             $em->persist($participant);
             $em->flush();
 
