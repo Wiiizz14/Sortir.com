@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails{% endblock %}
+{% block pagetitle %}Détails d'une sortie{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+
+    <div>
+        <ul>
+            {% for Sortie in Sorties %}
+
+                    <li><a href="{{ path('event_detailEvent', {"sortie":Sortie.id}) }}">{{ Sortie.nom }}</a></li>
+
+            {% endfor %}
+        </ul>
+    </div>
+
+
+{% endblock %}

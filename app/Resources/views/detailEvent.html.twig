@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails{% endblock %}
+{% block pagetitle %}Détails d'une sortie{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div>
+        <p>Nom de la sortie : {{ Detail.nom }}</p>
+        <p>Date et heure de la sortie : {{ Detail.dateDebut | date("d-M-Y") }}</p>
+        <p>Date limite d'inscription : {{ Detail.dateCloture | date("d-M-Y") }}</p>
+        <p>Nombre de places : {{ Detail.nbInscriptionsMax }}</p>
+        <p>Durée : {{ Detail.duree }} minutes</p>
+        <p>Description et infos : {{ Detail.description }}</p>
+    <div>
+
+    <div>
+        <p>Ville organisatrice : {{ Detail.Lieu.Ville.nom }}</p>
+        <p>Lieu : {{ Detail.lieu.nom }}</p>
+        <p>Rue : {{ Detail.Lieu.rue }}</p>
+        <p>Code Postal : {{ Detail.Lieu.Ville.codepostal }}</p>
+        <p>Latitude : </p>
+        <p>Longitude : </p>
+    </div>
+
+{% endblock %}

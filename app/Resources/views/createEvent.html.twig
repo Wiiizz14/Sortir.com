@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création{% endblock %}
+{% block pagetitle %}Création d'une sortie{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div>
+        {% form_theme formCreateEvent 'bootstrap_4_layout.html.twig' %}
+        {{ form(formCreateEvent) }}
+    </div>
+
+{% endblock %}
+
+

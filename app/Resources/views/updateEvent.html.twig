@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier{% endblock %}
+{% block pagetitle %} Modifier une sortie{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div>
+        {% form_theme formUpdateEvent 'bootstrap_4_layout.html.twig' %}
+
+        {{ form_start(formUpdateEvent)}}
+
+            {{ form_row(formUpdateEvent.nom) }}
+            {{ form_row(formUpdateEvent.datedebut) }}
+            {{ form_row(formUpdateEvent.datecloture) }}
+            {{ form_row(formUpdateEvent.nbinscriptionsmax) }}
+            {{ form_row(formUpdateEvent.duree) }}
+            {{ form_row(formUpdateEvent.descriptioninfos) }}
+
+
+        {{ form_end(formUpdateEvent) }}
+    </div>
+
+{% endblock %}
