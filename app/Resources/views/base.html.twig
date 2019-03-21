@@ -24,9 +24,11 @@
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
+      {% if is_granted('ROLE_USER') %}
       <li class="nav-item">
         <a class="nav-link" href="{{ path('homepage') }}">Accueil</a>
       </li>
+      {% if is_granted('ROLE_ADMIN') %}
       <li class="nav-item">
         <a class="nav-link" href="{{ path('manageCity_liste') }}">Ville</a>
       </li>
@@ -36,11 +38,13 @@
       <li class="nav-item">
         <a class="nav-link" href="{{ path('admin_listUser') }}">Participants</a>
       </li>
+      {% endif %}
          <li class="nav-item">
         <a class="nav-link" href="#">Mon Profil</a>
          <li class="nav-item">
         <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
-      </li>    
+      </li>
+      {% endif %}
       </li>    
     </ul>
   </div>  
