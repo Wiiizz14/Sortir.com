@@ -4,13 +4,21 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Site;
 use AppBundle\Entity\Sortie;
 use AppBundle\Form\SortiesType;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class EventController
@@ -51,17 +59,63 @@ class EventController extends Controller
 
     /**
      * @Route("/", name="listeEvent")
+     * @param Request $request
      * @param EntityManagerInterface $em
+     * @param UserInterface $user
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listEventAction(EntityManagerInterface $em)
+    public function listEventAction(Request $request, EntityManagerInterface $em, UserInterface $user)
     {
 
+        $formBuilder = $this->createFormBuilder()
+            ->add('sites', EntityType::class, array(
+                'class' => 'AppBundle:Site',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.nom', 'ASC');
+                },
+                'choice_label' => 'nom',
+            ))
+            ->add("search", TextType::class)
+            ->add('dateMin', DateType::class)
+            ->add('dateMax', DateType::class)
+            ->add('organisateur', CheckboxType::class)
+            ->add('isInscritr', CheckboxType::class)
+            ->add('isNotInscritr', CheckboxType::class)
+            ->add('archive', CheckboxType::class)
+            ->add("Valider", SubmitType::class);
+
+        $form = $formBuilder->getForm();
         $repoSortie = $em->getRepository(Sortie::class);
-        $sortie = $repoSortie->findAll();
+        $sorties = $repoSortie->findAll();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $searchSorties = [];
+
+            foreach ($sorties as $sortie)
+            {
+                if ($sortie->getOrganisateur() == $user->getId())
+                {
+                    $searchSorties[] = $sortie;
+                }
+
+            }
+
+
+
+        }
+        else
+        {
+
+        }
+
+
 
         return $this->render("listEvent.html.twig", [
-            "sorties" => $sortie
+            "sorties" => $sorties,
+            "form" => $form->createView()
         ]);
     }
 

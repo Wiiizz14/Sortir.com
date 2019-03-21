@@ -53,9 +53,12 @@
 <div class="jumbotron text-center" style="margin-bottom:0">
   <h1>{% block pagetitle %}parent{% endblock %}</h1>
 </div>
-{% for message in app.flashes("success") %}
-
+{% for messages in app.flashes %}
+  {% for message in messages %}
+    <div class="alert alert-{{ label }}">{{ message }}</div>
+    {% endfor %}
 {% else %}
+
 {%   endfor %}
 <div>
   {% block body %}

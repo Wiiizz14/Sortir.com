@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
-
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block title %}Accueil{% endblock %}
 {% block pagetitle %}Accueil{% endblock %}
 
 {% block body %}
+    {{ form(form) }}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert-{{ label }}">
@@ -11,17 +12,17 @@
             </div>
         {% endfor %}
     {% endfor %}
-    <table>
+    <table class="table table-hover">
     <tbody>
     <tr>
-        <th>Nom</th>
-        <th>Date de la sortie</th>
-        <th>Date de Cloture</th>
-        <th>Inscrits/Places</th>
-        <th>Etat</th>
-        <th>Inscrit</th>
-        <th>Organisateur</th>
-        <th>Actions</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Date de la sortie</th>
+        <th scope="col">Date de Cloture</th>
+        <th scope="col">Inscrits/Places</th>
+        <th scope="col">Etat</th>
+        <th scope="col">Inscrit</th>
+        <th scope="col">Organisateur</th>
+        <th scope="col">Actions</th>
     </tr>
     {% for sortie in sorties %}
         {% set isInscrit = 0 %}
@@ -54,7 +55,7 @@
                 {% endif %}
             </td>
         </tr>
+    {% endfor %}
         </tbody>
         </table>
-    {% endfor %}
 {% endblock %}

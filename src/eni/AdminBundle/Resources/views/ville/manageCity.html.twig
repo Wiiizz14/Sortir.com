@@ -5,21 +5,6 @@
 {% block body %}
     <h1>Ville</h1>
 
-    <table>
-        <tbody>
-        <tr>
-            <th>Nom</th>
-            <th>Codepostal</th>
-        </tr>
-            {% for ville in villes %}
-                <tr>
-                    <td>{{ ville.nom }}</td>
-                    <td>{{ ville.codePostal }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
     {{ form_start(form) }}
     <table class="table table-hover">
         <thead>
@@ -31,7 +16,7 @@
         </thead>
         <tbody>
         <tr>
-            <th scope="row">1</th>
+                <th scope="row">1</th>
             <td>Mark</td>
             <td>Otto</td>
             <td>@mdo</td>
