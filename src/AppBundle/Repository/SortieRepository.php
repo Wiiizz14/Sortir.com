@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Participant;
+use AppBundle\Entity\Sortie;
+
 /**
  * SortieRepository
  *
@@ -10,4 +13,27 @@ namespace AppBundle\Repository;
  */
 class SortieRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getSortiesByRegistering()
+    {
+        $em = $this->getEntityManager('s');
+        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder->select('s')
+            ->from(Sortie::class, 's')
+            ->innerJoin("s.organisateur", "p", "WITH", "s.organisateur = p.id")
+            ->where("s.participants = p.id");
+
+
+//        $this->createQueryBuilder('c')
+//            ->innerJoin('c.superCategories', 's', 'WITH', 's.name = :superCategoryName')
+//            ->setParameter('superCategoryName', $superCategoryName);
+//
+
+        // 1ère méthode : sans chainage
+        /*$query = $queryBuilder->getQuery();
+        $results = $query->getResult();
+        return $results;*/
+
+        // 2ème méthode : avec chainage
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

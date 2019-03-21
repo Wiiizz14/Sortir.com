@@ -7,6 +7,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Site;
 use AppBundle\Entity\Sortie;
 use AppBundle\Form\SortiesType;
+use AppBundle\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -92,18 +93,10 @@ class EventController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
-            $searchSorties = [];
-
-            foreach ($sorties as $sortie)
-            {
-                if ($sortie->getOrganisateur() == $user->getId())
-                {
-                    $searchSorties[] = $sortie;
-                }
-
-            }
-
-
+            $repo = $em->getRepository(Sortie::class);
+            $findByInscription = $repo->getSortiesByRegistering();
+            dump($findByInscription);
+            die();
 
         }
         else
