@@ -50,7 +50,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/listEvent", name="listeEvent")
+     * @Route("/", name="listeEvent")
      * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      */

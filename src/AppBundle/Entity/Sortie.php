@@ -71,7 +71,13 @@ class Sortie
     private $isEtatSortie;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Participant")
+     * @var
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Participant", inversedBy="organisations")
+     */
+    private $organisateur;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Participant", mappedBy="sorties")
      */
     private $participants;
 
@@ -330,6 +336,24 @@ class Sortie
     public function setSite($site)
     {
         $this->site = $site;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrganisateur()
+    {
+        return $this->organisateur;
+    }
+
+    /**
+     * @param mixed $organisateur
+     * @return Sortie
+     */
+    public function setOrganisateur($organisateur)
+    {
+        $this->organisateur = $organisateur;
         return $this;
     }
 

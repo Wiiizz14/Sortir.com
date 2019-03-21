@@ -13,6 +13,6 @@ class DefaultController extends Controller
      */
     public function mainAction()
     {
-        return $this->render("default/index.html.twig");
+        return $this->redirectToRoute("event_listeEvent");
     }
 }

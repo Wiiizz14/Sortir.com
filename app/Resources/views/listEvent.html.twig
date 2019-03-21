@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails{% endblock %}
-{% block pagetitle %}Détails d'une sortie{% endblock %}
+{% block title %}Accueil{% endblock %}
+{% block pagetitle %}Accueil{% endblock %}
 
 {% block body %}
-
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert-{{ label }}">
@@ -12,39 +11,50 @@
             </div>
         {% endfor %}
     {% endfor %}
-
-
-    <div>
-        <table>
-            <tbody>
-            <tr>
-                <th>Nom</th>
-                <th>Date de la sortie</th>
-                <th>Date de Cloture</th>
-                <th>Inscrits/Places</th>
-                <th>Etat</th>
-                <th>Inscrit</th>
-                <th>Organisateur</th>
-                <th>Actions</th>
-            </tr>
-            {% for sortie in sorties %}
-                <tr>
-                    <td>{{ sortie.nom }}</td>
-                    <td>{{ sortie.dateDebut|date("m/d/Y h:i") }}</td>
-                    <td>{{ sortie.dateCloture|date("m/d/Y") }}</td>
-                    <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
-                    <td>{{ sortie.etat ? sortie.etat.libelle : "pas d'etat" }}</td>
-                    <td>Inscrit TODO</td>
-                    <td>organisateur TODO</td>
-                    <td>
-                        <a href="{{ path('event_updateEvent', {"sortie": sortie.id}) }}">Modifier</a>
+    <table>
+    <tbody>
+    <tr>
+        <th>Nom</th>
+        <th>Date de la sortie</th>
+        <th>Date de Cloture</th>
+        <th>Inscrits/Places</th>
+        <th>Etat</th>
+        <th>Inscrit</th>
+        <th>Organisateur</th>
+        <th>Actions</th>
+    </tr>
+    {% for sortie in sorties %}
+        {% set isInscrit = 0 %}
+        <tr>
+            <td>{{ sortie.nom }}</td>
+            <td>{{ sortie.dateDebut|date("m/d/Y h:i") }}</td>
+            <td>{{ sortie.dateCloture|date("m/d/Y") }}</td>
+            <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
+            <td>#{{ sortie.etat ? sortie.etat.libelle : "pas d'etat" }}</td>
+            <td>
+                {% for inscrit in sortie.participants %}
+                    {% if inscrit.id == app.user.id %}{% set isInscrit = 1 %}X{%  endif %}
+                {% else %}
+                {% endfor %}
+            </td>
+            <td>#{{ sortie.organisateur ? sortie.organisateur.username : "pas d'organisateur :(" }}</td>
+            <td>
+                <a href="{{ path('event_detailEvent', {"sortie": sortie.id}) }}">afficher</a>
+                {% if app.user.id == sortie.organisateur %}
+                    <a href="{{ path('event_updateEvent', {"sortie": sortie.id}) }}">Modifier</a>
+                    {% if sortie.etat.libelle == "Ouverte" %}
                         <a href="{{ path('event_deleteEvent', {"sortie": sortie.id}) }}">Annuler</a>
-                        <a href="{{ path('event_detailEvent', {"sortie": sortie.id}) }}">afficher</a>
+                    {% endif %}
+                {% else %}
+                    {% if isInscrit %}
+                        <a href="#">Se désinscrire</a>
+                    {% else %}
                         <a href="#">S'inscrire</a>
-                    </td>
-                </tr>
-            {% endfor %}
-
-
-
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+        </table>
+    {% endfor %}
 {% endblock %}

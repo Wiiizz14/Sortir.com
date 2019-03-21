@@ -87,9 +87,15 @@ class Participant implements UserInterface
     private $urlPhoto;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Site")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Sortie", inversedBy="participants")
      */
     private $sorties;
+
+    /**
+     * @var
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sortie", mappedBy="organisateur")
+     */
+    private $organisations;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Site", inversedBy="participants")
@@ -433,5 +439,25 @@ class Participant implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOrganisations()
+    {
+        return $this->organisations;
+    }
+
+    /**
+     * @param mixed $organisations
+     * @return Participant
+     */
+    public function setOrganisations($organisations)
+    {
+        $this->organisations = $organisations;
+        return $this;
+    }
+
+
 }
 
