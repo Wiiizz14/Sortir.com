@@ -48,6 +48,7 @@ class ParticipantType extends AbstractType
                 "label" => "Droits Administrateur"
             ])
             ->add('urlPhoto', FileType::class, [
+                "data_class"=> null,
                 "required"=>false,
                 "label" => "Photo de profil"
             ])

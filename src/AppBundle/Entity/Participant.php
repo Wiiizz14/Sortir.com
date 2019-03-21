@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Participant
@@ -79,8 +80,8 @@ class Participant implements UserInterface
     private $isActif;
 
     /**
-     * @var string
-     *
+     * @var
+     * @Assert\Image(maxSize="4M", minWidth="100", minHeight="100")
      * @ORM\Column(name="url_photo", type="string", length=255, nullable=true)
      */
     private $urlPhoto;

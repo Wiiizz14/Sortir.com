@@ -6,7 +6,9 @@
 {% block body %}
     <p>je suis dans le detailUser du bundle admin</p>
 
-
+    {% if participant.urlPhoto %}
+    <img src="{{ asset(participant.urlPhoto) }}" alt="">
+    {% endif %}
         <p>Username : {{ participant.username }}</p>
         <p>Nom : {{ participant.nom }}</p>
         <p>Prenom : {{ participant.prenom }}</p>

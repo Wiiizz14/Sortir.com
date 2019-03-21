@@ -5,8 +5,11 @@ namespace eni\AdminBundle\Controller;
 use AppBundle\Entity\Participant;
 use AppBundle\Form\ParticipantType;
 
+use Cocur\Slugify\Slugify;
+use Intervention\Image\ImageManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,6 +43,28 @@ class AdminController extends Controller
             $participant->setSalt("poivre");
             $toSavePassword = $passwordEncoder->encodePassword($participant, $participant->getPassword());
             $participant->setPassword($toSavePassword);
+
+
+
+            if ($participant->getUrlPhoto() != null)
+            {
+                $filename = "logo-".$participant->getUsername()."-".$participant->getId().".".$participant->getUrlPhoto()->guessExtension();
+
+                $image = $participant->getUrlPhoto();
+
+                // pour l'activer : composer require intervention/image
+                $imageManager = new ImageManager();
+                $imageOrigin = $imageManager->make($image);
+                $imageOrigin->resize(300, null, function($constraint){
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+
+                $imageOrigin->save($this->get('kernel')->getProjectDir()."/web/images/upload/".$filename);
+
+                $participant->setUrlPhoto("/images/photos/".$filename);
+            }
+
             $em->persist($participant);
             $em->flush();
 
@@ -87,6 +112,7 @@ class AdminController extends Controller
      */
     public function updateUserAction(Request $request, Participant $participant)
     {
+        $saveUrlPhoto = $participant->getUrlPhoto();
         $form = $this->createForm(ParticipantType::class, $participant);
 
         $form->handleRequest($request);
@@ -96,6 +122,33 @@ class AdminController extends Controller
             $participant->setIsActif(true);
             $participant->getIsAdministrateur() ?
                 $participant->setRoles(['ROLE_ADMIN']) : $participant->setRoles(['ROLE_USER']);
+
+            if ($participant->getUrlPhoto() != null)
+            {
+                $filename = "logo-".$participant->getUsername()."-".$participant->getId().".".$participant->getUrlPhoto()->guessExtension();
+
+                $image = $participant->getUrlPhoto();
+
+                // pour l'activer : composer require intervention/image
+                $imageManager = new ImageManager();
+                $imageOrigin = $imageManager->make($image);
+                $imageOrigin->resize(300, null, function($constraint){
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+                //supprimer l'ancienne photo
+                $filesystem = new Filesystem();
+                $filesystem->remove($saveUrlPhoto);
+
+                $imageOrigin->save($this->get('kernel')->getProjectDir()."/web/images/upload/".$filename);
+
+                $participant->setUrlPhoto("/images/upload/".$filename);
+            }
+            else
+            {
+                $participant->setUrlPhoto($saveUrlPhoto);
+            }
+
             $em->persist($participant);
             $em->flush();
 
