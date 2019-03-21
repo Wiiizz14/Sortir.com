@@ -15,14 +15,36 @@
 
 
     <div>
-        <ul>
-            {% for Sortie in Sorties %}
-
-                    <li><a href="{{ path('event_detailEvent', {"sortie":Sortie.id}) }}">{{ Sortie.nom }}</a></li>
-
+        <table>
+            <tbody>
+            <tr>
+                <th>Nom</th>
+                <th>Date de la sortie</th>
+                <th>Date de Cloture</th>
+                <th>Inscrits/Places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+            {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.dateDebut|date("m/d/Y h:i") }}</td>
+                    <td>{{ sortie.dateCloture|date("m/d/Y") }}</td>
+                    <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
+                    <td>{{ sortie.etat ? sortie.etat.libelle : "pas d'etat" }}</td>
+                    <td>Inscrit TODO</td>
+                    <td>organisateur TODO</td>
+                    <td>
+                        <a href="{{ path('event_updateEvent', {"sortie": sortie.id}) }}">Modifier</a>
+                        <a href="{{ path('event_deleteEvent', {"sortie": sortie.id}) }}">Annuler</a>
+                        <a href="{{ path('event_detailEvent', {"sortie": sortie.id}) }}">afficher</a>
+                        <a href="#">S'inscrire</a>
+                    </td>
+                </tr>
             {% endfor %}
-        </ul>
-    </div>
+
 
 
 {% endblock %}

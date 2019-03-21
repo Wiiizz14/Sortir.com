@@ -61,21 +61,21 @@ class EventController extends Controller
         $sortie = $repoSortie->findAll();
 
         return $this->render("listEvent.html.twig", [
-            "Sorties" => $sortie
+            "sorties" => $sortie
         ]);
     }
 
     /**
-     * @Route("/detailEvent/{id}", name="detailEvent", requirements={"id":"\d+"})
-     * @param $id
+     * @Route("/detailEvent/{sortie}", name="detailEvent", requirements={"id":"\d+"})
+     * @param Sortie $sortie
      * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function detailEventAction($id, EntityManagerInterface $em)
+    public function detailEventAction(Sortie $sortie, EntityManagerInterface $em)
     {
 
         $repoId = $em->getRepository(Sortie::class);
-        $detailEvent = $repoId->find($id);
+        $detailEvent = $repoId->find($sortie);
 
         return $this->render("detailEvent.html.twig", [
             "Detail" => $detailEvent
