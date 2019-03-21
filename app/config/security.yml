@@ -7,10 +7,19 @@ security:
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        db_providers:
+        providers_username:
             entity:
                 class: AppBundle:Participant
                 property: username
+        providers_email:
+            entity:
+                class: AppBundle:Participant
+                property: email
+        all_users:
+            chain:
+                providers: ['providers_username', 'providers_email']
+
+
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
@@ -23,7 +32,7 @@ security:
 
         main:
             anonymous: true
-            provider: db_providers
+            provider: all_users
 
             remember_me:
                 secret:   '%secret%'

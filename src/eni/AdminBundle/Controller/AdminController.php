@@ -44,11 +44,9 @@ class AdminController extends Controller
             $toSavePassword = $passwordEncoder->encodePassword($participant, $participant->getPassword());
             $participant->setPassword($toSavePassword);
 
-
-
             if ($participant->getUrlPhoto() != null)
             {
-                $filename = "logo-".$participant->getUsername()."-".$participant->getId().".".$participant->getUrlPhoto()->guessExtension();
+                $filename = "photo-".$participant->getUsername()."-".$participant->getId().".".$participant->getUrlPhoto()->guessExtension();
 
                 $image = $participant->getUrlPhoto();
 
@@ -125,7 +123,7 @@ class AdminController extends Controller
 
             if ($participant->getUrlPhoto() != null)
             {
-                $filename = "logo-".$participant->getUsername()."-".$participant->getId().".".$participant->getUrlPhoto()->guessExtension();
+                $filename = "photo-".$participant->getUsername()."-".$participant->getId().".".$participant->getUrlPhoto()->guessExtension();
 
                 $image = $participant->getUrlPhoto();
 

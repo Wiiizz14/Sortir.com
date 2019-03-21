@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion Du Site{% endblock %}
+{% block pagetitle %}Gestion du site{% endblock %}
+
+{% block body %}
+
+    {% if participant.urlPhoto %}
+    <img src="{{ asset(participant.urlPhoto) }}" alt="">
+    {% endif %}
+        <p>Username : {{ participant.username }}</p>
+        <p>Nom : {{ participant.nom }}</p>
+        <p>Prenom : {{ participant.prenom }}</p>
+        <p>Email : {{ participant.email }}</p>
+        <p>Administrateur : {{ participant.isAdministrateur ? "oui" : "non" }}</p>
+        <p>Téléphone : {{ participant.telephone }}</p>
+
+    <div><a href="{{ path('update') }}">Modifier</a></div>
+    <div><a href="{{ path('homepage') }}">Retour</a></div>
+
+{% endblock %}
+
+
