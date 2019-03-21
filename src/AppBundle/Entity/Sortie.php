@@ -96,7 +96,6 @@ class Sortie
      */
     private $site;
 
-
     /**
      * Get id
      *

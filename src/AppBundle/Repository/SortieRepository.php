@@ -13,27 +13,55 @@ use AppBundle\Entity\Sortie;
  */
 class SortieRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getSortiesByRegistering()
+    /**
+     * @param $user
+     * @return array
+     */
+    public function getSortiesByAuthor($user)
     {
+
         $em = $this->getEntityManager('s');
         $queryBuilder = $em->createQueryBuilder();
         $queryBuilder->select('s')
             ->from(Sortie::class, 's')
-            ->innerJoin("s.organisateur", "p", "WITH", "s.organisateur = p.id")
-            ->where("s.participants = p.id");
+            ->innerJoin("s.organisateur", "p", "WITH")
+            ->where("p = :id")
+            ->setParameter("id", $user->getId());
 
+        return $queryBuilder->getQuery()->getResult();
+    }
 
-//        $this->createQueryBuilder('c')
-//            ->innerJoin('c.superCategories', 's', 'WITH', 's.name = :superCategoryName')
-//            ->setParameter('superCategoryName', $superCategoryName);
-//
+    public function getSortiesByRegistering($user)
+    {
 
-        // 1ère méthode : sans chainage
-        /*$query = $queryBuilder->getQuery();
-        $results = $query->getResult();
-        return $results;*/
+        $em = $this->getEntityManager('s');
+        $queryBuilder = $em->createQueryBuilder();
 
-        // 2ème méthode : avec chainage
+        $queryBuilder->select ('s')
+            ->from(Sortie::class, 's')
+            ->innerJoin('s.participants',"p")
+            ->where('p.id = :id')
+            ->setParameter("id", $user);
+
+        dump($queryBuilder->getDQL());
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function getSortiesByNotRegistered($user)
+    {
+
+        $em = $this->getEntityManager('s');
+        $queryBuilder = $em->createQueryBuilder();
+
+        $queryBuilder->select ('s')
+            ->from(Sortie::class, 's')
+            ->innerJoin('s.participants',"p");
+//            ->where('p.id = :id')
+//            ->setParameter("id", $user);
+
+        dump($queryBuilder->getDQL());
+
         return $queryBuilder->getQuery()->getResult();
     }
 }

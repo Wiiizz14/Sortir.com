@@ -4,6 +4,7 @@
 {% block pagetitle %}Accueil{% endblock %}
 
 {% block body %}
+    <a href="{{ path('event_createEvent') }}">créer evenement</a>
     {{ form(form) }}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
@@ -39,9 +40,9 @@
                 {% endfor %}
             </td>
             <td>#{{ sortie.organisateur ? sortie.organisateur.username : "pas d'organisateur :(" }}</td>
-            <td>
+            <td>{#
                 <a href="{{ path('event_detailEvent', {"sortie": sortie.id}) }}">afficher</a>
-                {% if app.user.id == sortie.organisateur %}
+                {% if app.user.id == sortie.organisateur.id %}
                     <a href="{{ path('event_updateEvent', {"sortie": sortie.id}) }}">Modifier</a>
                     {% if sortie.etat.libelle == "Ouverte" %}
                         <a href="{{ path('event_deleteEvent', {"sortie": sortie.id}) }}">Annuler</a>
@@ -52,7 +53,7 @@
                     {% else %}
                         <a href="#">S'inscrire</a>
                     {% endif %}
-                {% endif %}
+                {% endif %} #}
             </td>
         </tr>
     {% endfor %}

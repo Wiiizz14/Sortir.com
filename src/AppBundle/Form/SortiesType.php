@@ -36,27 +36,27 @@ class SortiesType extends AbstractType{
             ->add("datecloture", DateType::class)
             ->add("nbinscriptionsmax", IntegerType::class)
             ->add("duree", IntegerType::class)
-            ->add("descriptioninfos", TextType::class)
+            ->add("description", TextType::class)
             ->add("site", EntityType::class,[
                 "class"=> Site::class,
                 "choice_label"=> "nom"
             ])
-            ->add("ville", EntityType::class,[
-                "class"=> Ville::class,
-                "choice_label"=> "nom"
-            ])
-            ->add("lieu", EntityType::class,[
-                "class"=> Lieu::class,
-                "choice_label"=> "nom"
-            ])
-            ->add("rue", EntityType::class,[
-                "class"=> Lieu::class,
-                "choice_label"=> "rue"
-            ])
-            ->add("codePostal", EntityType::class,[
-                "class"=> Ville::class,
-                "choice_label"=> "codepostal"
-            ])
+//            ->add("ville", EntityType::class,[
+//                "class"=> Ville::class,
+//                "choice_label"=> "nom"
+//            ])
+//            ->add("lieu", EntityType::class,[
+//                "class"=> Lieu::class,
+//                "choice_label"=> "nom"
+//            ])
+//            ->add("rue", EntityType::class,[
+//                "class"=> Lieu::class,
+//                "choice_label"=> "rue"
+//            ])
+//            ->add("codePostal", EntityType::class,[
+//                "class"=> Ville::class,
+//                "choice_label"=> "codepostal"
+//            ])
 
             ->add("Enregistrer", SubmitType::class)
             ->add("Publier la sortie", SubmitType::class)

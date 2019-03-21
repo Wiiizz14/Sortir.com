@@ -33,19 +33,21 @@ class EventController extends Controller
      * @Route("/createEvent", name="createEvent")
      * @param Request $request
      * @param EntityManagerInterface $em
+     * @param UserInterface $user
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function createEventAction(Request $request, EntityManagerInterface $em)
+    public function createEventAction(Request $request, EntityManagerInterface $em, UserInterface $user)
     {
 
         $sortie = new Sortie();
-        $form = $this->createForm(SortiesType::class);
+        $form = $this->createForm(SortiesType::class, $sortie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->addFlash("success", "Event crée avec succès !");
-
+            $sortie->setIsEtatSortie(true);
+            $sortie->setOrganisateur($user);
             $em->persist($sortie);
             $em->flush();
 
@@ -93,10 +95,10 @@ class EventController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
-            $repo = $em->getRepository(Sortie::class);
-            $findByInscription = $repo->getSortiesByRegistering();
-            dump($findByInscription);
-            die();
+//            $repo = $em->getRepository(Sortie::class);
+//            $findByInscription = $repo->getSortiesByNotRegistered($user);
+//            dump($findByInscription);
+//            die();
 
         }
         else
