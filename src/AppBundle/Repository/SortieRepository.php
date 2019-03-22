@@ -43,8 +43,6 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
             ->where('p.id = :id')
             ->setParameter("id", $user);
 
-        dump($queryBuilder->getDQL());
-
         return $queryBuilder->getQuery()->getResult();
     }
 
@@ -56,11 +54,11 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
 
         $queryBuilder->select ('s')
             ->from(Sortie::class, 's')
-            ->innerJoin('s.participants',"p");
-//            ->where('p.id = :id')
-//            ->setParameter("id", $user);
-
-        dump($queryBuilder->getDQL());
+            ->innerJoin('s.participants',"p")
+            ->innerJoin("s.organisateur", "o")
+            ->where('p.id != :id')
+            ->andWhere("o.id != :id")
+            ->setParameter("id", $user);
 
         return $queryBuilder->getQuery()->getResult();
     }

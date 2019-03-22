@@ -18,49 +18,39 @@ class SortiesType extends AbstractType{
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-/*
-    nom                           VARCHAR(30) NOT NULL,
-    datedebut                     DATETIME NOT NULL,
-    duree                         INTEGER,
-    datecloture                   DATETIME NOT NULL,
-    nbinscriptionsmax             INTEGER NOT NULL,
-    descriptioninfos              VARCHAR(500),
-    etatsortie                    INTEGER,
-	urlPhoto                      VARCHAR (250)
- */
-
         $builder
-            ->add("nom", TextType::class)
-            ->add("datedebut", DateType::class)
-            ->add("datecloture", DateType::class)
-            ->add("nbinscriptionsmax", IntegerType::class)
-            ->add("duree", IntegerType::class)
-            ->add("description", TextType::class)
-            ->add("site", EntityType::class,[
-                "class"=> Site::class,
-                "choice_label"=> "nom"
+            ->add("nom", TextType::class, [
+                "label"=>"Nom :"
             ])
-//            ->add("ville", EntityType::class,[
-//                "class"=> Ville::class,
-//                "choice_label"=> "nom"
+            ->add("dateDebut", DateType::class, [
+                "label"=>"Date de début :"
+            ])
+            ->add("dateCloture", DateType::class, [
+                "label"=>"Date de cloture :"
+            ])
+            ->add("nbInscriptionsMax", IntegerType::class, [
+                "label"=>"Nombre d'inscriptions max :"
+            ])
+            ->add("duree", IntegerType::class, [
+                "label"=>"Durée :"
+            ])
+            ->add("description", TextType::class,[
+                "label"=>"Description & infos :"
+            ])
+
+//            ->add("rue", TextType::class, [
+//                "label"=>"Rue :"
 //            ])
-//            ->add("lieu", EntityType::class,[
-//                "class"=> Lieu::class,
-//                "choice_label"=> "nom"
-//            ])
-//            ->add("rue", EntityType::class,[
-//                "class"=> Lieu::class,
-//                "choice_label"=> "rue"
-//            ])
-//            ->add("codePostal", EntityType::class,[
-//                "class"=> Ville::class,
-//                "choice_label"=> "codepostal"
+//
+//            ->add("codePostal", TextType::class, [
+//                "label"=>"Code postal :"
 //            ])
 
-            ->add("Enregistrer", SubmitType::class)
-            ->add("Publier la sortie", SubmitType::class)
+            ->add("Enregistrer", SubmitType::class);
+            /*
+            ->add("Publier", SubmitType::class)
             ->add("Annuler", SubmitType::class);
+            */
     }
 }
 
