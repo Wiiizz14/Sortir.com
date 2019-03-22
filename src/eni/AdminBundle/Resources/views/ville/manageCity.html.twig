@@ -1,38 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des villes{% endblock %}
+{% block title %}Gestion des villes{% endblock %}
+
+{% block pagetitle %}Gérer les villes{% endblock %}
 
 {% block body %}
-    <h1>Ville</h1>
 
-    {{ form_start(form) }}
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th scope="col">Ville</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-                <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-        </tr>
-        </tbody>
-    </table>
-    {{ form_end(form) }}
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Ville</th>
+                <th scope="col">Code Postal</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            {% form_theme formCity 'bootstrap_4_layout.html.twig' %}
+            <tbody>
+            {% for ville in villes %}
+                <tr>
+                    <td scope="row">{{ ville.nom }}</td>
+                    <td>{{ ville.codepostal }}</td>
+                    <td><a href="#">Modifier</a> - <a href="#">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+            {{ form_start(formCity) }}
+            <tr>
+                <td>{{ form_widget(formCity.nom) }}</td>
+                <td>{{ form_widget(formCity.codePostal) }}</td>
+                <td>{{ form_widget(formCity.ajouter) }}</td>
+            </tr>
+            {{ form_end(formCity) }}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

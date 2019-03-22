@@ -5,7 +5,9 @@ namespace eni\AdminBundle\Controller;
 use AppBundle\Entity\Ville;
 use AppBundle\Form\VilleType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,39 +35,124 @@ class VilleController extends Controller
     }*/
 
     /**
+     * Affiche l'ensemble des villes et permet d'en ajouter une nouvelle.
+     *
      * @Route("/", name="createCity")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function createCityAction(Request $request)
+    public function manageCityAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $repoVilles = $em->getRepository(Ville::class);
+
+        // Liste de toutes les villes.
         $villes = $repoVilles->findAll();
 
-        $city = new Ville();
 
-        // Crétation du formulaire pour enregistrer une nouvelle Ville en BDD.
+        /*
+         * Ajout d'une nouvelle ville.
+         */
+        $city = new Ville();
+        // Création du formulaire pour enregistrer une nouvelle Ville en BDD.
         $form = $this->createForm(VilleType::class, $city);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
             $em = $this->getDoctrine()->getManager();
             $em->persist($city);
-            $em->flush();
 
-            // Message confirmant le succès de l'enregsitrement.
-            $this->addFlash("success", "Nouvelle Ville enregistrée avec succès");
-            // Message indiquant une erreur lors de l'enregistrement.
-            $this->addFlash("danger", "Une erreur est survenue lors de l'enregistrement.");
+            try
+            {
+                $em->flush();
 
-            return $this->redirectToRoute("manageCity_");
+                // Message confirmant le succès de l'enregsitrement.
+                $this->addFlash("success", "Nouvelle ville enregistrée avec succès");
+            }
+            catch (\Exception $e)
+            {
+                // Message indiquant une erreur lors de l'enregistrement.
+                $this->addFlash("danger", "Une erreur est survenue lors de l'enregistrement.");
+            }
+
+            return $this->redirectToRoute("manageCity_createCity");
         }
 
         return $this->render("@eniAdmin/Ville/manageCity.html.twig", [
             "villes" => $villes,
-            "form" => $form->createView()
+            "formCity" => $form->createView()
         ]);
+    }
+
+    /**
+     * Permet de modifier une ville.
+     *
+     * @Route("/{city}", name="updateCity")
+     * @param Request $request
+     * @param Ville $city
+     * @Method("UPDATE")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateCityAction(Request $request, Ville $city)
+    {
+        // Création du formulaire
+        $formUpdateCity = $this->createForm(VilleType::class, $city);
+        $formUpdateCity->handleRequest($request);
+
+        if ($formUpdateCity->isSubmitted() && $formUpdateCity->isValid())
+        {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute("manageCity_createCity");
+        }
+
+        return $this->render("updateCity.html.twig", [
+            "formUpdateCity" => $formUpdateCity->createView()
+        ]);
+    }
+
+    /**
+     * Permet de supprimer une ville.
+     *
+     * @Route("/{city}", name="deleteCity")
+     * @param Request $request
+     * @param Ville $city
+     * @Method("DELETE")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteCityAction(Request $request, Ville $city)
+    {
+
+        return $this->render("deleteCity.html.twig");
+    }
+
+    /**
+     * Création d'un formulaire pour modifier une ville.
+     *
+     * @param Ville $city
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function createUpdateForm(Ville $city)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl("manageCity_updateCity", array(["id" => $city->getId()])))
+            ->setMethod("UPDATE")
+            ->getForm();
+    }
+
+    /**
+     * Création d'un formulaire pour supprimer une ville.
+     *
+     * @param Ville $city
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function createDeleteForm(Ville $city)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl("manageCity_deleteCity", array(["id" => $city->getId()])))
+            ->setMethod("DELETE")
+            ->getForm();
     }
 }
