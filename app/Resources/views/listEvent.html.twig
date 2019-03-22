@@ -5,13 +5,21 @@
 
 {% block body %}
     <a href="{{ path('event_createEvent') }}">créer evenement</a>
-    {{ form(form) }}
+    {{ form_start(form) }}
+    <div>
+
+        <p>{{ form_row(form.organisateur, {"label": "es tu l'organisateur", 'id': "orga1", "value": 35}) }}</p>
+    </div>
+
+
+    {{ form_end(form) }}
+    {#
     <input id="myInput" type="text" placeholder="Search..">
     <select name="select_sites" id="select_sites">
         <option value="sitenone">pas de site</option>
         {% for site in sites %}
         <option value="{{ site.id }}">{{ site.nom }}</option>
-        {% endfor %}
+        {% endfor %}#}
     </select>
     <table class="table table-hover">
 
@@ -49,11 +57,11 @@
                         <a href="{{ path('event_deleteEvent', {"sortie": sortie.id}) }}">Annuler</a>
                     {% endif %}
                 {% else %}
-                    {% if isInscrit %}
+                    {% if isInscrit and sortie.dateCloture < "now" %}
                         <a href="#">Se désinscrire</a>
                     {% else %}
-                        <a href="#">S'inscrire</a>
-                    {% endif %}
+                <a href="#">S'inscrire</a>
+                {% endif %}
                 {% endif %} #}
             </td>
         </tr>

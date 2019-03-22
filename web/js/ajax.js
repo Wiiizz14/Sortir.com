@@ -25,4 +25,18 @@ $(document).ready(function(){
             $(this).toggle($(this).text().toLowerCase().indexOf(val) > -1)
         });
     });
+
+
+    $(document).ready(function(){
+        $("button").click(function(){
+            $.post("",
+                {
+                    name: "Donald Duck",
+                    city: "Duckburg"
+                },
+                function(data,status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+        });
+    });
 });

@@ -8,8 +8,11 @@ use AppBundle\Entity\Sortie;
 use AppBundle\Entity\Ville;
 use AppBundle\Form\SortiesType;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,13 +88,19 @@ class EventController extends Controller
     public function listEventAction(EntityManagerInterface $em)
     {
         // tableau des sites pour le select
-        $sites = $em->createQueryBuilder()
-            ->select("site")
-            ->from(Site::class, "site")
-            ->getQuery()->getResult();
+        $sites = $em->getRepository(Site::class)->findAll();
+
 
         // formulaire de requete des checkboxes
         $formBuilder = $this->createFormBuilder()
+        ->add('sites',  EntityType::class, [
+                "class" => 'AppBundle:Site',
+                "query_builder" => function(EntityRepository $er) {
+                    return $er->createQueryBuilder("u")
+                        ->orderBy('u.nom', "ASC");
+                },
+                "choice_label" => "nom"
+            ])
             ->add('organisateur', CheckboxType::class, [
                 "required" => false
             ])
