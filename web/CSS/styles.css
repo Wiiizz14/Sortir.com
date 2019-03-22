@@ -1,5 +1,40 @@
 ﻿@CHARSET "UTF-8";
-/*
-fond : rgb(19,74,128)
-*/
 
+/* Déclencheur modal "Ajout Lieu" */
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+
+/* Paramètres */
+.w3-modal-content{
+    max-width: 550px;
+}
+
+#lieuModal{
+    width:400px;
+}
+
+#rueModal{
+    width:402px;
+}
+
+#closeX{
+    font-weight:600;
+}
+
+.submitModal{
+    display: inline-block;
+}
+
+/* Fin */
+
+.createLinks{
+    display: inline-block;
+}

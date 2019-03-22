@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Participant;
+use AppBundle\Entity\Site;
 use AppBundle\Entity\Sortie;
 
 /**
@@ -62,4 +63,5 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
 }

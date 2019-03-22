@@ -3,16 +3,15 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Lieu;
-use AppBundle\Entity\Site;
 use AppBundle\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Tests\Fixtures\Entity;
 
 class SortiesType extends AbstractType{
 
@@ -38,13 +37,9 @@ class SortiesType extends AbstractType{
                 "label"=>"Description & infos :"
             ])
 
-//            ->add("rue", TextType::class, [
-//                "label"=>"Rue :"
-//            ])
-//
-//            ->add("codePostal", TextType::class, [
-//                "label"=>"Code postal :"
-//            ])
+            ->add("lieu", EntityType::class, [
+                "class"=>Lieu::class
+            ])
 
             ->add("Enregistrer", SubmitType::class);
             /*

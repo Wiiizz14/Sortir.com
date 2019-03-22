@@ -1,7 +1,5 @@
 <?php
 
-/*Revoir : render et redirectToRoute -> manque les twig*/
-
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Lieu;
@@ -80,13 +78,11 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/", name="listeEvent")
-     * @param Request $request
+     * @Route("/listEvent", name="listeEvent")
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listEventAction(Request $request, EntityManagerInterface $em, UserInterface $user)
+    public function listEventAction(EntityManagerInterface $em)
     {
         // tableau des sites pour le select
         $sites = $em->createQueryBuilder()
@@ -164,16 +160,16 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/detailEvent/{sortie}", name="detailEvent", requirements={"id":"\d+"})
-     * @param Sortie $sortie
+     * @Route("/detailEvent/{id}", name="detailEvent", requirements={"id":"\d+"})
+     * @param $id
      * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function detailEventAction(Sortie $sortie, EntityManagerInterface $em)
+    public function detailEventAction($id, EntityManagerInterface $em)
     {
 
         $repoId = $em->getRepository(Sortie::class);
-        $detailEvent = $repoId->find($sortie);
+        $detailEvent = $repoId->find($id);
 
         return $this->render("detailEvent.html.twig", [
             "Detail" => $detailEvent
@@ -191,18 +187,14 @@ class EventController extends Controller
     {
 
         $form = $this->createForm(SortiesType::class, $sortie);
-
-
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->addFlash("success", "Event modifié avec succes !");
-
             $em->persist($sortie);
             $em->flush();
 
+            $this->addFlash("success", "Event modifié avec succes !");
             return $this->redirectToRoute("event_detailEvent", ["id" => $sortie->getId()]);
         }
         return $this->render("updateEvent.html.twig", [
@@ -228,11 +220,10 @@ class EventController extends Controller
 
         if ($form->isSubmitted()) {
 
-            $this->addFlash("success", "Event supprimé avec succès !");
-
             $em->remove($sortie);
             $em->flush();
 
+            $this->addFlash("success", "Event supprimé avec succès !");
             return $this->redirectToRoute("event_listeEvent");
         }
 

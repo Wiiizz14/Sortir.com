@@ -28,6 +28,7 @@
             {{ form_row(formCreateEvent.nbInscriptionsMax) }}
             {{ form_row(formCreateEvent.duree) }}
             {{ form_row(formCreateEvent.description) }}
+            {{ form_row(formCreateEvent.lieu) }}
 
             {# Bloc pour la gestion du site du User #}
             {% if(app.user.site is empty) %}
@@ -36,28 +37,10 @@
                 <p>Site : {{ app.user.site.nom }}</p>
             {% endif %}
 
-            <label for="select_ville">Ville : </label><select name="ville" id="select_ville">
-                {% for ville in villes %}
-                    <option value="ville{{ ville.id }}">{{ ville.nom }}</option>
-                {% endfor %}
-            </select>
-
-
-            <label for="select_lieux">Lieu :</label><select name="lieu" id="select_lieux">
-                {% for lieu in lieux %}
-                <option value="lieu{{ lieu.ville.id}}">{{ lieu.nom }}</option>
-                {% endfor %}
-            </select>
-
-        {#       {{ form_row(formCreateEvent.rue) }}
-              {{ form_row(formCreateEvent.codePostal) }}
-        #}
-
             <div class="createLinks">
                 {{ form_row(formCreateEvent.Enregistrer) }}
             </div>
 
-        {{ form_end(formCreateEvent) }}
     </div>
 
     <!-- FENETRE MODALE A RE-INSERER EN ITERATION 3
