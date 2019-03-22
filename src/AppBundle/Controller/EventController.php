@@ -1,22 +1,16 @@
 <?php
 
-/*Revoir : render et redirectToRoute -> manque les twig*/
-
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Lieu;
 use AppBundle\Entity\Site;
 use AppBundle\Entity\Sortie;
+use AppBundle\Entity\Ville;
 use AppBundle\Form\SortiesType;
-use AppBundle\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -41,90 +35,141 @@ class EventController extends Controller
 
         $sortie = new Sortie();
         $form = $this->createForm(SortiesType::class, $sortie);
+
+        /* A RE-INSERER SI MEP DE LA MODALE
+        $form->remove("Enregistrer");
+        $form->remove("Publier");
+        $form->remove("Annuler");
+        */
+
         $form->handleRequest($request);
+
+        //Pour choix de la ville
+        $repoVille = $em->getRepository(Ville::class);
+        $villes = $repoVille->findAll();
+
+        //Pour choix du lieu
+        $repoLieu = $em->getRepository(Lieu::class);
+        $lieux = $repoLieu->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->addFlash("success", "Event crée avec succès !");
-            $sortie->setIsEtatSortie(true);
+            //Setters pour l'organisateur et l'état de la sortie
             $sortie->setOrganisateur($user);
+            $sortie->setIsEtatSortie(true);
+            dump($form);
+            dump($sortie);
+            $test = $request->get("ville");
+            dump($test);
+            die();
+            //GO
             $em->persist($sortie);
             $em->flush();
 
-            return $this->redirectToRoute("event_detailEvent", [
+            $this->addFlash("success", "Event crée avec succès !");
+            return $this->redirectToRoute("event_detailEvent", ["id"=>$sortie->getid()
             ]);
         }
-
         return $this->render("createEvent.html.twig", [
-            "formCreateEvent" => $form->createView()
+            "formCreateEvent" => $form->createView(),
+            "villes"=>$villes,
+            "lieux"=>$lieux
         ]);
     }
 
     /**
-     * @Route("/", name="listeEvent")
-     * @param Request $request
+     * @Route("/listEvent", name="listeEvent")
      * @param EntityManagerInterface $em
-     * @param UserInterface $user
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listEventAction(Request $request, EntityManagerInterface $em, UserInterface $user)
+    public function listEventAction(EntityManagerInterface $em)
     {
+        // tableau des sites pour le select
+        $sites = $em->createQueryBuilder()
+            ->select("site")
+            ->from(Site::class, "site")
+            ->getQuery()->getResult();
 
+        // formulaire de requete des checkboxes
         $formBuilder = $this->createFormBuilder()
-            ->add('sites', EntityType::class, array(
-                'class' => 'AppBundle:Site',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.nom', 'ASC');
-                },
-                'choice_label' => 'nom',
-            ))
-            ->add("search", TextType::class)
-            ->add('dateMin', DateType::class)
-            ->add('dateMax', DateType::class)
-            ->add('organisateur', CheckboxType::class)
-            ->add('isInscritr', CheckboxType::class)
-            ->add('isNotInscritr', CheckboxType::class)
-            ->add('archive', CheckboxType::class)
+            ->add('organisateur', CheckboxType::class, [
+                "required" => false
+            ])
+            ->add('isInscrit', CheckboxType::class, [
+                "required" => false
+            ])
+            ->add('isNotInscrit', CheckboxType::class, [
+        "required" => false
+            ])
+            ->add('archive', CheckboxType::class, [
+        "required" => false
+            ])
             ->add("Valider", SubmitType::class);
 
         $form = $formBuilder->getForm();
         $repoSortie = $em->getRepository(Sortie::class);
-        $sorties = $repoSortie->findAll();
+
+        $findByOrganisateur = array();
+        $findByInscription = array();
+        $findByNonInscription = array();
+        $findAllOthers = array();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
-//            $repo = $em->getRepository(Sortie::class);
-//            $findByInscription = $repo->getSortiesByNotRegistered($user);
+            if ($form->get("organisateur"))
+            {
+                $findByOrganisateur = $repoSortie->getSortiesByAuthor($user);
+            }
+            if ($form->get("isInscrit"))
+            {
+                $findByInscription = $repoSortie->getSortiesByRegistering($user);
+            }
+            if ($form->get("isNotInscrit"))
+            {
+                $findByNonInscription = $repoSortie->getSortiesByNotRegistered($user);
+            }
+            if ($form->get("archive"))
+            {
+                $findAllOthers = "3";
+            }
 //            dump($findByInscription);
+//            dump($findByOrganisateur);
+//            dump($findByNonInscription);
+//            dump($findAllOthers);
+//            die();
+//            $sorties = $findAllOthers + $findByNonInscription;
+//                + $findByOrganisateur + $findByInscription;
+
+//            dump($sorties);
 //            die();
 
         }
         else
         {
-
+            $sorties = $repoSortie->findAll();
         }
 
 
 
         return $this->render("listEvent.html.twig", [
             "sorties" => $sorties,
-            "form" => $form->createView()
+            "form" => $form->createView(),
+            "sites" => $sites
         ]);
     }
 
     /**
-     * @Route("/detailEvent/{sortie}", name="detailEvent", requirements={"id":"\d+"})
-     * @param Sortie $sortie
+     * @Route("/detailEvent/{id}", name="detailEvent", requirements={"id":"\d+"})
+     * @param $id
      * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function detailEventAction(Sortie $sortie, EntityManagerInterface $em)
+    public function detailEventAction($id, EntityManagerInterface $em)
     {
 
         $repoId = $em->getRepository(Sortie::class);
-        $detailEvent = $repoId->find($sortie);
+        $detailEvent = $repoId->find($id);
 
         return $this->render("detailEvent.html.twig", [
             "Detail" => $detailEvent
@@ -142,18 +187,14 @@ class EventController extends Controller
     {
 
         $form = $this->createForm(SortiesType::class, $sortie);
-
-
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->addFlash("success", "Event modifié avec succes !");
-
             $em->persist($sortie);
             $em->flush();
 
+            $this->addFlash("success", "Event modifié avec succes !");
             return $this->redirectToRoute("event_detailEvent", ["id" => $sortie->getId()]);
         }
         return $this->render("updateEvent.html.twig", [
@@ -179,11 +220,10 @@ class EventController extends Controller
 
         if ($form->isSubmitted()) {
 
-            $this->addFlash("success", "Event supprimé avec succès !");
-
             $em->remove($sortie);
             $em->flush();
 
+            $this->addFlash("success", "Event supprimé avec succès !");
             return $this->redirectToRoute("event_listeEvent");
         }
 

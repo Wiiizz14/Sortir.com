@@ -6,16 +6,15 @@
 {% block body %}
     <a href="{{ path('event_createEvent') }}">créer evenement</a>
     {{ form(form) }}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert-{{ label }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endfor %}
     <input id="myInput" type="text" placeholder="Search..">
+    <select name="select_sites" id="select_sites">
+        <option value="sitenone">pas de site</option>
+        {% for site in sites %}
+        <option value="{{ site.id }}">{{ site.nom }}</option>
+        {% endfor %}
+    </select>
     <table class="table table-hover">
-    <tbody id="myTable">
+
     <tr>
         <th scope="col">Nom</th>
         <th scope="col">Date de la sortie</th>
@@ -26,9 +25,10 @@
         <th scope="col">Organisateur</th>
         <th scope="col">Actions</th>
     </tr>
+        <tbody id="myTable">
     {% for sortie in sorties %}
         {% set isInscrit = 0 %}
-        <tr>
+        <tr class="site{{ sortie.site ? sortie.site.id : "none" }}">
             <td>{{ sortie.nom }}</td>
             <td>{{ sortie.dateDebut|date("m/d/Y h:i") }}</td>
             <td>{{ sortie.dateCloture|date("m/d/Y") }}</td>
