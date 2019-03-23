@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class EventController
- * @Route("/event", name="event_")
+ * @Route("/", name="event_")
  * @package AppBundle\Controller
  */
 class EventController extends Controller
@@ -82,10 +82,11 @@ class EventController extends Controller
 
     /**
      * @Route("/listEvent", name="listeEvent")
+     * @param Request $request
      * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listEventAction(EntityManagerInterface $em)
+    public function listEventAction(Request $request, EntityManagerInterface $em)
     {
         // tableau des sites pour le select
         $sites = $em->getRepository(Site::class)->findAll();
