@@ -68,7 +68,7 @@ class SiteController extends Controller
             return $this->redirectToRoute("manageSite_createSite");
         }
 
-        return $this->render("manageSite.html.twig", [
+        return $this->render("@eniAdmin/Site/manageSite.html.twig", [
             "villes" => $sites,
             "formSite" => $form->createView()
         ]);
