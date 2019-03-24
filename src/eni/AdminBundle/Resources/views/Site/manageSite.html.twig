@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des sites{% endblock %}
+
+{% block pagetitle %}Gérer les sites{% endblock %}
+
+{% block body %}
+
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Site de rattachement</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            {% form_theme formSite 'bootstrap_4_layout.html.twig' %}
+            <tbody>
+            {% for site in sites %}
+                <tr>
+                    <td scope="row">{{ site.nom }}</td>
+                    <td><a href="#">Modifier</a> - <a href="#">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+            {{ form_start(formSite) }}
+            <tr>
+                <td>{{ form_widget(formSite.nom) }}</td>
+                <td>{{ form_widget(formSite.codePostal) }}</td>
+                <td>{{ form_widget(formSite.ajouter) }}</td>
+            </tr>
+            {{ form_end(formSite) }}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
