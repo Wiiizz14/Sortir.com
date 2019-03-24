@@ -5,6 +5,15 @@
     margin-top: 2%;
     margin-bottom: 2%;
 }
+
+/* Page de login */
+/* Uniquement centrer le formulaire sur la page */
+#formLogin
+{
+    margin: 10% auto;
+    width: 60%;
+}
+
 /* Déclencheur modal "Ajout Lieu" */
 .btn-circle {
     width: 30px;
