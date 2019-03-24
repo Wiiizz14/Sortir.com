@@ -5,6 +5,13 @@
 
 {% block body %}
 
-
+    <div class="row">
+        <div class="col-12">
+            <p>Etes-vous sûr de vouloir supprimer {{ ville.nom }} ?</p>
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form(formDeleteCity) }}
+            <a href="{{ path('manageCity_createCity') }}" class="btn btn-info">Annuler</a>
+        </div>
+    </div>
 
 {% endblock %}

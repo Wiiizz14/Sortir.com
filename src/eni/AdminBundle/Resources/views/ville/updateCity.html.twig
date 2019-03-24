@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une ville{% endblock %}
+
+{% block pagetitle %}Modification de la ville : {{ ville.nom }}{% endblock %}
+
+{% block body %}
+
+    {% form_theme formUpdateCity 'bootstrap_4_layout.html.twig' %}
+    {{ form(formUpdateCity) }}
+
+{% endblock %}

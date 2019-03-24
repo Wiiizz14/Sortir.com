@@ -21,7 +21,7 @@
                 <tr>
                     <td scope="row">{{ ville.nom }}</td>
                     <td>{{ ville.codepostal }}</td>
-                    <td><a href="#">Modifier</a> - <a href="#">Supprimer</a></td>
+                    <td><a href="{{ url('manageCity_updateCity', {'city' : ville.id}) }}">Modifier</a> - <a href="{{ url('manageCity_deleteCity', {'city' : ville.id}) }}">Supprimer</a></td>
                 </tr>
             {% endfor %}
             {{ form_start(formCity) }}
