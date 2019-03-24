@@ -22,7 +22,8 @@ class VilleType extends AbstractType
             ->add('codePostal', TextType::class, [
                 'label' => 'Code Postal'
             ])
-            ->add('ajouter', SubmitType::class);
+            ->add('ajouter', SubmitType::class)
+            ->add('valider', SubmitType::class);
     }
 
     /**

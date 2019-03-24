@@ -6,6 +6,7 @@ use AppBundle\Entity\Ville;
 use AppBundle\Form\VilleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -54,6 +55,7 @@ class VilleController extends Controller
         $city = new Ville();
         // Création du formulaire pour enregistrer une nouvelle Ville en BDD.
         $form = $this->createForm(VilleType::class, $city);
+        $form->remove('valider');
 
         $form->handleRequest($request);
 
@@ -87,7 +89,7 @@ class VilleController extends Controller
     /**
      * Permet de modifier une ville.
      *
-     * @Route("/{city}", name="updateCity")
+     * @Route("/updateCity/{city}", name="updateCity")
      * @param Request $request
      * @param Ville $city
      * @Method("UPDATE")
@@ -97,24 +99,29 @@ class VilleController extends Controller
     {
         // Création du formulaire
         $formUpdateCity = $this->createForm(VilleType::class, $city);
+        $formUpdateCity->remove('ajouter');
+
         $formUpdateCity->handleRequest($request);
 
         if ($formUpdateCity->isSubmitted() && $formUpdateCity->isValid())
         {
             $this->getDoctrine()->getManager()->flush();
 
+            // Message confirmant la modification de la ville.
+            $this->addFlash("success", "La modification de la ville a bien été effectuée.");
             return $this->redirectToRoute("manageCity_createCity");
         }
 
-        return $this->render("updateCity.html.twig", [
-            "formUpdateCity" => $formUpdateCity->createView()
+        return $this->render("@eniAdmin/ville/updateCity.html.twig", [
+            "formUpdateCity" => $formUpdateCity->createView(),
+            "ville" => $city
         ]);
     }
 
     /**
      * Permet de supprimer une ville.
      *
-     * @Route("/{city}", name="deleteCity")
+     * @Route("/deleteCity/{city}", name="deleteCity")
      * @param Request $request
      * @param Ville $city
      * @Method("DELETE")
@@ -122,35 +129,37 @@ class VilleController extends Controller
      */
     public function deleteCityAction(Request $request, Ville $city)
     {
+        // Création du formulaire pour supprimer une ville.
+        $formBuilder = $this->createFormBuilder();
+        $formBuilder->add('supprimer', SubmitType::class);
 
-        return $this->render("deleteCity.html.twig");
+        $formDeleteCity = $formBuilder->getForm();
+        $formDeleteCity->handleRequest($request);
+
+        if ($formDeleteCity->isSubmitted() && $formDeleteCity->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($city);
+
+            try
+            {
+                $em->flush();
+
+                // Message confirmant le succès de la suppression.
+                $this->addFlash("success", "La suppression de la ville a bien été effectuée.");
+            }
+            catch (\Exception $e)
+            {
+                // Message indiquant une erreur lors de la suppression.
+                $this->addFlash("danger", "Une erreur s'est produite. La suppression de la ville a été annulée.");
+            }
+            return $this->redirectToRoute("manageCity_createCity");
+        }
+
+        return $this->render("@eniAdmin/ville/deleteCity.html.twig", [
+            "formDeleteCity" => $formDeleteCity,
+            "ville" => $city
+        ]);
     }
 
-    /**
-     * Création d'un formulaire pour modifier une ville.
-     *
-     * @param Ville $city
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createUpdateForm(Ville $city)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl("manageCity_updateCity", array(["id" => $city->getId()])))
-            ->setMethod("UPDATE")
-            ->getForm();
-    }
-
-    /**
-     * Création d'un formulaire pour supprimer une ville.
-     *
-     * @param Ville $city
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createDeleteForm(Ville $city)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl("manageCity_deleteCity", array(["id" => $city->getId()])))
-            ->setMethod("DELETE")
-            ->getForm();
-    }
 }
