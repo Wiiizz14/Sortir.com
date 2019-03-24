@@ -7,8 +7,13 @@
     <a href="{{ path('event_createEvent') }}">créer evenement</a>
     {{ form_start(form) }}
     <div>
+        <script>
+           varTest = {{ sites[1]|json_encode|raw }}
+
+        </script>
 
         <p>{{ form_row(form.organisateur, {"label": "es tu l'organisateur", 'id': "orga1", "value": 35}) }}</p>
+        <p>{{ form_row(form.sites, {"label": "Site concerné", 'id': "choixSite", 'attr': {'onchange': "selectionSite();"}}) }}</p>
     </div>
 
 
@@ -36,6 +41,7 @@
         <tbody id="myTable">
     {% for sortie in sorties %}
         {% set isInscrit = 0 %}
+        <script>var testSortie = {{ sortie|json_encode }}</script>
         <tr class="site{{ sortie.site ? sortie.site.id : "none" }}">
             <td>{{ sortie.nom }}</td>
             <td>{{ sortie.dateDebut|date("m/d/Y h:i") }}</td>

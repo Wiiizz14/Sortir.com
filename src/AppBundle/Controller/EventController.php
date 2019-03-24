@@ -14,9 +14,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Mapping\Loader\LoaderInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class EventController
@@ -82,7 +89,6 @@ class EventController extends Controller
 
     /**
      * @Route("/listEvent", name="listeEvent")
-     * @param Request $request
      * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -167,6 +173,37 @@ class EventController extends Controller
             "form" => $form->createView(),
             "sites" => $sites
         ]);
+    }
+
+    /**
+     * @Route("/get", name="getListById")
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     */
+    public function getAction(Request $request, EntityManagerInterface $em)
+    {
+        // pour commencer il faut le plugin serializer
+        // composer require symfony/serializer
+        // ensuite il faut l'ajouter dans le config dans framework
+
+        $encoder = new JsonEncoder();
+        $normaliser = new ObjectNormalizer();
+
+        $normaliser->setCircularReferenceHandler(function ($object) {
+            return $object->getid();
+        });
+
+        $serializer = new Serializer([$normaliser],[$encoder]);
+
+        $repoSortie = $em->getRepository(Sortie::class);
+        $sorties = $repoSortie->findAll();
+
+        // utiliser serializer sur l'objet en passant en parametre 'json'
+        $retour = $serializer->serialize($sorties, 'json');
+
+        return new JsonResponse($retour);
     }
 
     /**
