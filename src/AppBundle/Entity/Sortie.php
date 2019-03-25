@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Sortie
@@ -14,7 +15,7 @@ class Sortie
 {
     /**
      * @var int
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,76 +24,82 @@ class Sortie
 
     /**
      * @var string
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="nom", type="string", length=80)
      */
     private $nom;
 
     /**
      * @var \DateTime
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="date_debut", type="datetime")
+     *
      */
     private $dateDebut;
 
     /**
      * @var int
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="duree", type="integer", nullable=true)
      */
     private $duree;
 
     /**
      * @var \DateTime
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="date_cloture", type="datetime")
      */
     private $dateCloture;
 
     /**
      * @var int
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="nb_inscriptions_max", type="integer")
      */
     private $nbInscriptionsMax;
 
     /**
      * @var string
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="description", type="string", length=500, nullable=true)
      */
     private $description;
 
     /**
      * @var boolean
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="is_etat_sortie", type="boolean")
      */
     private $isEtatSortie;
 
     /**
      * @var
+     * @Groups({"sortieGroupe"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Participant", inversedBy="organisations")
      */
     private $organisateur;
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Participant", mappedBy="sorties")
+     * @Groups({"sortieGroupe"})
      */
     private $participants;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Etat", inversedBy="sorties")
+     * @Groups({"sortieGroupe"})
      */
     private $etat;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Lieu", inversedBy="sorties")
+     * @Groups({"sortieGroupe"})
      */
     private $lieu;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Site", inversedBy="sorties")
+     * @Groups({"sortieGroupe"})
      */
     private $site;
 

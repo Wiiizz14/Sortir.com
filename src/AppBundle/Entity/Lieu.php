@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Lieu
@@ -14,7 +15,7 @@ class Lieu
 {
     /**
      * @var int
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,28 +24,28 @@ class Lieu
 
     /**
      * @var string
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="nom", type="string", length=30)
      */
     private $nom;
 
     /**
      * @var string
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="rue", type="string", length=80, nullable=true)
      */
     private $rue;
 
     /**
      * @var float
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="latitude", type="float", nullable=true)
      */
     private $latitude;
 
     /**
      * @var float
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="longitude", type="float", nullable=true)
      */
     private $longitude;
@@ -56,6 +57,7 @@ class Lieu
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ville", inversedBy="lieux")
+     * @Groups({"sortieGroupe"})
      */
     private $ville;
 
