@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Sortie
@@ -23,42 +24,49 @@ class Sortie
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
+     * @Assert\Type(type="string", message="Chaine de caractères uniquement")
      * @ORM\Column(name="nom", type="string", length=80)
      */
     private $nom;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
+     * @Assert\LessThan(propertyPath="dateCloture" , message="La date de début doit-être antérieure à la date de clôture")
+     * @Assert\GreaterThan("today", message="La sortie ne peut pas se réaliser dans le passé !")
      * @ORM\Column(name="date_debut", type="datetime")
      */
     private $dateDebut;
 
     /**
      * @var int
-     *
+     * @Assert\Type(type="integer", message="Valeur numérique uniquement")
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
+     * @Assert\Range(min=0, minMessage="La durée ne peut pas être négative !")
      * @ORM\Column(name="duree", type="integer", nullable=true)
      */
     private $duree;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
+     * @Assert\GreaterThan(propertyPath="dateDebut", message="La date de clôture doit-être postérieure à la date de début")
      * @ORM\Column(name="date_cloture", type="datetime")
      */
     private $dateCloture;
 
     /**
      * @var int
-     *
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
+     * @Assert\Range(min=0, minMessage="Le nombre de participants ne peut pas être négatif")
      * @ORM\Column(name="nb_inscriptions_max", type="integer")
      */
     private $nbInscriptionsMax;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
      * @ORM\Column(name="description", type="string", length=500, nullable=true)
      */
     private $description;

@@ -15,8 +15,8 @@
 
     <div>
         <p>Nom de la sortie : {{ Detail.nom }}</p>
-        <p>Date et heure de la sortie : {{ Detail.dateDebut | date("d-M-Y") }}</p>
-        <p>Date limite d'inscription : {{ Detail.dateCloture | date("d-M-Y") }}</p>
+        <p>Date et heure de la sortie : {{ Detail.dateDebut | date("d-m-Y") }}</p>
+        <p>Date limite d'inscription : {{ Detail.dateCloture | date("d-m-Y") }}</p>
         <p>Nombre de places : {{ Detail.nbInscriptionsMax }}</p>
         <p>Durée : {{ Detail.duree }} minutes</p>
         <p>Description et infos : {{ Detail.description }}</p>
@@ -27,8 +27,8 @@
         <p>Lieu : {{ Detail.lieu.nom }}</p>
         <p>Rue : {{ Detail.Lieu.rue }}</p>
         <p>Code Postal : {{ Detail.Lieu.Ville.codepostal }}</p>
-        <p>Latitude : </p>
-        <p>Longitude : </p>
+        <p>Latitude : {{ Detail.Lieu.latitude }}</p>
+        <p>Longitude : {{ Detail.Lieu.longitude }} </p>
     </div>
 
 {% endblock %}

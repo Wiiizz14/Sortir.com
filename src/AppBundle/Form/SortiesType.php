@@ -3,15 +3,13 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Lieu;
-use AppBundle\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Tests\Fixtures\Entity;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class SortiesType extends AbstractType{
 
@@ -19,33 +17,41 @@ class SortiesType extends AbstractType{
     {
         $builder
             ->add("nom", TextType::class, [
-                "label"=>"Nom :"
+                "label"=>"Nom de la sortie :"
             ])
-            ->add("dateDebut", DateType::class, [
-                "label"=>"Date de début :"
+            ->add("dateDebut", DateTimeType::class, [
+                "label"=> "Date de début :",
+                "widget" => "single_text",
             ])
-            ->add("dateCloture", DateType::class, [
-                "label"=>"Date de cloture :"
+
+            ->add("dateCloture", DateTimeType::class, [
+                "label"=> "Date de clôture :",
+                "widget" => "single_text",
             ])
+
             ->add("nbInscriptionsMax", IntegerType::class, [
                 "label"=>"Nombre d'inscriptions max :"
             ])
             ->add("duree", IntegerType::class, [
-                "label"=>"Durée :"
+                "label"=>"Durée :",
+                "required"=>false
+
             ])
             ->add("description", TextType::class,[
                 "label"=>"Description & infos :"
             ])
 
             ->add("lieu", EntityType::class, [
-                "class"=>Lieu::class
+                "class"=>Lieu::class,
+                "label"=> "Lieu :"
             ])
 
-            ->add("Enregistrer", SubmitType::class);
-            /*
-            ->add("Publier", SubmitType::class)
+            ->add("Enregistrer", SubmitType::class)
+            ->add("Publier", SubmitType::class,[
+                "label"=>"Publier la sortie"
+            ])
             ->add("Annuler", SubmitType::class);
-            */
+
     }
 }
 
