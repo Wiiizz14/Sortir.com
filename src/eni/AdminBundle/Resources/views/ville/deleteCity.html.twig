@@ -5,12 +5,13 @@
 
 {% block body %}
 
-    <div class="row">
+    <div class="row" id="formDeleteCity">
         <div class="col-12">
-            <p>Etes-vous sûr de vouloir supprimer {{ ville.nom }} ?</p>
-            {% form_theme form 'bootstrap_4_layout.html.twig' %}
-            {{ form(formDeleteCity) }}
-            <a href="{{ path('manageCity_createCity') }}" class="btn btn-info">Annuler</a>
+            <p>Etes-vous sûr de vouloir supprimer la ville de <strong>{{ ville.nom }}</strong> ?</p>
+            {% form_theme formDeleteCity 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(formDeleteCity) }}
+            {{ form_widget(formDeleteCity.supprimer) }} <a href="{{ path('manageCity_createCity') }}" class="btn btn-info">Annuler</a>
+            {{ form_end(formDeleteCity) }}
         </div>
     </div>
 
