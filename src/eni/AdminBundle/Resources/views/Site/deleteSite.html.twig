@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suppression d'un site{% endblock %}
+
+{% block body %}
+
+    <div class="row" id="formDeleteSite">
+        <div class="col-12">
+            <p>Etes-vous sûr de vouloir supprimer la ville de <strong>{{ site.nom }}</strong> ?</p>
+            {% form_theme formDeleteSite 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(formDeleteSite) }}
+            {{ form_widget(formDeleteSite.supprimer) }} <a href="{{ path('manageSite_createSite') }}" class="btn btn-info">Annuler</a>
+            {{ form_end(formDeleteSite) }}
+        </div>
+    </div>
+
+{% endblock %}
+
