@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Etat;
 use AppBundle\Entity\Lieu;
 use AppBundle\Entity\Site;
 use AppBundle\Entity\Sortie;
@@ -44,7 +45,6 @@ class EventController extends Controller
      */
     public function createEventAction(Request $request, EntityManagerInterface $em, UserInterface $user)
     {
-
         $sortie = new Sortie();
         $form = $this->createForm(SortiesType::class, $sortie);
 
@@ -56,31 +56,48 @@ class EventController extends Controller
 
         $form->handleRequest($request);
 
-        //Pour choix de la ville
+        //Pour choix de la ville -> DYNAMISE le LIEU + CODE POSTAL
         $repoVille = $em->getRepository(Ville::class);
         $villes = $repoVille->findAll();
 
-        //Pour choix du lieu
+        //Pour choix du lieu -> A DYNAMISER en JS
         $repoLieu = $em->getRepository(Lieu::class);
         $lieux = $repoLieu->findAll();
 
+
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //Setters pour l'organisateur et l'état de la sortie
+            //Setters : l'organisateur + etat_id + site_id
             $sortie->setOrganisateur($user);
             $sortie->setIsEtatSortie(true);
-            dump($form);
-            dump($sortie);
-            $test = $request->get("ville");
-            dump($test);
-            die();
-            //GO
-            $em->persist($sortie);
-            $em->flush();
+            $sortie->setSite($user->getSite());
 
-            $this->addFlash("success", "Event crée avec succès !");
-            return $this->redirectToRoute("event_detailEvent", ["id"=>$sortie->getid()
-            ]);
+            //Aiguillage
+            if($form->get("Enregistrer")->isClicked()){
+                //Set etat_id = Créee(1)
+                $sortie->setEtat($em->getRepository(Etat::class)->find(1));
+                //GO BDD
+                $em->persist($sortie);
+                $em->flush();
+                //Flash
+                $this->addFlash("success", "Event enregistré avec succes !");
+                return $this->redirectToRoute("event_detailEvent", ["id"=>$sortie->getid()]);
+
+            } elseif ($form->get("Publier")->isClicked()) {
+                //Set etat_id = Ouverte(2)
+                $sortie->setEtat($em->getRepository(Etat::class)->find(2));
+
+                //GO BDD
+                $em->persist($sortie);
+                $em->flush();
+
+                //Flash
+                $this->addFlash("success", "Event publié avec succes !");
+                return $this->redirectToRoute("event_detailEvent", ["id"=>$sortie->getid()]);
+
+            } elseif($form->get("Annuler")->isClicked()) {
+                return $this->redirectToRoute("event_listeEvent");
+            }
         }
         return $this->render("createEvent.html.twig", [
             "formCreateEvent" => $form->createView(),
@@ -91,6 +108,7 @@ class EventController extends Controller
 
     /**
      * @Route("/listEvent", name="listeEvent")
+     * @param Request $request
      * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      */

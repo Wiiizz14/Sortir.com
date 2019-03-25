@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,19 +25,19 @@ class ParticipantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('nom',TextType::class, [
-                "label" => "Nom"
+                'label' => 'Nom'
             ])
             ->add('prenom',TextType::class, [
-                "label" => "Prénom"
+                'label' => 'Prénom'
             ])
             ->add('username',TextType::class, [
-                "label" => "Pseudo"
+                'label' => 'Pseudo'
             ])
             ->add('telephone', TelType::class, [
-            "label" => "Numéro de Téléphone"
+                'label' => 'Numéro de Téléphone'
             ])
             ->add('email', EmailType::class, [
-                "label" => "Adresse mail"
+                'label' => 'Adresse mail'
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -44,19 +45,22 @@ class ParticipantType extends AbstractType
                 'second_options' => ['label' => 'Confirmer mot de passe']
             ])
             ->add('isAdministrateur', CheckboxType::class, [
-                "required"=>false,
-                "label" => "Droits Administrateur"
+                'required'=>false,
+                'label' => 'Droits Administrateur'
+            ])
+            ->add('site',  EntityType::class, [
+                'class' => 'AppBundle:Site',
+                'choice_label' => 'nom',
             ])
             ->add('urlPhoto', FileType::class, [
-                "data_class"=> null,
-                "required"=>false,
-                "label" => "Photo de profil"
+                'data_class'=> null,
+                'required'=>false,
+                'label' => 'Photo de profil'
             ])
-            ->add('site', ChoiceType::class, [
-                "label" => "Site de référence"
-            ])
-            ->add('Valider', SubmitType::class);
-    }/**
+            ->add('enregistrer', SubmitType::class);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
