@@ -6,13 +6,33 @@ $(document).ready(function(){
         })
 
      selectionSite = () => {
-        console.log('je suis dans la fonction')
-        //var site = "/get/" + $('#choixSite option:selected').val();
-        //la fonction getJson permet de récupérer un string au format json
-        $.getJSON( {
-            url: "/get",
-            format: "json",
-        })
+         console.log("dans la func");
+        var idSite = $("#choixSite option:selected").val();
+        var isOrganisateur = 0;
+        var isInscrit = 0;
+        var isNotInscrit = 0;
+        var isArchive = 0;
+        console.log(idSite);
+        //la fonction getJson permet de récupérer un string au format json;
+        $.get(
+             {
+                 url: "/api/searchEvent",
+                 data: {idSite: idSite,
+                 isOrganisateur: isOrganisateur,
+                 isInscrit: isInscrit,
+                 isNotInscrit: isNotInscrit,
+                 isArchive: isArchive}
+             },
+             function(apiresult, status){
+                 console.log("dans la requete");
+                 console.log(apiresult);
+                 //alert("Data: " + apiresult + "\nStatus: " + status);
+             })
+        //
+        // $.getJSON( {
+        //     url: "/get",
+        //     format: "json",
+        // })
             .done(function (apiResult) {
                 // JSON.parse pour obtenir un objet depuis le json
                 //supression du tableau en place

@@ -7,6 +7,7 @@ use AppBundle\Entity\Site;
 use AppBundle\Entity\Sortie;
 use AppBundle\Entity\Ville;
 use AppBundle\Form\SortiesType;
+use AppBundle\Repository\SortieRepository;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -177,24 +178,42 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/get", name="getListById")
+     * @Route("/api/searchEvent", name="api_getList")
      * @param Request $request
      * @param EntityManagerInterface $em
+     * @param UserInterface $user
      * @return Response
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
-    public function getAction(Request $request, EntityManagerInterface $em)
+    public function getAction(Request $request, EntityManagerInterface $em, UserInterface $user)
     {
+        $idSite = $request->get("idSite");
+        $isOrganisateur = $request->get("isOrganisateur");
+        $isInscrit = $request->get("isInscrit");
+        $isNotInscrit = $request->get("isNotInscrit");
+        $isArchive = $request->get("isArchive");
+
         $classMetadataFactory = new ClassMetadataFactory(
             new AnnotationLoader(new AnnotationReader()));
 
         $normalizer = new ObjectNormalizer($classMetadataFactory);
         $serializer = new Serializer([$normalizer]);
 
+        $repo = $em->getRepository(Sortie::class);
+
+        if ($isOrganisateur || $isInscrit || $isNotInscrit || $isArchive)
+        {
+            $sorties = [];
+            if ($isOrganisateur) {
+                $sorties[] = $repo->getSortiesByOrganisateur($user, $idSite);
+            }
 
 
-        $repoSortie = $em->getRepository(Sortie::class);
-        $sorties = $repoSortie->findAll();
+
+        } else
+        {
+            $sorties = $repo->getSortiesOnlyBySite($idSite);
+        }
 
         $retour = $serializer->normalize($sorties,
             null,
