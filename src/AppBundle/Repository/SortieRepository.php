@@ -18,16 +18,35 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
      * @param $user
      * @return array
      */
-    public function getSortiesByAuthor($user)
+    public function getSortiesOnlyBySite($idSite)
     {
 
         $em = $this->getEntityManager('s');
         $queryBuilder = $em->createQueryBuilder();
         $queryBuilder->select('s')
             ->from(Sortie::class, 's')
-            ->innerJoin("s.organisateur", "p", "WITH")
-            ->where("p = :id")
-            ->setParameter("id", $user->getId());
+            ->innerJoin("s.site", "site", "WITH", "site.id = :idSite")
+            ->setParameter("idSite", $idSite);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param $user
+     * @return array
+     */
+    public function getSortiesByOrganisateur($user, $idSite)
+    {
+
+        $em = $this->getEntityManager('s');
+        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder->select('s')
+            ->from(Sortie::class, 's')
+            ->innerJoin("s.site", "site", "WITH", "site.id = :idSite")
+            ->innerJoin("s.organisateur", "p", "WITH", "p = :idUser")
+            ->andWhere("s.site.id = :idSite")
+            ->setParameter("idUser", $user->getId())
+            ->setParameter("idSite", $idSite);
 
         return $queryBuilder->getQuery()->getResult();
     }

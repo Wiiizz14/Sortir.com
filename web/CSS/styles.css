@@ -14,6 +14,12 @@
     width: 60%;
 }
 
+
+/* Liens page de création de sortie */
+.createLinks{
+    display: inline-block;
+}
+
 /* Déclencheur modal "Ajout Lieu" */
 .btn-circle {
     width: 30px;
@@ -26,7 +32,7 @@
     border-radius: 15px;
 }
 
-/* Paramètres */
+/* Paramètres modal */
 .w3-modal-content{
     max-width: 550px;
 }
@@ -44,6 +50,10 @@
 }
 
 .submitModal{
+    display: inline-block;
+}
+
+.addSpot{
     display: inline-block;
 }
 
@@ -75,6 +85,5 @@
 
 /* Fin */
 
-.createLinks{
-    display: inline-block;
-}
+
+
