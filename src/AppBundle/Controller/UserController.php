@@ -26,7 +26,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/updateUser", name="update")
+     * @Route("/updateUser", name="updateUser")
      * @param Request $request
      * @param UserInterface $user
      * @return \Symfony\Component\HttpFoundation\Response
@@ -75,7 +75,7 @@ class UserController extends Controller
             $em->flush();
 
             $this->addFlash("success", "Le participant a bien été modifié.");
-            return $this->redirectToRoute("detail", [
+            return $this->redirectToRoute("updateUser", [
                 "participant"=>$user->getId()
             ]);
         }
