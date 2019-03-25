@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,7 +17,7 @@ class Participant implements UserInterface
 {
     /**
      * @var int
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -25,21 +26,21 @@ class Participant implements UserInterface
 
     /**
      * @var string
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="nom", type="string", length=50)
      */
     private $nom;
 
     /**
      * @var string
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="prenom", type="string", length=30)
      */
     private $prenom;
 
     /**
      * @var string
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="username", type="string", length=30, unique=true)
      */
     private $username;

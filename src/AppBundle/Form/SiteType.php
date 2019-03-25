@@ -19,7 +19,8 @@ class SiteType extends AbstractType
             ->add('nom', TextType::class, [
                 'label' => 'Site de rattachement'
             ])
-            ->add('ajouter', SubmitType::class);
+            ->add('ajouter', SubmitType::class)
+            ->add('valider', SubmitType::class);
     }/**
      * {@inheritdoc}
      */

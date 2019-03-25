@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Etat
@@ -14,7 +15,7 @@ class Etat
 {
     /**
      * @var int
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,7 +24,7 @@ class Etat
 
     /**
      * @var string
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="libelle", type="string", length=30)
      */
     private $libelle;

@@ -129,7 +129,7 @@ class VilleController extends Controller
      */
     public function deleteCityAction(Request $request, Ville $city)
     {
-        // Création du formulaire pour supprimer une ville.
+        // Création du formulaire
         $formBuilder = $this->createFormBuilder();
         $formBuilder->add('supprimer', SubmitType::class);
 
@@ -151,13 +151,13 @@ class VilleController extends Controller
             catch (\Exception $e)
             {
                 // Message indiquant une erreur lors de la suppression.
-                $this->addFlash("danger", "Une erreur s'est produite. La suppression de la ville a été annulée.");
+                $this->addFlash("danger", "Une erreur s'est produite. La suppression de la ville n'a pas aboutie.");
             }
             return $this->redirectToRoute("manageCity_createCity");
         }
 
         return $this->render("@eniAdmin/ville/deleteCity.html.twig", [
-            "formDeleteCity" => $formDeleteCity,
+            "formDeleteCity" => $formDeleteCity->createView(),
             "ville" => $city
         ]);
     }

@@ -8,21 +8,24 @@ use AppBundle\Entity\Site;
 use AppBundle\Entity\Sortie;
 use AppBundle\Entity\Ville;
 use AppBundle\Form\SortiesType;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class EventController
@@ -193,31 +196,28 @@ class EventController extends Controller
 
     /**
      * @Route("/get", name="getListById")
-     * @param SerializerInterface $serializer
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @return JsonResponse
+     * @return Response
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function getAction(Request $request, EntityManagerInterface $em)
     {
-        // pour commencer il faut le plugin serializer
-        // composer require symfony/serializer
-        // ensuite il faut l'ajouter dans le config dans framework
+        $classMetadataFactory = new ClassMetadataFactory(
+            new AnnotationLoader(new AnnotationReader()));
 
-        $encoder = new JsonEncoder();
-        $normaliser = new ObjectNormalizer();
+        $normalizer = new ObjectNormalizer($classMetadataFactory);
+        $serializer = new Serializer([$normalizer]);
 
-        $normaliser->setCircularReferenceHandler(function ($object) {
-            return $object->getid();
-        });
 
-        $serializer = new Serializer([$normaliser],[$encoder]);
 
         $repoSortie = $em->getRepository(Sortie::class);
         $sorties = $repoSortie->findAll();
 
-        // utiliser serializer sur l'objet en passant en parametre 'json'
-        $retour = $serializer->serialize($sorties, 'json');
+        $retour = $serializer->normalize($sorties,
+            null,
+            ["groups" => ["sortieGroupe"]]);
+
 
         return new JsonResponse($retour);
     }
@@ -232,7 +232,7 @@ class EventController extends Controller
     {
 
         $repoId = $em->getRepository(Sortie::class);
-        $detailEvent = $repoId->find($id);
+        $detailEvent = $repoId->find($libelle);
 
         return $this->render("detailEvent.html.twig", [
             "Detail" => $detailEvent

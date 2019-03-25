@@ -29,14 +29,14 @@
         <a class="nav-link" href="{{ path('manageCity_createCity') }}">Ville</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Sites</a>
+        <a class="nav-link" href="{{ path('manageSite_createSite') }}">Sites</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ path('admin_listUser') }}">Participants</a>
       </li>
       {% endif %}
          <li class="nav-item">
-        <a class="nav-link" href="{{ path('detail') }}">Mon Profil</a>
+        <a class="nav-link" href="{{ path('updateUser') }}">Mon Profil</a>
          <li class="nav-item">
         <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
       </li>

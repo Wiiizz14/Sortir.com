@@ -57,6 +57,26 @@
     display: inline-block;
 }
 
+/* Page updateCity et updateSite */
+#formUpdateSite, #formUpdateCity
+{
+    margin: 10% auto;
+    width: 60%;
+}
+
+/* Page deleteCity et deleteSite */
+#formDeleteCity, #formDeleteSite
+{
+    margin: 10% auto;
+    text-align: center;
+}
+
+/* Page mon profil */
+#containerMyProfil
+{
+    margin: 10% auto;
+}
+
 /* Fin */
 
 

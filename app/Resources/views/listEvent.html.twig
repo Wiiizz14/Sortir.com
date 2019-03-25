@@ -8,7 +8,11 @@
     {{ form_start(form) }}
     <div>
         <script>
-           varTest = {{ sites[1]|json_encode|raw }}
+           user = {
+               id: {{ app.user.id }},
+               username: '{{ app.user.username }}'
+           };
+
 
         </script>
 
@@ -41,7 +45,6 @@
         <tbody id="myTable">
     {% for sortie in sorties %}
         {% set isInscrit = 0 %}
-        <script>var testSortie = {{ sortie|json_encode }}</script>
         <tr class="site{{ sortie.site ? sortie.site.id : "none" }}">
             <td>{{ sortie.nom }}</td>
             <td>{{ sortie.dateDebut|date("m/d/Y h:i") }}</td>
@@ -65,7 +68,7 @@
                 {% else %}
                     {% if isInscrit and sortie.dateCloture < "now" %}
                         <a href="#">Se désinscrire</a>
-                    {% else %}
+                    {% else if sortie.dateCloture < "now" %}
                 <a href="#">S'inscrire</a>
                 {% endif %}
                 {% endif %} #}

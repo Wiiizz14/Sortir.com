@@ -15,7 +15,7 @@ class Sortie
 {
     /**
      * @var int
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -73,34 +73,39 @@ class Sortie
 
     /**
      * @var boolean
-     *
+     * @Groups({"sortieGroupe"})
      * @ORM\Column(name="is_etat_sortie", type="boolean")
      */
     private $isEtatSortie;
 
     /**
      * @var
+     * @Groups({"sortieGroupe"})
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Participant", inversedBy="organisations")
      */
     private $organisateur;
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Participant", mappedBy="sorties")
+     * @Groups({"sortieGroupe"})
      */
     private $participants;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Etat", inversedBy="sorties")
+     * @Groups({"sortieGroupe"})
      */
     private $etat;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Lieu", inversedBy="sorties")
+     * @Groups({"sortieGroupe"})
      */
     private $lieu;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Site", inversedBy="sorties")
+     * @Groups({"sortieGroupe"})
      */
     private $site;
 
