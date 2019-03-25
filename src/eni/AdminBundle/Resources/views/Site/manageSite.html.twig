@@ -6,6 +6,12 @@
 
 {% block body %}
 
+    <h3>Filtrer les sites</h3>
+    <form class="search-form col-md-4">
+        <input class="form-control form-control-sm mr-3" type="text" placeholder="Search" aria-label="Search" id="myInput">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </form>
+
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-hover">
             <thead>
@@ -15,21 +21,21 @@
             </tr>
             </thead>
             {% form_theme formSite 'bootstrap_4_layout.html.twig' %}
-            <tbody>
+            <tbody id="myTable">
             {% for site in sites %}
                 <tr>
                     <td scope="row">{{ site.nom }}</td>
-                    <td><a href="#">Modifier</a> - <a href="#">Supprimer</a></td>
+                    <td><a href="{{ url('manageSite_updateSite', {'site' : site.id}) }}">Modifier</a> - <a href="{{ url('manageSite_deleteSite', {'site' : site.id}) }}">Supprimer</a></td>
                 </tr>
             {% endfor %}
+            </tbody>
             {{ form_start(formSite) }}
             <tr>
                 <td>{{ form_widget(formSite.nom) }}</td>
-                <td>{{ form_widget(formSite.codePostal) }}</td>
                 <td>{{ form_widget(formSite.ajouter) }}</td>
             </tr>
             {{ form_end(formSite) }}
-            </tbody>
+
         </table>
     </div>
 {% endblock %}
