@@ -6,7 +6,15 @@
 
 {% block body %}
 
-    {% form_theme formUpdateCity 'bootstrap_4_layout.html.twig' %}
-    {{ form(formUpdateCity) }}
+    <div class="row" id="formUpdateCity">
+        <div class="col-12">
+            {% form_theme formUpdateCity 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(formUpdateCity) }}
+            {{ form_row(formUpdateCity.nom, {'attr': {'autofocus': 'autofocus'}}) }}
+            {{ form_row(formUpdateCity.codePostal) }}
+            {{ form_widget(formUpdateCity.valider) }} <a href="{{ path('manageCity_createCity') }}" class="btn btn-info">Retour</a>
+            {{ form_end(formUpdateCity) }}
+        </div>
+    </div>
 
 {% endblock %}

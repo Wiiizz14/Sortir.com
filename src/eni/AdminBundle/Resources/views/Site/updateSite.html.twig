@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un site{% endblock %}
+
+{% block pagetitle %}Modification du site de {{ site.nom }}{% endblock %}
+
+{% block body %}
+
+    <div class="row" id="formUpdateSite">
+        <div class="col-12">
+            {% form_theme formUpdateSite 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(formUpdateSite) }}
+            {{ form_row(formUpdateSite.nom, {'attr': {'autofocus': 'autofocus'}}) }}
+            {{ form_widget(formUpdateSite.valider) }} <a href="{{ path('manageSite_createSite') }}" class="btn btn-info">Retour</a>
+            {{ form_end(formUpdateSite) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+
+

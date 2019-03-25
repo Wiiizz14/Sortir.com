@@ -6,6 +6,12 @@
 
 {% block body %}
 
+    <h3>Filtrer les villes</h3>
+    <form class="search-form col-md-4">
+        <input class="form-control form-control-sm mr-3" type="text" placeholder="Search" aria-label="Search" id="myInput">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </form>
+
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
         <table class="table table-hover">
             <thead>
@@ -16,7 +22,7 @@
             </tr>
             </thead>
             {% form_theme formCity 'bootstrap_4_layout.html.twig' %}
-            <tbody>
+            <tbody id="myTable">
             {% for ville in villes %}
                 <tr>
                     <td scope="row">{{ ville.nom }}</td>
@@ -24,6 +30,7 @@
                     <td><a href="{{ url('manageCity_updateCity', {'city' : ville.id}) }}">Modifier</a> - <a href="{{ url('manageCity_deleteCity', {'city' : ville.id}) }}">Supprimer</a></td>
                 </tr>
             {% endfor %}
+            </tbody>
             {{ form_start(formCity) }}
             <tr>
                 <td>{{ form_widget(formCity.nom) }}</td>
@@ -31,7 +38,6 @@
                 <td>{{ form_widget(formCity.ajouter) }}</td>
             </tr>
             {{ form_end(formCity) }}
-            </tbody>
         </table>
     </div>
 {% endblock %}
