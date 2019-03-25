@@ -62,9 +62,15 @@
 }
 
 /* Page mon profil */
+#titleProfil
+{
+    margin: 2% auto;
+    text-align: center;
+}
+
 #containerMyProfil
 {
-    margin: 10% auto;
+    margin: 2% auto;
 }
 
 /* Fin */
