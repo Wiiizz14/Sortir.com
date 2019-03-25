@@ -61,6 +61,12 @@
     text-align: center;
 }
 
+/* Page mon profil */
+#containerMyProfil
+{
+    margin: 10% auto;
+}
+
 /* Fin */
 
 .createLinks{
