@@ -4,14 +4,14 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Etat;
 use AppBundle\Entity\Lieu;
+use AppBundle\Entity\Participant;
 use AppBundle\Entity\Site;
 use AppBundle\Entity\Sortie;
 use AppBundle\Entity\Ville;
 use AppBundle\Form\SortiesType;
-use AppBundle\Repository\SortieRepository;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use mysql_xdevapi\Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -21,12 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -128,18 +122,18 @@ class EventController extends Controller
                 },
                 "choice_label" => "nom"
             ])
-            ->add('organisateur', CheckboxType::class, [
-                "required" => false
-            ])
-            ->add('isInscrit', CheckboxType::class, [
-                "required" => false
-            ])
-            ->add('isNotInscrit', CheckboxType::class, [
-        "required" => false
-            ])
-            ->add('archive', CheckboxType::class, [
-        "required" => false
-            ]);
+        ->add('organisateur', CheckboxType::class, [
+            "required" => false
+        ])
+        ->add('isInscrit', CheckboxType::class, [
+            "required" => false
+        ])
+        ->add('isNotInscrit', CheckboxType::class, [
+            "required" => false
+        ])
+        ->add('archive', CheckboxType::class, [
+            "required" => false
+        ]);
 
         $form = $formBuilder->getForm();
 
@@ -195,7 +189,7 @@ class EventController extends Controller
     {
 
         $repoId = $em->getRepository(Sortie::class);
-        $detailEvent = $repoId->find($libelle);
+        $detailEvent = $repoId->find($id);
 
         return $this->render("detailEvent.html.twig", [
             "Detail" => $detailEvent
@@ -258,4 +252,49 @@ class EventController extends Controller
             "formDeleteEvent" => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/api/registerEvent/{id}", name="registerEvent", requirements={"id":"\d+"}))
+     * @param EntityManagerInterface $em
+     * @param UserInterface $user
+     * @param $id
+     * @return void
+     * @throws \Exception
+     */
+    public function registerEventAction(EntityManagerInterface $em, UserInterface $user, $id){
+
+        $repoSortie= $em->getRepository(Sortie::class);
+        $sortie = $repoSortie->find($id);
+
+        //Récup des participants
+        $participant = new Participant();
+        $repoParticipant = $em->getRepository(Participant::class);
+        $tabParticipant = $sortie->getParticipants();
+
+
+        // Récup des champs : nb inscrits max, nb inscrits, date limite
+        $nbInscriptionMax = $sortie->getNbInscriptionsMax();
+        $nbInscrits = count($sortie->getParticipants());
+        $dateDuJour = new \DateTime();
+        $dateLimite = $sortie->getDateCloture();
+
+        //Entrer le participant dans la sortie
+        $sortie->getParticipants()->add($user);
+
+        //Entrer la sortie dans le participant
+        $user->getSorties()->add($sortie);
+
+        //Go Bdd
+        $em->persist($user);
+        $em->persist($sortie);
+        $em->flush();
+
+        //TODO ajouter les contraintes
+
+
+
+
+
+    }
+
 }
