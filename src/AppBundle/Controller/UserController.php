@@ -33,6 +33,7 @@ class UserController extends Controller
      */
     public function updateUserAction(Request $request, UserInterface $user)
     {
+        $passwordEncoder = $this->get('security.password_encoder');
         $saveUrlPhoto = $user->getUrlPhoto();
         $form = $this->createForm(ParticipantType::class, $user);
         $form->remove('isAdministrateur');
@@ -44,6 +45,9 @@ class UserController extends Controller
             $user->setIsActif(true);
             $user->getIsAdministrateur() ?
                 $user->setRoles(['ROLE_ADMIN']) : $user->setRoles(['ROLE_USER']);
+
+            $toSavePassword = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($toSavePassword);
 
             if ($user->getUrlPhoto() != null)
             {
