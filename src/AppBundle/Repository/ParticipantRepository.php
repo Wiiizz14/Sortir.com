@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Sortie;
+
 /**
  * ParticipantRepository
  *
@@ -10,4 +12,22 @@ namespace AppBundle\Repository;
  */
 class ParticipantRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * @param $idSortie
+     * @return array
+     */
+    public function getParticipantsBySorties($idSortie){
+
+        $em = $this->getEntityManager('s');
+        $queryBuilder = $em->createQueryBuilder();
+        $queryBuilder->select('s')
+            ->from(Sortie::class, 's')
+            ->innerJoin("s.participants", "p", "WITH", "p.id = :idSortie")
+            ->setParameter("idSortie", $idSortie);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+
 }
