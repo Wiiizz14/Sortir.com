@@ -160,26 +160,36 @@ class EventController extends Controller
      */
     public function getAction(Request $request, EntityManagerInterface $em, UserInterface $user, SerializerInterface $serializer)
     {
-        $idSite = $request->get("idSite") ? $request->get("idSite") : false;
-        $isOrganisateur = $request->get("isOrganisateur") ? $request->get("isOrganisateur") : false;
-        $isInscrit = $request->get("isInscrit") ? $request->get("isInscrit") : false;
-        $isNotInscrit = $request->get("isNotInscrit") ? $request->get("isNotInscrit") : false;
-        $isArchive = $request->get("isArchive") ? $request->get("isArchive") : false;
+        $idSite = $request->get("idSite", false) ;
+        $isOrganisateur = $request->get("isOrganisateur", false);
+        $isInscrit = $request->get("isInscrit", false);
+        $isNotInscrit = $request->get("isNotInscrit", false);
+        $isArchive = $request->get("isArchive", false);
 
-        $repo = $em->getRepository(Sortie::class);
+        $repoSortie = $em->getRepository(Sortie::class);
 
         if ($isOrganisateur || $isInscrit || $isNotInscrit || $isArchive)
         {
             $sorties = [];
             if ($isOrganisateur) {
-                $sorties[] = $repo->getSortiesByOrganisateur($user, $idSite);
+                $sorties += $repoSortie->getSortiesByOrganisateur($user, $idSite);
             }
+            if ($isInscrit) {
+
+                $sorties += $repoSortie->getSortiesByOrganisateur($user, $idSite);
 
 
-
+                die("je passe dans le if");
+            }
+            if ($isNotInscrit) {
+                $sorties += $repoSortie->getSortiesByOrganisateur($user, $idSite);
+            }
+            if ($isArchive) {
+                $sorties += $repoSortie->getSortiesByOrganisateur($user, $idSite);
+            }
         } else
         {
-            $sorties = $repo->getSortiesOnlyBySite($idSite);
+            $sorties = $repoSortie->getSortiesOnlyBySite($idSite);
         }
 
         $retour = $serializer->normalize($sorties,

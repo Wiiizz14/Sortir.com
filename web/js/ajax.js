@@ -26,10 +26,10 @@ getFirstList = () => {
 
 selectionSite = () => {
     var idSite = $("#choixSite option:selected").val();
-    var isOrganisateur = 0;
-    var isInscrit = 0;
-    var isNotInscrit = 0;
-    var isArchive = 0;
+    var isOrganisateur = $('#isOrganisateur').is(':checked');
+    var isInscrit = $('#isInscrit').is(':checked');
+    var isNotInscrit = $('#isNotInscrit').is(':checked');
+    var isArchive = $('#isArchive').is(':checked');
     //la fonction getJson permet de récupérer un string au format json;
     $.get({
         url: "/api/searchEvent",
@@ -66,11 +66,11 @@ function addToList(sortie) {
     // insersion des données dans les éléments
     nom.innerText = sortie.nom
     sortie.dateDebut = new Date(sortie.dateDebut)
-    dateDebut.innerText = (sortie.dateDebut.getDate() + 1) + '/' + sortie.dateDebut.getMonth() + '/'
+    dateDebut.innerText = (sortie.dateDebut.getDate() + 1) + '/' + (sortie.dateDebut.getMonth() + 1) + '/'
         +  sortie.dateDebut.getFullYear()
-        + " à " + sortie.dateDebut.getHours("hh") + ":" + sortie.dateDebut.getMinutes();
+        + " à " + sortie.dateDebut.getHours() + ":" + sortie.dateDebut.getMinutes();
     sortie.dateCloture = new Date(sortie.dateCloture);
-    dateCloture.innerText = (sortie.dateCloture.getMonth() + 1) + '/' + sortie.dateCloture.getDate() + '/' +  sortie.dateCloture.getFullYear(); // idem
+    dateCloture.innerText = (sortie.dateCloture.getDate() + 1) + '/' + (sortie.dateCloture.getMonth() + 1) + '/' +  sortie.dateCloture.getFullYear(); // idem
     inscriptions.innerText = sortie.participants.length + "/" + sortie.nbInscriptionsMax
     etat.innerText = sortie.etat.libelle;
 
