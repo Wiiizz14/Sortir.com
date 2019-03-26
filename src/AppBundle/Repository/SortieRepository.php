@@ -2,8 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Participant;
-use AppBundle\Entity\Site;
 use AppBundle\Entity\Sortie;
 use DateTime;
 
@@ -38,6 +36,7 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
      * @param $user
      * @param $idSite
      * @return array
+     * @throws \Exception
      */
     public function getSortiesByOrganisateur($user, $idSite)
     {
@@ -49,8 +48,10 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin("s.site", "site", "WITH", "site.id = :idSite")
             ->innerJoin("s.organisateur", "p", "WITH", "p = :idUser")
             ->andWhere("s.site.id = :idSite")
+            ->where("s.dateCloture >= :date")
             ->setParameter("idUser", $user->getId())
-            ->setParameter("idSite", $idSite);
+            ->setParameter("idSite", $idSite)
+            ->setParameter('date', new DateTime("-30 days"));
 
         return $queryBuilder->getQuery()->getResult();
     }
@@ -65,7 +66,9 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
             ->from(Sortie::class, 's')
             ->innerJoin('s.participants',"p")
             ->where('p.id = :id')
-            ->setParameter("id", $user);
+            ->where("s.dateCloture >= :date")
+            ->setParameter("id", $user)
+            ->setParameter('date', new DateTime("-30 days"));
 
         return $queryBuilder->getQuery()->getResult();
     }
@@ -82,7 +85,9 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin("s.organisateur", "o")
             ->where('p.id != :id')
             ->andWhere("o.id != :id")
-            ->setParameter("id", $user);
+            ->where("s.dateCloture >= :date")
+            ->setParameter("id", $user)
+            ->setParameter('date', new DateTime("-30 days"));
 
         return $queryBuilder->getQuery()->getResult();
     }

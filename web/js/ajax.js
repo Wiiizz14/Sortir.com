@@ -68,7 +68,7 @@ function addToList(sortie) {
     sortie.dateDebut = new Date(sortie.dateDebut)
     dateDebut.innerText = (sortie.dateDebut.getDate() + 1) + '/' + sortie.dateDebut.getMonth() + '/'
         +  sortie.dateDebut.getFullYear()
-        + " à " + sortie.dateDebut.getHours("hh") + ":" + sortie.dateDebut.getMinutes();
+        + " à " + sortie.dateDebut.getHours() + ":" + sortie.dateDebut.getMinutes();
     sortie.dateCloture = new Date(sortie.dateCloture);
     dateCloture.innerText = (sortie.dateCloture.getMonth() + 1) + '/' + sortie.dateCloture.getDate() + '/' +  sortie.dateCloture.getFullYear(); // idem
     inscriptions.innerText = sortie.participants.length + "/" + sortie.nbInscriptionsMax
