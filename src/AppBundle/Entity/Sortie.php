@@ -16,7 +16,9 @@ class Sortie
 {
     /**
      * @var int
+     *
      * @Groups({"sortieGroupe"})
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -25,61 +27,80 @@ class Sortie
 
     /**
      * @var string
+     *
      * @Groups({"sortieGroupe"})
+     *
      * @Assert\NotBlank(message="Ce champ est obligatoire")
      * @Assert\Type(type="string", message="Chaine de caractères uniquement")
+     *
      * @ORM\Column(name="nom", type="string", length=80)
      */
     private $nom;
 
     /**
      * @var \DateTime
+     *
      * @Groups({"sortieGroupe"})
+     *
      * @Assert\NotBlank(message="Ce champ est obligatoire")
      * @Assert\LessThan(propertyPath="dateCloture" , message="La date de début doit-être antérieure à la date de clôture")
      * @Assert\GreaterThan("today", message="La sortie ne peut pas se réaliser dans le passé !")
+     *
      * @ORM\Column(name="date_debut", type="datetime")
      */
     private $dateDebut;
 
     /**
      * @var int
+     *
      * @Groups({"sortieGroupe"})
+     *
      * @Assert\Type(type="integer", message="Valeur numérique uniquement")
      * @Assert\NotBlank(message="Ce champ est obligatoire")
      * @Assert\Range(min=0, minMessage="La durée ne peut pas être négative !")
+     *
      * @ORM\Column(name="duree", type="integer", nullable=true)
      */
     private $duree;
 
     /**
      * @var \DateTime
+     *
      * @Groups({"sortieGroupe"})
+     *
      * @Assert\NotBlank(message="Ce champ est obligatoire")
      * @Assert\GreaterThan(propertyPath="dateDebut", message="La date de clôture doit-être postérieure à la date de début")
+     *
      * @ORM\Column(name="date_cloture", type="datetime")
      */
     private $dateCloture;
 
     /**
      * @var int
+     *
      * @Groups({"sortieGroupe"})
+     *
      * @Assert\NotBlank(message="Ce champ est obligatoire")
      * @Assert\Range(min=0, minMessage="Le nombre de participants ne peut pas être négatif")
+     *
      * @ORM\Column(name="nb_inscriptions_max", type="integer")
      */
     private $nbInscriptionsMax;
 
     /**
      * @var string
+     *
      * @Groups({"sortieGroupe"})
+     *
      * @Assert\NotBlank(message="Ce champ est obligatoire")
+     *
      * @ORM\Column(name="description", type="string", length=500, nullable=true)
      */
     private $description;
 
     /**
      * @var boolean
+     *
      * @Groups({"sortieGroupe"})
      * @ORM\Column(name="is_etat_sortie", type="boolean")
      */
@@ -88,30 +109,30 @@ class Sortie
     /**
      * @var
      * @Groups({"sortieGroupe"})
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Participant", inversedBy="organisations")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Participant", inversedBy="organisations", cascade={"persist"})
      */
     private $organisateur;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Participant", mappedBy="sorties")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Participant", mappedBy="sorties", cascade={"persist"})
      * @Groups({"sortieGroupe"})
      */
     private $participants;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Etat", inversedBy="sorties")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Etat", inversedBy="sorties", cascade={"persist"})
      * @Groups({"sortieGroupe"})
      */
     private $etat;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Lieu", inversedBy="sorties")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Lieu", inversedBy="sorties", cascade={"persist"})
      * @Groups({"sortieGroupe"})
      */
     private $lieu;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Site", inversedBy="sorties")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Site", inversedBy="sorties", cascade={"persist"})
      * @Groups({"sortieGroupe"})
      */
     private $site;
