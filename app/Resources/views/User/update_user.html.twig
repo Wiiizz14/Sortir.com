@@ -9,12 +9,16 @@
     <div id="titleProfil">
         <h5>Mon profil</h5>
     </div>
-    <div class="rowspan">
-        <div>
-            <img src="{{ app.user.urlPhoto }}" alt="photoDeProfil">
+    <div class="row">
+        <div class="col-md-4 col-xs-2" id="photoProfil">
+            {% if app.user.urlPhoto is not null%}
+                <img src="{{ app.user.urlPhoto }}" alt="photoDeProfil">
+            {% else %}
+                <img src="{{ asset('Images/logoLaGarderie.png') }}" alt="logoProfilDefaut">
+            {% endif %}
         </div>
 
-        <div id="containerMyProfil">
+        <div id="containerMyProfil" class="col-md-4 col-xs-10">
             {% form_theme form 'bootstrap_4_layout.html.twig' %}
             {{ form_start(form) }}
             {{ form_row(form.nom) }}
@@ -25,9 +29,12 @@
             {{ form_row(form.password) }}
             {{ form_row(form.site) }}
             {{ form_row(form.urlPhoto) }}
-            {{ form_widget(form.enregistrer) }} <a href="{{ path('homepage') }}" class="btn btn-info">Annuler</a>
-            {{ form_end(form) }}
+
         </div>
     </div>
+    <div class="row" id="btnsMyProfil">
+        {{ form_widget(form.enregistrer) }} <a href="{{ path('homepage') }}" class="btn btn-info">Annuler</a>
+    </div>
+    {{ form_end(form) }}
 
 {% endblock %}
