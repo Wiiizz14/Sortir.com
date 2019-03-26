@@ -34,7 +34,8 @@ class ParticipantType extends AbstractType
                 'label' => 'Pseudo'
             ])
             ->add('telephone', TelType::class, [
-                'label' => 'Numéro de Téléphone'
+                'label' => 'Numéro de Téléphone',
+                'required' => false
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Adresse mail'
