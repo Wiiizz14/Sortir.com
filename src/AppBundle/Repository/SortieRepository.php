@@ -70,12 +70,6 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
             if ($isNotInscrit) {
                 $queryBuilder->andWhere("p.id != :idCurrentUser");
             }
-//            $queryBuilder->andWhere(
-    //                $queryBuilder->expr()->orX( null,
-//                    $isInscrit ? $queryBuilder->expr()->eq('p.id', ':idCurrentUser') : null,
-//                    $isNotInscrit ? $queryBuilder->expr()->neq('p.id', ':idCurrentUser') : null
-//                )
-//            );
             $queryBuilder->setParameter("idCurrentUser", $user->getId());
         }
 
@@ -89,10 +83,6 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
                 ->setParameter('date', new DateTime("-30 days"));
         }
 
-
-        dump($queryBuilder->getQuery());
-        dump($queryBuilder->getQuery()->getResult());
-        die;
 
         return $queryBuilder->getQuery()->getResult();
     }

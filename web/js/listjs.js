@@ -9,6 +9,7 @@ $(document).ready(function(){
         });
     });
 
+
 });
 
 getFirstList = () => {
@@ -40,6 +41,7 @@ selectionSite = () => {
             isArchive: isArchive}
     })
         .done(function (apiResult) {
+            console.log(apiResult);
             //supression du tableau en place
             $("#myTable").empty();
             // on peut ensuite récupérer les valeurs en invoquant les clés
@@ -64,8 +66,8 @@ function addToList(sortie) {
     var action = document.createElement('td');
 
     // insersion des données dans les éléments
-    nom.innerText = sortie.nom
-    sortie.dateDebut = new Date(sortie.dateDebut)
+    nom.innerText = sortie.nom;
+    sortie.dateDebut = new Date(sortie.dateDebut);
     dateDebut.innerText = (sortie.dateDebut.getDate() + 1) + '/' + (sortie.dateDebut.getMonth() + 1) + '/'
         +  sortie.dateDebut.getFullYear()
         + " à " + sortie.dateDebut.getHours() + ":" + sortie.dateDebut.getMinutes();
@@ -100,16 +102,18 @@ function addToList(sortie) {
         {
             if (isInscrit)
             {
-                var httpInscription = document.createElement("a");
-                httpInscription.setAttribute("href", "#" + sortie.id);
-                httpInscription.innerText = "S'inscrire";
-                action.appendChild(httpInscription);
-            } else
-            {
                 var httpDesinscription = document.createElement("a");
                 httpDesinscription.setAttribute("href", "#" + sortie.id);
+                httpDesinscription.setAttribute("onclick", "seDesinscrire()");
                 httpDesinscription.innerText = "Se désincrire";
                 action.appendChild(httpDesinscription);
+            } else
+            {
+                var httpInscription = document.createElement("a");
+                httpInscription.setAttribute("href", "#" + sortie.id);
+                httpInscription.setAttribute("onclick", "sInscrire()");
+                httpInscription.innerText = "S'inscrire";
+                action.appendChild(httpInscription);
             }
         }
     }
@@ -131,5 +135,19 @@ function addToList(sortie) {
     bloc.appendChild(organisateur);
     bloc.append(action);
     $("#myTable").append(bloc);
+}
+
+var seDesinscrire = () => {
+    if (confirm("etes vous sur de vouloir vous désister?"))
+    {
+        console.log("desistement")
+    }
+}
+
+var sInscrire = () => {
+    if (confirm("Confirmez votre inscription"))
+    {
+        console.log("desistement")
+    }
 }
 
