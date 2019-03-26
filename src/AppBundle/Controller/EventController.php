@@ -27,6 +27,7 @@ use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class EventController
@@ -117,7 +118,6 @@ class EventController extends Controller
         // tableau des sites pour le select
         $sites = $em->getRepository(Site::class)->findAll();
 
-
         // formulaire de requete des checkboxes
         $formBuilder = $this->createFormBuilder()
         ->add('sites',  EntityType::class, [
@@ -139,57 +139,11 @@ class EventController extends Controller
             ])
             ->add('archive', CheckboxType::class, [
         "required" => false
-            ])
-            ->add("Valider", SubmitType::class);
+            ]);
 
         $form = $formBuilder->getForm();
-        $repoSortie = $em->getRepository(Sortie::class);
-
-        $findByOrganisateur = array();
-        $findByInscription = array();
-        $findByNonInscription = array();
-        $findAllOthers = array();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            if ($form->get("organisateur"))
-            {
-                $findByOrganisateur = $repoSortie->getSortiesByAuthor($user);
-            }
-            if ($form->get("isInscrit"))
-            {
-                $findByInscription = $repoSortie->getSortiesByRegistering($user);
-            }
-            if ($form->get("isNotInscrit"))
-            {
-                $findByNonInscription = $repoSortie->getSortiesByNotRegistered($user);
-            }
-            if ($form->get("archive"))
-            {
-                $findAllOthers = "3";
-            }
-//            dump($findByInscription);
-//            dump($findByOrganisateur);
-//            dump($findByNonInscription);
-//            dump($findAllOthers);
-//            die();
-//            $sorties = $findAllOthers + $findByNonInscription;
-//                + $findByOrganisateur + $findByInscription;
-
-//            dump($sorties);
-//            die();
-
-        }
-        else
-        {
-            $sorties = $repoSortie->findAll();
-        }
-
-
 
         return $this->render("listEvent.html.twig", [
-            "sorties" => $sorties,
             "form" => $form->createView(),
             "sites" => $sites
         ]);
@@ -200,22 +154,17 @@ class EventController extends Controller
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param UserInterface $user
+     * @param SerializerInterface $serializer
      * @return Response
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
-    public function getAction(Request $request, EntityManagerInterface $em, UserInterface $user)
+    public function getAction(Request $request, EntityManagerInterface $em, UserInterface $user, SerializerInterface $serializer)
     {
-        $idSite = $request->get("idSite");
-        $isOrganisateur = $request->get("isOrganisateur");
-        $isInscrit = $request->get("isInscrit");
-        $isNotInscrit = $request->get("isNotInscrit");
-        $isArchive = $request->get("isArchive");
-
-        $classMetadataFactory = new ClassMetadataFactory(
-            new AnnotationLoader(new AnnotationReader()));
-
-        $normalizer = new ObjectNormalizer($classMetadataFactory);
-        $serializer = new Serializer([$normalizer]);
+        $idSite = $request->get("idSite") ? $request->get("idSite") : false;
+        $isOrganisateur = $request->get("isOrganisateur") ? $request->get("isOrganisateur") : false;
+        $isInscrit = $request->get("isInscrit") ? $request->get("isInscrit") : false;
+        $isNotInscrit = $request->get("isNotInscrit") ? $request->get("isNotInscrit") : false;
+        $isArchive = $request->get("isArchive") ? $request->get("isArchive") : false;
 
         $repo = $em->getRepository(Sortie::class);
 
