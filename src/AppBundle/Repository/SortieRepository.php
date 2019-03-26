@@ -35,59 +35,64 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
     /**
      * @param $user
      * @param $idSite
+     * @param $isOrganisateur
+     * @param $isInscrit
+     * @param $isNotInscrit
+     * @param $isArchive
      * @return array
      * @throws \Exception
      */
-    public function getSortiesByOrganisateur($user, $idSite)
+    public function getSortiesByParameters($user, $idSite, $isOrganisateur, $isInscrit, $isNotInscrit, $isArchive)
     {
 
         $em = $this->getEntityManager('s');
         $queryBuilder = $em->createQueryBuilder();
         $queryBuilder->select('s')
             ->from(Sortie::class, 's')
-            ->innerJoin("s.site", "site", "WITH", "site.id = :idSite")
-            ->innerJoin("s.organisateur", "p", "WITH", "p = :idUser")
-            ->andWhere("s.site.id = :idSite")
-            ->where("s.dateCloture >= :date")
-            ->setParameter("idUser", $user->getId())
-            ->setParameter("idSite", $idSite)
-            ->setParameter('date', new DateTime("-30 days"));
+            ->innerJoin("s.site", "site")
+            ->where("site.id = :idSite")
+            ->setParameter("idSite", $idSite);
 
-        return $queryBuilder->getQuery()->getResult();
-    }
 
-    public function getSortiesByRegistering($user)
-    {
+        if ($isOrganisateur)
+        {
+            $queryBuilder->andWhere("s.organisateur = :user")
+                ->setParameter("user", $user->getId());
+//            $queryBuilder->innerJoin("s.organisateur", "o", "WITH", "o = :idUser")
+//                ->setParameter("idUser", $user);
+        }
+        if (($isInscrit || $isNotInscrit) && !($isInscrit && $isNotInscrit))
+        {
+            $queryBuilder->innerJoin('s.participants',"p");
+            if ($isInscrit) {
+                $queryBuilder->andWhere("p.id = :idCurrentUser");
+            }
+            if ($isNotInscrit) {
+                $queryBuilder->andWhere("p.id != :idCurrentUser");
+            }
+//            $queryBuilder->andWhere(
+    //                $queryBuilder->expr()->orX( null,
+//                    $isInscrit ? $queryBuilder->expr()->eq('p.id', ':idCurrentUser') : null,
+//                    $isNotInscrit ? $queryBuilder->expr()->neq('p.id', ':idCurrentUser') : null
+//                )
+//            );
+            $queryBuilder->setParameter("idCurrentUser", $user->getId());
+        }
 
-        $em = $this->getEntityManager('s');
-        $queryBuilder = $em->createQueryBuilder();
+        if ($isArchive == false)
+        {
+            $queryBuilder->andWhere("s.dateDebut > :date")
+                ->setParameter('date', new DateTime("-30 days"));
+        } else if (!($isOrganisateur || $isInscrit || $isNotInscrit))
+        {
+            $queryBuilder->andWhere("s.dateDebut <= :date")
+                ->setParameter('date', new DateTime("-30 days"));
+        }
 
-        $queryBuilder->select ('s')
-            ->from(Sortie::class, 's')
-            ->innerJoin('s.participants',"p")
-            ->where('p.id = :id')
-            ->where("s.dateCloture >= :date")
-            ->setParameter("id", $user)
-            ->setParameter('date', new DateTime("-30 days"));
 
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-    public function getSortiesByNotRegistered($user)
-    {
-
-        $em = $this->getEntityManager('s');
-        $queryBuilder = $em->createQueryBuilder();
-
-        $queryBuilder->select ('s')
-            ->from(Sortie::class, 's')
-            ->innerJoin('s.participants',"p")
-            ->innerJoin("s.organisateur", "o")
-            ->where('p.id != :id')
-            ->andWhere("o.id != :id")
-            ->where("s.dateCloture >= :date")
-            ->setParameter("id", $user)
-            ->setParameter('date', new DateTime("-30 days"));
+        dump($queryBuilder->getQuery());
+        dump($queryBuilder->getQuery()->getResult());
+        die;
 
         return $queryBuilder->getQuery()->getResult();
     }

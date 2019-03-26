@@ -156,37 +156,23 @@ class EventController extends Controller
      * @param UserInterface $user
      * @param SerializerInterface $serializer
      * @return Response
-     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \Exception
      */
-    public function getAction(Request $request, EntityManagerInterface $em, UserInterface $user, SerializerInterface $serializer)
+    public function getAction(Request $request, EntityManagerInterface $em, UserInterface $user,
+                              SerializerInterface $serializer)
     {
         $idSite = $request->get("idSite", false) ;
-        $isOrganisateur = $request->get("isOrganisateur", false);
-        $isInscrit = $request->get("isInscrit", false);
-        $isNotInscrit = $request->get("isNotInscrit", false);
-        $isArchive = $request->get("isArchive", false);
+        $isOrganisateur = filter_var($request->get("isOrganisateur", false), FILTER_VALIDATE_BOOLEAN);
+        $isInscrit = filter_var($request->get("isInscrit", false), FILTER_VALIDATE_BOOLEAN);
+        $isNotInscrit = filter_var($request->get("isNotInscrit", false), FILTER_VALIDATE_BOOLEAN);
+        $isArchive = filter_var($request->get("isArchive", false), FILTER_VALIDATE_BOOLEAN);
 
         $repoSortie = $em->getRepository(Sortie::class);
 
         if ($isOrganisateur || $isInscrit || $isNotInscrit || $isArchive)
         {
-            $sorties = [];
-            if ($isOrganisateur) {
-                $sorties += $repoSortie->getSortiesByOrganisateur($user, $idSite);
-            }
-            if ($isInscrit) {
-
-                $sorties += $repoSortie->getSortiesByOrganisateur($user, $idSite);
-
-
-                die("je passe dans le if");
-            }
-            if ($isNotInscrit) {
-                $sorties += $repoSortie->getSortiesByOrganisateur($user, $idSite);
-            }
-            if ($isArchive) {
-                $sorties += $repoSortie->getSortiesByOrganisateur($user, $idSite);
-            }
+            $sorties = $repoSortie->getSortiesByParameters($user, $idSite, $isOrganisateur,
+                $isInscrit, $isNotInscrit, $isArchive);
         } else
         {
             $sorties = $repoSortie->getSortiesOnlyBySite($idSite);
@@ -195,7 +181,6 @@ class EventController extends Controller
         $retour = $serializer->normalize($sorties,
             null,
             ["groups" => ["sortieGroupe"]]);
-
 
         return new JsonResponse($retour);
     }
