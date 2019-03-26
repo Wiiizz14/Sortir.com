@@ -4,31 +4,36 @@
 {% block pagetitle %}Accueil{% endblock %}
 
 {% block body %}
-    <a href="{{ path('event_createEvent') }}">créer evenement</a>
-    {{ form_start(form) }}
+    <div>
+        <h3><a href="{{ path('event_createEvent') }}">Organiser une nouvelle sortie</a></h3>
+    </div>
+
     <div>
         <script>
            user = {
                id: {{ app.user.id }},
-               username: '{{ app.user.username }}'
+               username: '{{ app.user.username }}',
+               site: {{ app.user.site.id }}
            };
-
-
         </script>
-
-        <p>{{ form_row(form.organisateur, {"label": "es tu l'organisateur", 'id': "orga1", "value": 35}) }}</p>
-        <p>{{ form_row(form.sites, {"label": "Site concerné", 'id': "choixSite", 'attr': {'onchange': "selectionSite();"}}) }}</p>
+        <div>
+            <h2>Recherche de sorties</h2>
+            <div>
+                {{ form_start(form) }}
+                <p>{{ form_row(form.sites, {"label": "Site concerné", 'id': "choixSite", 'attr': {'onchange': "selectionSite();"}}) }}</p>
+                <p>{{ form_row(form.organisateur, {"label": "Dont je suis l'organisateur", 'id': "orga1", "value": 35}) }}</p>
+                <p>{{ form_row(form.isInscrit, {"label": "auxquels je suis inscrit", 'id': "orga1", "value": 35}) }}</p>
+                <p>{{ form_row(form.isNotInscrit, {"label": "auxquels je ne suis pas inscrit", 'id': "orga1", "value": 35}) }}</p>
+                <p>{{ form_row(form.archive, {"label": "tous les autres", 'id': "orga1", "value": 35}) }}</p>
+                {{ form_end(form) }}
+            </div>
+        </div>
     </div>
 
 
-    {{ form_end(form) }}
-    {#
-    <input id="myInput" type="text" placeholder="Search..">
-    <select name="select_sites" id="select_sites">
-        <option value="sitenone">pas de site</option>
-        {% for site in sites %}
-        <option value="{{ site.id }}">{{ site.nom }}</option>
-        {% endfor %}#}
+
+
+    <input id="myInput" type="text" placeholder="Rechercher dans le tableau">
     </select>
     <table class="table table-hover">
 
@@ -43,38 +48,7 @@
         <th scope="col">Actions</th>
     </tr>
         <tbody id="myTable">
-    {% for sortie in sorties %}
-        {% set isInscrit = 0 %}
-        <tr class="site{{ sortie.site ? sortie.site.id : "none" }}">
-            <td>{{ sortie.nom }}</td>
-            <td>{{ sortie.dateDebut|date("m/d/Y h:i") }}</td>
-            <td>{{ sortie.dateCloture|date("m/d/Y") }}</td>
-            <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
-            <td>#{{ sortie.etat ? sortie.etat.libelle : "pas d'etat" }}</td>
-            <td>
-                {% for inscrit in sortie.participants %}
-                    {% if inscrit.id == app.user.id %}{% set isInscrit = 1 %}X{%  endif %}
-                {% else %}
-                {% endfor %}
-            </td>
-            <td>#{{ sortie.organisateur ? sortie.organisateur.username : "pas d'organisateur :(" }}</td>
-            <td>{#
-                <a href="{{ path('event_detailEvent', {"sortie": sortie.id}) }}">afficher</a>
-                {% if app.user.id == sortie.organisateur.id %}
-                    <a href="{{ path('event_updateEvent', {"sortie": sortie.id}) }}">Modifier</a>
-                    {% if sortie.etat.libelle == "Ouverte" %}
-                        <a href="{{ path('event_deleteEvent', {"sortie": sortie.id}) }}">Annuler</a>
-                    {% endif %}
-                {% else %}
-                    {% if isInscrit and sortie.dateCloture < "now" %}
-                        <a href="#">Se désinscrire</a>
-                    {% else if sortie.dateCloture < "now" %}
-                <a href="#">S'inscrire</a>
-                {% endif %}
-                {% endif %} #}
-            </td>
-        </tr>
-    {% endfor %}
         </tbody>
         </table>
+    <script src="{{ asset('js/ajax.js') }}"></script>
 {% endblock %}
