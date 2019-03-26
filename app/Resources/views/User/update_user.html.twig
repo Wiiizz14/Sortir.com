@@ -1,23 +1,33 @@
 {% extends 'base.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
 {% block title %}Gestion Du Site{% endblock %}
+
 {% block pagetitle %}Gestion du site{% endblock %}
 
 {% block body %}
 
-    <div class="container" id="containerMyProfil">
-        {% form_theme form 'bootstrap_4_layout.html.twig' %}
-        {{ form_start(form) }}
-        {{ form_row(form.nom) }}
-        {{ form_row(form.prenom) }}
-        {{ form_row(form.username) }}
-        {{ form_row(form.telephone) }}
-        {{ form_row(form.email) }}
-        {{ form_row(form.password) }}
-        {{ form_row(form.site) }}
-        {{ form_row(form.urlPhoto) }}
-        {{ form_widget(form.enregistrer) }} <a href="{{ path('homepage') }}" class="btn btn-info">Annuler</a>
-        {{ form_end(form) }}
+    <div id="titleProfil">
+        <h5>Mon profil</h5>
+    </div>
+    <div class="rowspan">
+        <div>
+            <img src="{{ app.user.urlPhoto }}" alt="photoDeProfil">
+        </div>
+
+        <div id="containerMyProfil">
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_row(form.nom) }}
+            {{ form_row(form.prenom) }}
+            {{ form_row(form.username) }}
+            {{ form_row(form.telephone) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
+            {{ form_row(form.site) }}
+            {{ form_row(form.urlPhoto) }}
+            {{ form_widget(form.enregistrer) }} <a href="{{ path('homepage') }}" class="btn btn-info">Annuler</a>
+            {{ form_end(form) }}
+        </div>
     </div>
 
 {% endblock %}
