@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     getFirstList();
 
     // script pour le tri par typing
@@ -10,9 +11,11 @@ $(document).ready(function(){
     });
 
 
+
 });
 
 getFirstList = () => {
+    document.getElementById("loader").style.display = "block";
     //fonction qui fait une requete get
     $.get({
         url: "/api/searchEvent",
@@ -22,16 +25,23 @@ getFirstList = () => {
         for (let sortie of apiResult){
             addToList(sortie);
         }
+        document.getElementById("loader").style.display = "none";
     });
 }
 
 
 selectionSite = () => {
+
     var idSite = $("#choixSite option:selected").val();
     var isOrganisateur = $('#isOrganisateur').is(':checked');
     var isInscrit = $('#isInscrit').is(':checked');
     var isNotInscrit = $('#isNotInscrit').is(':checked');
     var isArchive = $('#isArchive').is(':checked');
+
+    //supression du tableau en place
+    $("#myTable").empty();
+    document.getElementById("loader").style.display = "block";
+
     //la fonction get peut récupérer un string au format json;
     $.get({
         url: "/api/searchEvent",
@@ -42,14 +52,16 @@ selectionSite = () => {
             isArchive: isArchive}
     })
         .done(function (apiResult) {
+
             console.log(apiResult);
-            //supression du tableau en place
-            $("#myTable").empty();
+
             // on peut ensuite récupérer les valeurs en invoquant les clés
             for (let sortie of apiResult){
                 addToList(sortie);
             }
+            document.getElementById("loader").style.display = "none";
         });
+
 }
 
 function addToList(sortie) {
