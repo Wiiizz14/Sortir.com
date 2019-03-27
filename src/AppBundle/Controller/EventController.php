@@ -15,7 +15,10 @@ use mysql_xdevapi\Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
+;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,7 +71,7 @@ class EventController extends Controller
             $sortie->setSite($user->getSite());
 
             //Aiguillage
-            if($form->get("Enregistrer")->isClicked()){
+            if ($form->get("Enregistrer")->isClicked()) {
                 //Set etat_id = Créee(1)
                 $sortie->setEtat($em->getRepository(Etat::class)->find(1));
                 //GO BDD
@@ -76,7 +79,7 @@ class EventController extends Controller
                 $em->flush();
                 //Flash
                 $this->addFlash("success", "Event enregistré avec succes !");
-                return $this->redirectToRoute("event_detailEvent", ["id"=>$sortie->getid()]);
+                return $this->redirectToRoute("event_detailEvent", ["id" => $sortie->getid()]);
 
             } elseif ($form->get("Publier")->isClicked()) {
                 //Set etat_id = Ouverte(2)
@@ -88,16 +91,16 @@ class EventController extends Controller
 
                 //Flash
                 $this->addFlash("success", "Event publié avec succes !");
-                return $this->redirectToRoute("event_detailEvent", ["id"=>$sortie->getid()]);
+                return $this->redirectToRoute("event_detailEvent", ["id" => $sortie->getid()]);
 
-            } elseif($form->get("Annuler")->isClicked()) {
+            } elseif ($form->get("Annuler")->isClicked()) {
                 return $this->redirectToRoute("event_listeEvent");
             }
         }
         return $this->render("createEvent.html.twig", [
             "formCreateEvent" => $form->createView(),
-            "villes"=>$villes,
-            "lieux"=>$lieux
+            "villes" => $villes,
+            "lieux" => $lieux
         ]);
     }
 
@@ -114,26 +117,26 @@ class EventController extends Controller
 
         // formulaire de requete des checkboxes
         $formBuilder = $this->createFormBuilder()
-        ->add('sites',  EntityType::class, [
+            ->add('sites', EntityType::class, [
                 "class" => 'AppBundle:Site',
-                "query_builder" => function(EntityRepository $er) {
+                "query_builder" => function (EntityRepository $er) {
                     return $er->createQueryBuilder("u")
                         ->orderBy('u.nom', "ASC");
                 },
                 "choice_label" => "nom"
             ])
-        ->add('organisateur', CheckboxType::class, [
-            "required" => false
-        ])
-        ->add('isInscrit', CheckboxType::class, [
-            "required" => false
-        ])
-        ->add('isNotInscrit', CheckboxType::class, [
-            "required" => false
-        ])
-        ->add('archive', CheckboxType::class, [
-            "required" => false
-        ]);
+            ->add('organisateur', CheckboxType::class, [
+                "required" => false
+            ])
+            ->add('isInscrit', CheckboxType::class, [
+                "required" => false
+            ])
+            ->add('isNotInscrit', CheckboxType::class, [
+                "required" => false
+            ])
+            ->add('archive', CheckboxType::class, [
+                "required" => false
+            ]);
 
         $form = $formBuilder->getForm();
 
@@ -155,7 +158,7 @@ class EventController extends Controller
     public function getAction(Request $request, EntityManagerInterface $em, UserInterface $user,
                               SerializerInterface $serializer)
     {
-        $idSite = $request->get("idSite", false) ;
+        $idSite = $request->get("idSite", false);
         $isOrganisateur = filter_var($request->get("isOrganisateur", false), FILTER_VALIDATE_BOOLEAN);
         $isInscrit = filter_var($request->get("isInscrit", false), FILTER_VALIDATE_BOOLEAN);
         $isNotInscrit = filter_var($request->get("isNotInscrit", false), FILTER_VALIDATE_BOOLEAN);
@@ -163,12 +166,10 @@ class EventController extends Controller
 
         $repoSortie = $em->getRepository(Sortie::class);
 
-        if ($isOrganisateur || $isInscrit || $isNotInscrit || $isArchive)
-        {
+        if ($isOrganisateur || $isInscrit || $isNotInscrit || $isArchive) {
             $sorties = $repoSortie->getSortiesByParameters($user, $idSite, $isOrganisateur,
                 $isInscrit, $isNotInscrit, $isArchive);
-        } else
-        {
+        } else {
             $sorties = $repoSortie->getSortiesOnlyBySite($idSite);
         }
 
@@ -254,47 +255,60 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/api/registerEvent/{id}", name="registerEvent", requirements={"id":"\d+"}))
+     * @Route("/api/registerEvent/", name="registerEvent")
+     * @param Request $request
      * @param EntityManagerInterface $em
      * @param UserInterface $user
-     * @param $id
-     * @return void
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
      */
-    public function registerEventAction(EntityManagerInterface $em, UserInterface $user, $id){
+    public function registerEventAction(Request $request, EntityManagerInterface $em, UserInterface $user)
+    {
 
-        $repoSortie= $em->getRepository(Sortie::class);
+        $id = $request->get("idSortie");
+        $repoSortie = $em->getRepository(Sortie::class);
         $sortie = $repoSortie->find($id);
 
-        //Récup des participants
-        $participant = new Participant();
-        $repoParticipant = $em->getRepository(Participant::class);
+        //Récup des participants déja inscrits
         $tabParticipant = $sortie->getParticipants();
 
-
-        // Récup des champs : nb inscrits max, nb inscrits, date limite
+        //Récup des champs : nb inscrits max, nb inscrits, date du jour, date limite
         $nbInscriptionMax = $sortie->getNbInscriptionsMax();
         $nbInscrits = count($sortie->getParticipants());
         $dateDuJour = new \DateTime();
         $dateLimite = $sortie->getDateCloture();
 
-        //Entrer le participant dans la sortie
-        $sortie->getParticipants()->add($user);
+        //Test date
+        if ($dateLimite > $dateDuJour) {
 
-        //Entrer la sortie dans le participant
-        $user->getSorties()->add($sortie);
+            //Test si user déja inscrit
+            if (!$tabParticipant->contains($user)) {
 
-        //Go Bdd
-        $em->persist($user);
-        $em->persist($sortie);
-        $em->flush();
+                //Test capacité
+                if ($nbInscrits < $nbInscriptionMax) {
 
-        //TODO ajouter les contraintes
+                    //Entrer le participant dans la sortie
+                    $sortie->getParticipants()->add($user);
 
+                    //Entrer la sortie dans le participant
+                    $user->getSorties()->add($sortie);
 
+                    //Go Bdd
+                    $em->persist($user);
+                    $em->persist($sortie);
+                    $em->flush();
 
+                    $this->addFlash("success", "Vous êtes bien inscrit !");
 
-
+                } else {
+                    $this->addFlash("warning", "Il n'y a plus de places disponibles !");
+                }
+            } else {
+                $this->addFlash("warning", "Vous êtes déja inscrit !");
+            }
+        } else {
+            $this->addFlash("warning", "la date limite d'inscription est dépassée !");
+        }
+        return $this->redirectToRoute("event_listeEvent");
     }
-
 }
