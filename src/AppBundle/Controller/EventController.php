@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * Class EventController
@@ -297,4 +298,42 @@ class EventController extends Controller
 
     }
 
-}
+    /**
+     * @Route("/api/unRegisterEvent/", name="cancelEvent")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param UserInterface $user
+     * @return Response
+     * @throws \Exception
+     */
+    public function cancelEventAction(Request $request,EntityManagerInterface $em, UserInterface $user)
+    {
+        $id = $request->get("idSortie");
+        $repoSortie = $em->getRepository(Sortie::class);
+        /** @var Sortie $sortie */
+        $sortie = $repoSortie->findOneById($id);
+
+
+        if ($sortie && $sortie->getOrganisateur() != $user && $sortie->getDateCloture() > new \DateTime("now"))
+        {
+            if ($sortie->getParticipants()->contains($user)) {
+                dump($sortie);
+                $sortie->getParticipants()->removeElement($user);
+                dump($sortie);
+                $em->persist($sortie);
+
+                try
+                {
+                    $em->flush();
+                    return new Response("true");
+                } catch (\Exception $e) {
+                    return new Response("error");
+                }
+            } else {
+                return new Response("Vous n'êtes pas inscrit.");
+            }
+        }
+        return new Response("La demande n'a pas pu être satisfaite.");
+    }
+
+    }
