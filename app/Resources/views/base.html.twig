@@ -16,36 +16,46 @@
 </head>
 <body>
 
+<!-- Navbar -->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="#"><img src="{{ asset('Images/logoLaGarderieTiny.png') }}" alt="logo"></a>
+
+  <!-- Logo navbar -->
+  <a class="navbar-brand" href="{{ path('homepage') }}"><img src="{{ asset('Images/logoLaGarderieTiny.png') }}" alt="logo"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
+
+      <!-- Menu stagiaire 1/2 -->
       {% if is_granted('ROLE_USER') %}
-      <li class="nav-item">
-        <a class="nav-link" href="{{ path('homepage') }}">Accueil</a>
-      </li>
-      {% if is_granted('ROLE_ADMIN') %}
-      <li class="nav-item">
-        <a class="nav-link" href="{{ path('manageCity_createCity') }}">Ville</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ path('manageSite_createSite') }}">Sites</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ path('admin_listUser') }}">Participants</a>
-      </li>
-      {% endif %}
-         <li class="nav-item">
-        <a class="nav-link" href="{{ path('updateUser') }}">Mon Profil</a>
-         <li class="nav-item">
-        <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
-      </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('homepage') }}">Accueil</a>
+        </li>
+
+        <!-- Menu d'administration -->
+        {% if is_granted('ROLE_ADMIN') %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Menu administration
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{ path('manageCity_createCity') }}">Gestion des villes</a>
+              <a class="dropdown-item" href="{{ path('manageSite_createSite') }}">Gestion des sites</a>
+              <a class="dropdown-item" href="{{ path('admin_listUser') }}">Gestion des stagiaires</a>
+            </div>
+          </li>
+        {% endif %}
+
+        <!-- Menu stagiaire 2/2 -->
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('updateUser') }}">Mon Profil</a>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path('logout') }}">Se déconnecter</a>
+        </li>
       {% endif %}
     </ul>
-  </div>  
+  </div>
 </nav>
 
 <div class="jumbotron text-center" style="margin-bottom:0">
@@ -68,7 +78,7 @@
 
 <div class="jumbotron text-center" style="margin-bottom:0">
   <p>Eni-Ecole Informatique</p>
-    <p>Quelque part à Saint Herblain</p>
+  <p>Quelque part à Saint Herblain</p>
 </div>
 
 </body>

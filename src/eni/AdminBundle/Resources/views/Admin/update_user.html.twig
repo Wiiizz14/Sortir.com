@@ -1,11 +1,54 @@
 {% extends 'base.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
-{% block title %}Gestion Du Site{% endblock %}
-{% block pagetitle %}Gestion du site{% endblock %}
+
+{% block title %}Profil de{% endblock %}
+
+{% block pagetitle %}Gestion des stagiaires{% endblock %}
 
 {% block body %}
-    <p>je suis dans le updateUser du bundle admin</p>
-    {{ form(form) }}
-    <div><a href="{{ path('admin_listUser') }}">Retour</a></div>
-{% endblock %}
 
+    <div id="titleProfil">
+        <h5>Mon profil</h5>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-xs-12" id="photoProfil">
+            {% if app.user.urlPhoto is not null%}
+                <img src="{{ app.user.urlPhoto }}" alt="photoDeProfil">
+            {% else %}
+                <img src="{{ asset('Images/logoLaGarderie.png') }}" alt="logoProfilDefaut">
+            {% endif %}
+        </div>
+
+        <div id="containerMyProfil" class="col-md-4 col-xs-12">
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_row(form.nom) }}
+            {{ form_row(form.prenom) }}
+            {{ form_row(form.username) }}
+            {{ form_row(form.telephone) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
+            <small id="emailHelp" class="form-text text-muted">Votre mot de passe doit contenir entre 8 et 50 caractères avec au moins :
+                <ul>
+                    <li>une minuscule (a-z)</li>
+                    <li>une majsucule (A-Z)</li>
+                    <li>un chiffre (0-9)</li>
+                    <li>un caractère spécial (#, @, &...)</li>
+                </ul>
+            </small>
+            {{ form_row(form.isAdministrateur) }}
+            {{ form_row(form.site) }}
+            {{ form_row(form.urlPhoto) }}
+
+        </div>
+    </div>
+    <div class="row" id="btnsMyProfil">
+        <div class="col-md-6">
+            {{ form_widget(form.enregistrer) }}
+        </div>
+        <div class="col-md-6" id="btnBack">
+            <a href="{{ path('admin_listUser') }}" class="btn btn-info" id="btnAnnuler">Annuler</a>
+        </div>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
