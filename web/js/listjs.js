@@ -13,6 +13,7 @@ $(document).ready(function(){
 });
 
 getFirstList = () => {
+    //fonction qui fait une requete get
     $.get({
         url: "/api/searchEvent",
         data: {idSite: user.site}
@@ -31,7 +32,7 @@ selectionSite = () => {
     var isInscrit = $('#isInscrit').is(':checked');
     var isNotInscrit = $('#isNotInscrit').is(':checked');
     var isArchive = $('#isArchive').is(':checked');
-    //la fonction getJson permet de récupérer un string au format json;
+    //la fonction get peut récupérer un string au format json;
     $.get({
         url: "/api/searchEvent",
         data: {idSite: idSite,
@@ -93,25 +94,32 @@ function addToList(sortie) {
     {
         if (sortie.organisateur.username == user.username)
         {
+            // creation d'un element a et insertion attribut href
             var httpModifier = document.createElement("a");
             httpModifier.setAttribute("href", "/updateEvent/" + sortie.id);
             httpModifier.innerText = "Modifier";
             action.appendChild(httpModifier);
+
+            // creation d'un element a et insertion attribut href et onClick pour invoquer la methode js
+            var httpAnnuler = document.createElement("a");
+
         }
         else
         {
             if (isInscrit)
             {
+                // creation d'un element a et insertion attribut href et onClick pour invoquer la methode js
                 var httpDesinscription = document.createElement("a");
-                httpDesinscription.setAttribute("href", "#" + sortie.id);
-                httpDesinscription.setAttribute("onclick", "seDesinscrire()");
+                httpDesinscription.setAttribute("href", "#");
+                httpDesinscription.setAttribute("onclick", "seDesinscrire("+ sortie.id +")");
                 httpDesinscription.innerText = "Se désincrire";
                 action.appendChild(httpDesinscription);
             } else
             {
+                // creation d'un element a et insertion attribut href et onClick pour invoquer la methode js
                 var httpInscription = document.createElement("a");
                 httpInscription.setAttribute("href", "#" + sortie.id);
-                httpInscription.setAttribute("onclick", "sInscrire()");
+                httpInscription.setAttribute("onclick", "sInscrire(" + sortie.id + ")");
                 httpInscription.innerText = "S'inscrire";
                 action.appendChild(httpInscription);
             }
@@ -137,17 +145,44 @@ function addToList(sortie) {
     $("#myTable").append(bloc);
 }
 
-var seDesinscrire = () => {
+var seDesinscrire = (id) => {
     if (confirm("etes vous sur de vouloir vous désister?"))
     {
-        console.log("desistement")
+        var idSortie = id
+        console.log(idSortie);
+        $.ajax(
+            {
+                url: "api/unRegisterEvent/",
+                type: "POST",
+                data: {"idSortie": idSortie},
+                success: alert("le post est passé")
+            },
+
+
+        ).done(
+            selectionSite()
+    )
     }
 }
 
-var sInscrire = () => {
+var sInscrire = (id) => {
+    var idSortie = id
+    console.log(idSortie);
     if (confirm("Confirmez votre inscription"))
     {
-        console.log("desistement")
+        $.ajax(
+            {
+                url: "api/registerEvent/",
+                type: "POST",
+                data: {"idSortie": idSortie},
+                success: alert("le post est passé")
+            },
+
+
+        ).done(
+            selectionSite()
+        )
+
     }
 }
 

@@ -14,11 +14,25 @@
     width: 60%;
 }
 
+/* Page de création de sortie */
 
-/* Liens page de création de sortie */
-.createLinks{
-    display: inline-block;
+.form-group> #sorties_Publier{
+    width: 80%;
 }
+
+.form-group> #sorties_Annuler{
+    width: 80%;
+}
+
+.form-group> #sorties_Enregistrer{
+    width: 80%;
+}
+
+#buttons{
+    text-align: center;
+}
+
+
 
 /* Déclencheur modal "Ajout Lieu" */
 .btn-circle {

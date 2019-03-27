@@ -13,22 +13,46 @@
         {% endfor %}
     {% endfor %}
 
-    <div>
-        <p>Nom de la sortie : {{ Detail.nom }}</p>
-        <p>Date et heure de la sortie : {{ Detail.dateDebut | date("d-m-Y") }}</p>
-        <p>Date limite d'inscription : {{ Detail.dateCloture | date("d-m-Y") }}</p>
-        <p>Nombre de places : {{ Detail.nbInscriptionsMax }}</p>
-        <p>Durée : {{ Detail.duree }} minutes</p>
-        <p>Description et infos : {{ Detail.description }}</p>
-    <div>
 
-    <div>
-        <p>Ville organisatrice : {{ Detail.Lieu.Ville.nom }}</p>
-        <p>Lieu : {{ Detail.lieu.nom }}</p>
-        <p>Rue : {{ Detail.Lieu.rue }}</p>
-        <p>Code Postal : {{ Detail.Lieu.Ville.codepostal }}</p>
-        <p>Latitude : {{ Detail.Lieu.latitude }}</p>
-        <p>Longitude : {{ Detail.Lieu.longitude }} </p>
+    <div class="row">
+        <div class="container col-md-6">
+            <br>
+            <p>Nom de la sortie : {{ Detail.nom }}</p>
+            <p>Date et heure de la sortie : {{ Detail.dateDebut | date("d-m-Y") }}</p>
+            <p>Date limite d'inscription : {{ Detail.dateCloture | date("d-m-Y") }}</p>
+            <p>Nombre de places : {{ Detail.nbInscriptionsMax }}</p>
+            <p>Durée : {{ Detail.duree }} minutes</p>
+            <p>Description et infos : {{ Detail.description }}</p>
+            <p>Ville organisatrice : {{ Detail.Lieu.Ville.nom }}</p>
+            <p>Lieu : {{ Detail.lieu.nom }}</p>
+            <p>Rue : {{ Detail.Lieu.rue }}</p>
+            <p>Code Postal : {{ Detail.Lieu.Ville.codepostal }}</p>
+            <p>Latitude : {{ Detail.Lieu.latitude }}</p>
+            <p>Longitude : {{ Detail.Lieu.longitude }} </p>
+        </div>
+
+        <div class="container col-md-5">
+            <p>-> Liste des participants déjà inscrits :</p>
+
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Pseudo</th>
+                    </tr>
+                    </thead>
+                    <tbody id="myTable">
+                    {% for Participant in TabParticipant %}
+                        <tr>
+                            <td scope="row">{{ Participant.nom }}</td>
+                            <td>{{ Participant.username }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
     </div>
 
 {% endblock %}
