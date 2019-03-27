@@ -9,6 +9,7 @@ $(document).ready(function(){
         });
     });
 
+
 });
 
 getFirstList = () => {
@@ -26,10 +27,10 @@ getFirstList = () => {
 
 selectionSite = () => {
     var idSite = $("#choixSite option:selected").val();
-    var isOrganisateur = 0;
-    var isInscrit = 0;
-    var isNotInscrit = 0;
-    var isArchive = 0;
+    var isOrganisateur = $('#isOrganisateur').is(':checked');
+    var isInscrit = $('#isInscrit').is(':checked');
+    var isNotInscrit = $('#isNotInscrit').is(':checked');
+    var isArchive = $('#isArchive').is(':checked');
     //la fonction getJson permet de récupérer un string au format json;
     $.get({
         url: "/api/searchEvent",
@@ -40,6 +41,7 @@ selectionSite = () => {
             isArchive: isArchive}
     })
         .done(function (apiResult) {
+            console.log(apiResult);
             //supression du tableau en place
             $("#myTable").empty();
             // on peut ensuite récupérer les valeurs en invoquant les clés
@@ -64,13 +66,13 @@ function addToList(sortie) {
     var action = document.createElement('td');
 
     // insersion des données dans les éléments
-    nom.innerText = sortie.nom
-    sortie.dateDebut = new Date(sortie.dateDebut)
-    dateDebut.innerText = (sortie.dateDebut.getDate() + 1) + '/' + sortie.dateDebut.getMonth() + '/'
+    nom.innerText = sortie.nom;
+    sortie.dateDebut = new Date(sortie.dateDebut);
+    dateDebut.innerText = (sortie.dateDebut.getDate() + 1) + '/' + (sortie.dateDebut.getMonth() + 1) + '/'
         +  sortie.dateDebut.getFullYear()
         + " à " + sortie.dateDebut.getHours() + ":" + sortie.dateDebut.getMinutes();
     sortie.dateCloture = new Date(sortie.dateCloture);
-    dateCloture.innerText = (sortie.dateCloture.getMonth() + 1) + '/' + sortie.dateCloture.getDate() + '/' +  sortie.dateCloture.getFullYear(); // idem
+    dateCloture.innerText = (sortie.dateCloture.getDate() + 1) + '/' + (sortie.dateCloture.getMonth() + 1) + '/' +  sortie.dateCloture.getFullYear(); // idem
     inscriptions.innerText = sortie.participants.length + "/" + sortie.nbInscriptionsMax
     etat.innerText = sortie.etat.libelle;
 
@@ -89,7 +91,7 @@ function addToList(sortie) {
     // conditions d'affichage des actions
     if (sortie.dateCloture > new Date())
     {
-        if (organisateur.username === user.username)
+        if (sortie.organisateur.username == user.username)
         {
             var httpModifier = document.createElement("a");
             httpModifier.setAttribute("href", "/updateEvent/" + sortie.id);
@@ -100,16 +102,18 @@ function addToList(sortie) {
         {
             if (isInscrit)
             {
-                var httpInscription = document.createElement("a");
-                httpInscription.setAttribute("href", "#" + sortie.id);
-                httpInscription.innerText = "S'inscrire";
-                action.appendChild(httpInscription);
-            } else
-            {
                 var httpDesinscription = document.createElement("a");
                 httpDesinscription.setAttribute("href", "#" + sortie.id);
+                httpDesinscription.setAttribute("onclick", "seDesinscrire()");
                 httpDesinscription.innerText = "Se désincrire";
                 action.appendChild(httpDesinscription);
+            } else
+            {
+                var httpInscription = document.createElement("a");
+                httpInscription.setAttribute("href", "#" + sortie.id);
+                httpInscription.setAttribute("onclick", "sInscrire()");
+                httpInscription.innerText = "S'inscrire";
+                action.appendChild(httpInscription);
             }
         }
     }
@@ -131,5 +135,19 @@ function addToList(sortie) {
     bloc.appendChild(organisateur);
     bloc.append(action);
     $("#myTable").append(bloc);
+}
+
+var seDesinscrire = () => {
+    if (confirm("etes vous sur de vouloir vous désister?"))
+    {
+        console.log("desistement")
+    }
+}
+
+var sInscrire = () => {
+    if (confirm("Confirmez votre inscription"))
+    {
+        console.log("desistement")
+    }
 }
 
