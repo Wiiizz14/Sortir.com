@@ -1,16 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Gestion Du Site{% endblock %}
+{% block title %}Mon profil{% endblock %}
 
-{% block pagetitle %}Gestion du site{% endblock %}
+{% block pagetitle %}Mon profil{% endblock %}
 
 {% block body %}
 
-    <div id="titleProfil">
-        <h5>Mon profil</h5>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-xs-2" id="photoProfil">
+    <div class="row" id="containerPrincipal">
+        <div class="col-md-4 col-xs-12" id="photoProfil">
             {% if app.user.urlPhoto is not null%}
                 <img src="{{ app.user.urlPhoto }}" alt="photoDeProfil">
             {% else %}
@@ -18,7 +15,7 @@
             {% endif %}
         </div>
 
-        <div id="containerMyProfil" class="col-md-4 col-xs-10">
+        <div id="containerMyProfil" class="col-md-4 col-xs-12">
             {% form_theme form 'bootstrap_4_layout.html.twig' %}
             {{ form_start(form) }}
             {{ form_row(form.nom) }}
