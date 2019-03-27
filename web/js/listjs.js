@@ -91,7 +91,7 @@ function addToList(sortie) {
     // conditions d'affichage des actions
     if (sortie.dateCloture > new Date())
     {
-        if (organisateur.username === user.username)
+        if (sortie.organisateur.username == user.username)
         {
             var httpModifier = document.createElement("a");
             httpModifier.setAttribute("href", "/updateEvent/" + sortie.id);

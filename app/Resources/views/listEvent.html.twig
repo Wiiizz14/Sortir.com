@@ -22,7 +22,7 @@
                 {{ form_start(form) }}
                 <p>{{ form_row(form.sites, {"label": "Site concerné", 'id': "choixSite", 'attr': {'onchange': "selectionSite();"}}) }}</p>
                 <p>{{ form_row(form.organisateur, {"label": "Dont je suis l'organisateur", 'id': "isOrganisateur", 'attr': {'onchange': "selectionSite();"}}) }}</p>
-                <p>{{ form_row(form.isInscrit, {"label": "auxquels je suis inscrit", 'id': "isIncrit", 'attr': {'onchange': "selectionSite();"}}) }}</p>
+                <p>{{ form_row(form.isInscrit, {"label": "auxquels je suis inscrit", 'id': "isInscrit", 'attr': {'onchange': "selectionSite();"}}) }}</p>
                 <p>{{ form_row(form.isNotInscrit, {"label": "auxquels je ne suis pas inscrit", 'id': "isNotInscrit", 'attr': {'onchange': "selectionSite();"}}) }}</p>
                 <p>{{ form_row(form.archive, {"label": "tous les autres", 'id': "isArchive", 'attr': {'onchange': "selectionSite();"}}) }}</p>
                 {{ form_end(form) }}

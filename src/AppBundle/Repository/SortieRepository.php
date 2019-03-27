@@ -54,23 +54,21 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter("idSite", $idSite);
 
 
-        if ($isOrganisateur)
-        {
-            $queryBuilder->andWhere("s.organisateur = :user")
-                ->setParameter("user", $user->getId());
-//            $queryBuilder->innerJoin("s.organisateur", "o", "WITH", "o = :idUser")
-//                ->setParameter("idUser", $user);
-        }
+
         if (($isInscrit || $isNotInscrit) && !($isInscrit && $isNotInscrit))
         {
-            $queryBuilder->innerJoin('s.participants',"p");
             if ($isInscrit) {
-                $queryBuilder->andWhere("p.id = :idCurrentUser");
+                $queryBuilder->leftJoin('s.participants',"p");
+                $queryBuilder->andWhere("p = :idCurrentUser");
             }
             if ($isNotInscrit) {
-                $queryBuilder->andWhere("p.id != :idCurrentUser");
+                $queryBuilder->leftJoin('s.participants',"p");
+               $queryBuilder->andWhere("p != :idCurrentUser")
+                   ->andWhere("s.organisateur != :idCurrentUser")
+               ->orWhere("s.participants IS EMPTY")
+                   ->andWhere("s.organisateur != :idCurrentUser");
             }
-            $queryBuilder->setParameter("idCurrentUser", $user->getId());
+            $queryBuilder->setParameter("idCurrentUser", $user);
         }
 
         if ($isArchive == false)
@@ -81,6 +79,17 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
         {
             $queryBuilder->andWhere("s.dateDebut <= :date")
                 ->setParameter('date', new DateTime("-30 days"));
+        }
+        if ($isOrganisateur)
+        {
+            if ($isArchive || $isInscrit || $isNotInscrit)
+            {
+                $queryBuilder->orWhere("s.organisateur = :idCurrentUser");
+            } else
+            {
+                $queryBuilder->andWhere("s.organisateur = :idCurrentUser");
+            }
+            $queryBuilder->setParameter("idCurrentUser", $user);
         }
 
 
