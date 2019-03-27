@@ -21,12 +21,12 @@ class SortiesType extends AbstractType{
                 "label"=>"Nom de la sortie :"
             ])
             ->add("dateDebut", DateTimeType::class, [
-                "label"=> "Date de début :",
+                "label"=> "Date de la sortie :",
                 "widget" => "single_text",
             ])
 
             ->add("dateCloture", DateType::class, [
-                "label"=> "Date de clôture :",
+                "label"=> "Date de clôture des inscriptions :",
                 "widget" => "single_text",
             ])
 
