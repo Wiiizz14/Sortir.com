@@ -34,7 +34,8 @@ class ParticipantType extends AbstractType
                 'label' => 'Pseudo'
             ])
             ->add('telephone', TelType::class, [
-                'label' => 'Numéro de Téléphone'
+                'label' => 'Numéro de Téléphone',
+                'required' => false
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Adresse mail'
@@ -42,7 +43,8 @@ class ParticipantType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'Mot de Passe'],
-                'second_options' => ['label' => 'Confirmer mot de passe']
+                'second_options' => ['label' => 'Confirmer mot de passe'],
+                'invalid_message' => 'Le mot de passe entré n\'est pas identique'
             ])
             ->add('isAdministrateur', CheckboxType::class, [
                 'required'=>false,
@@ -50,7 +52,7 @@ class ParticipantType extends AbstractType
             ])
             ->add('site',  EntityType::class, [
                 'class' => 'AppBundle:Site',
-                'choice_label' => 'nom',
+                'choice_label' => 'nom'
             ])
             ->add('urlPhoto', FileType::class, [
                 'data_class'=> null,

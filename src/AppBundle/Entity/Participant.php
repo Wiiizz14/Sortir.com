@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Participant
  *
  * @ORM\Table(name="participant")
+ * @UniqueEntity(fields={"username"}, message="Pseudo déjà existant.")
+ * @UniqueEntity(fields={"email"}, message="Email déjà existant.")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ParticipantRepository")
  */
 class Participant implements UserInterface
@@ -26,21 +29,39 @@ class Participant implements UserInterface
 
     /**
      * @var string
+     *
      * @Groups({"sortieGroupe"})
+     *
+     * @Assert\NotBlank(message="Vous devez remplir ce champs.")
+     * @Assert\Type(type="string", message="Le nom doit être une chaîne de caractères.")
+     * @Assert\Length(max="50", maxMessage="Votre nom ne doit pas excéder 50 caractères.")
+     *
      * @ORM\Column(name="nom", type="string", length=50)
      */
     private $nom;
 
     /**
      * @var string
+     *
      * @Groups({"sortieGroupe"})
+     *
+     * @Assert\NotBlank(message="Vous devez remplir ce champs.")
+     * @Assert\Type(type="string", message="Le prénom doit être une chaîne de caractères.")
+     * @Assert\Length(max="30", maxMessage="Votre prénom ne doit pas excéder 30 caractères.")
+     *
      * @ORM\Column(name="prenom", type="string", length=30)
      */
     private $prenom;
 
     /**
      * @var string
+     *
      * @Groups({"sortieGroupe"})
+     *
+     * @Assert\NotBlank(message="Vous devez remplir ce champs.")
+     * @Assert\Type(type="string", message="Le pseudo doit être une chaîne de caractères.")
+     * @Assert\Length(max="30", maxMessage="Votre pseudo ne doit pas excéder 50 caractères.")
+     *
      * @ORM\Column(name="username", type="string", length=30, unique=true)
      */
     private $username;
@@ -48,12 +69,17 @@ class Participant implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="telephone", type="string", length=15, nullable=true)
+     * @Assert\Regex(pattern="'#^0[6-7]{1}\d{8}$#'", message="Votre numéro de téléphone doit comporter 10 chiffres sans espaces ni points.")
+     *
+     * @ORM\Column(name="telephone", type="integer", length=10, nullable=true)
      */
     private $telephone;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank(message="Vous devez remplir ce champs.")
+     * @Assert\Email(message="Le format de l'email '{{ value }}' n'est pas conforme.")
      *
      * @ORM\Column(name="email", type="string", length=100, unique=true)
      */
@@ -61,6 +87,9 @@ class Participant implements UserInterface
 
     /**
      * @var string
+     *
+     * @Assert\Length(max="50", maxMessage="Le mot de passe doit contenir entre 8 et 50 caractères.",
+     *     min="8", minMessage="Le mot de passe doit contenir entre 8 et 50 caractères.")
      *
      * @ORM\Column(name="password", type="string", length=50)
      */
@@ -88,18 +117,18 @@ class Participant implements UserInterface
     private $urlPhoto;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Sortie", inversedBy="participants")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Sortie", inversedBy="participants", cascade={"persist"})
      */
     private $sorties;
 
     /**
      * @var
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sortie", mappedBy="organisateur")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sortie", mappedBy="organisateur", cascade={"persist"})
      */
     private $organisations;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Site", inversedBy="participants")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Site", inversedBy="participants", cascade={"persist"})
      */
     private $site;
 

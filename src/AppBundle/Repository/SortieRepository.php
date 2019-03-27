@@ -26,7 +26,7 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
         $queryBuilder->select('s')
             ->from(Sortie::class, 's')
             ->innerJoin("s.site", "site", "WITH", "site.id = :idSite")
-            ->where("s.dateCloture >= :date")
+            ->where("s.dateDebut > :date")
             ->setParameter("idSite", $idSite)
             ->setParameter('date', new DateTime("-30 days"));
         return $queryBuilder->getQuery()->getResult();
@@ -54,39 +54,32 @@ class SortieRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter("idSite", $idSite);
 
 
-
-        if (($isInscrit || $isNotInscrit) && !($isInscrit && $isNotInscrit))
-        {
+        if (($isInscrit || $isNotInscrit) && !($isInscrit && $isNotInscrit)) {
             if ($isInscrit) {
-                $queryBuilder->leftJoin('s.participants',"p");
+                $queryBuilder->leftJoin('s.participants', "p");
                 $queryBuilder->andWhere("p = :idCurrentUser");
             }
             if ($isNotInscrit) {
-                $queryBuilder->leftJoin('s.participants',"p");
-               $queryBuilder->andWhere("p != :idCurrentUser")
-                   ->andWhere("s.organisateur != :idCurrentUser")
-               ->orWhere("s.participants IS EMPTY")
-                   ->andWhere("s.organisateur != :idCurrentUser");
+                $queryBuilder->leftJoin('s.participants', "p");
+                $queryBuilder->andWhere("p != :idCurrentUser")
+                    ->andWhere("s.organisateur != :idCurrentUser")
+                    ->orWhere("s.participants IS EMPTY")
+                    ->andWhere("s.organisateur != :idCurrentUser");
             }
             $queryBuilder->setParameter("idCurrentUser", $user);
         }
 
-        if ($isArchive == false)
-        {
+        if ($isArchive == false) {
             $queryBuilder->andWhere("s.dateDebut > :date")
                 ->setParameter('date', new DateTime("-30 days"));
-        } else if (!($isOrganisateur || $isInscrit || $isNotInscrit))
-        {
+        } else if (!($isOrganisateur || $isInscrit || $isNotInscrit)) {
             $queryBuilder->andWhere("s.dateDebut <= :date")
                 ->setParameter('date', new DateTime("-30 days"));
         }
-        if ($isOrganisateur)
-        {
-            if ($isArchive || $isInscrit || $isNotInscrit)
-            {
+        if ($isOrganisateur) {
+            if ($isArchive || $isInscrit || $isNotInscrit) {
                 $queryBuilder->orWhere("s.organisateur = :idCurrentUser");
-            } else
-            {
+            } else {
                 $queryBuilder->andWhere("s.organisateur = :idCurrentUser");
             }
             $queryBuilder->setParameter("idCurrentUser", $user);
