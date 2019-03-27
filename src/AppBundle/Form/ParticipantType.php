@@ -46,7 +46,12 @@ class ParticipantType extends AbstractType
                 'second_options' => ['label' => 'Confirmer mot de passe'],
                 'invalid_message' => 'Le mot de passe entré n\'est pas identique'
             ])
-            ->add('isAdministrateur', CheckboxType::class, [
+            ->add('isAdministrateur', ChoiceType::class, [
+                'placeholder' => 'Veuillez sélectionner une option',
+                'choices' => [
+                    'oui' => true,
+                    'non' => false
+                ],
                 'required'=>false,
                 'label' => 'Droits Administrateur'
             ])
