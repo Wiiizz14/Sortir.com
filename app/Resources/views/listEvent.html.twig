@@ -4,17 +4,14 @@
 {% block pagetitle %}Accueil{% endblock %}
 
 {% block body %}
-    <div>
-        <h3><a href="{{ path('event_createEvent') }}">Organiser une nouvelle sortie</a></h3>
-    </div>
 
     <div>
         <script>
-           user = {
-               id: {{ app.user.id }},
-               username: '{{ app.user.username }}',
-               site: {{ app.user.site.id }}
-           };
+            user = {
+                id: {{ app.user.id }},
+                username: '{{ app.user.username }}',
+                site: {{ app.user.site.id }}
+            };
         </script>
         <div>
             <h2>Recherche de sorties</h2>
@@ -33,23 +30,31 @@
 
 
 
-    <input id="myInput" type="text" placeholder="Rechercher dans le tableau">
-    </select>
-    <table class="table table-hover">
+    <form class="search-form col-md-4">
+        <input class="form-control form-control-sm mr-3" type="text" placeholder="Rechercher une sortie" aria-label="Search" id="myInput">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </form>
+    <div class="table-responsive">
+        <table class="table table-hover">
 
-    <tr>
-        <th scope="col">Nom</th>
-        <th scope="col">Date de la sortie</th>
-        <th scope="col">Date de clôture</th>
-        <th scope="col">Inscrits/Places</th>
-        <th scope="col">Etat</th>
-        <th scope="col">Inscrit</th>
-        <th scope="col">Organisateur</th>
-        <th scope="col">Actions</th>
-    </tr>
-        <tbody id="myTable">
-        </tbody>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Date de clôture</th>
+                <th scope="col">Inscrits/Places</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
+            <tbody id="myTable">
+            </tbody>
         </table>
+    </div>
     <div id="loader" style="display: none" align="center"><img src="{{ asset('Images/loader.gif') }}"></div>
     <script src="{{ asset('js/listjs.js') }}"></script>
+
+    <div>
+        <a href="{{ path('event_createEvent') }}" class="btn btn-primary">Organiser une nouvelle sortie</a>
+    </div>
 {% endblock %}

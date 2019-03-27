@@ -118,6 +118,12 @@
     width: 30%;
 }
 
+/* Réduction de la taille d'affichage des tableaux pour le scroll */
+.table-responsive
+{
+    height: 300px;
+}
+
 /*.btn-info
 {
     margin-left: 1%;
