@@ -52,7 +52,7 @@
                 </label>
             </div>
 
-            <div class="form-group" >
+            <div class="form-group">
                 <div class="addSpot">
                     {{ form_row(formCreateEvent.lieu) }}
                 </div>
@@ -84,17 +84,19 @@
         </div>
 
         {# Boutons Enregistrer + Publier + Annuler #}
-        <div class="form-group">
-            <div class="createLinks">
-                {{ form_row(formCreateEvent.Enregistrer) }}
+        <span>
+            <div class="row">
+                    <div class="col-md-4" id="buttons">
+                        {{ form_row(formCreateEvent.Enregistrer) }}
+                    </div>
+                    <div class="col-md-4" id="buttons">
+                        {{ form_row(formCreateEvent.Publier) }}
+                    </div>
+                    <div class="col-md-4" id="buttons">
+                        {{ form_row(formCreateEvent.Annuler) }}
+                    </div>
             </div>
-            <div class="createLinks">
-                {{ form_row(formCreateEvent.Publier) }}
-            </div>
-            <div class="createLinks">
-                {{ form_row(formCreateEvent.Annuler) }}
-            </div>
-        </div>
+        </span>
         {{ form_end(formCreateEvent) }}
     </div>
 

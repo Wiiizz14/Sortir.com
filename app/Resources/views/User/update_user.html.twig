@@ -27,13 +27,26 @@
             {{ form_row(form.telephone) }}
             {{ form_row(form.email) }}
             {{ form_row(form.password) }}
+            <small id="emailHelp" class="form-text text-muted">Votre mot de passe doit contenir entre 8 et 50 caractères avec au moins :
+                <ul>
+                    <li>une minuscule (a-z)</li>
+                    <li>une majsucule (A-Z)</li>
+                    <li>un chiffre (0-9)</li>
+                    <li>un caractère spécial (#, @, &...)</li>
+                </ul>
+            </small>
             {{ form_row(form.site) }}
             {{ form_row(form.urlPhoto) }}
 
         </div>
     </div>
     <div class="row" id="btnsMyProfil">
-        {{ form_widget(form.enregistrer) }} <a href="{{ path('homepage') }}" class="btn btn-info">Annuler</a>
+        <div class="col-md-6">
+        {{ form_widget(form.enregistrer) }}
+        </div>
+    <div class="col-md-6" id="btnBack">
+        <a href="{{ path('homepage') }}" class="btn btn-info" id="btnAnnuler">Annuler</a>
+    </div>
     </div>
     {{ form_end(form) }}
 

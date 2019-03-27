@@ -69,7 +69,7 @@ class Participant implements UserInterface
     /**
      * @var string
      *
-     * @Assert\Regex(pattern="'#^0[6-7]{1}\d{8}$#'", message="Votre numéro de téléphone doit comporter 10 chiffres sans espaces ni points.")
+     * @Assert\Regex(pattern="#^0[1-9]{1}\d{8}$#", message="Votre numéro de téléphone doit comporter 10 chiffres sans espaces ni points.")
      *
      * @ORM\Column(name="telephone", type="integer", length=10, nullable=true)
      */
@@ -90,6 +90,8 @@ class Participant implements UserInterface
      *
      * @Assert\Length(max="50", maxMessage="Le mot de passe doit contenir entre 8 et 50 caractères.",
      *     min="8", minMessage="Le mot de passe doit contenir entre 8 et 50 caractères.")
+     * @Assert\Regex(pattern="#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{8,}$#",
+     *     message="Le format du mot de passe attendu n'est pas correct.")
      *
      * @ORM\Column(name="password", type="string", length=50)
      */
@@ -110,8 +112,13 @@ class Participant implements UserInterface
     private $isActif;
 
     /**
-     * @var
-     * @Assert\Image(maxSize="4M", minWidth="100", minHeight="100")
+     * @var string
+     * @Assert\Image(
+     *     maxSize="4M", maxSizeMessage="La photo ne peut excéder 4 Mo.",
+     *     minWidth="100", minWidthMessage="Taille de l'image minimale 100x100.",
+     *     minHeight="100", minHeight="Taille de l'image minimale de 100x100.",
+     * )
+     *
      * @ORM\Column(name="url_photo", type="string", length=255, nullable=true)
      */
     private $urlPhoto;
