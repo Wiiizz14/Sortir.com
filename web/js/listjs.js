@@ -124,7 +124,7 @@ function addToList(sortie) {
                 var httpDesinscription = document.createElement("a");
                 httpDesinscription.setAttribute("href", "#");
                 httpDesinscription.setAttribute("onclick", "seDesinscrire("+ sortie.id +")");
-                httpDesinscription.innerText = "Se désincrire";
+                httpDesinscription.innerText = "Se désinscrire";
                 action.appendChild(httpDesinscription);
             } else
             {
@@ -158,7 +158,7 @@ function addToList(sortie) {
 }
 
 var seDesinscrire = (id) => {
-    if (confirm("etes vous sur de vouloir vous désister?"))
+    if (confirm("Etes-vous sûr de vouloir vous désister ?"))
     {
         var idSortie = id
         console.log(idSortie);

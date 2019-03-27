@@ -20,11 +20,11 @@
             <h2>Recherche de sorties</h2>
             <div>
                 {{ form_start(form) }}
-                <p>{{ form_row(form.sites, {"label": "Site concerné", 'id': "choixSite", 'attr': {'onchange': "selectionSite();"}}) }}</p>
-                <p>{{ form_row(form.organisateur, {"label": "Dont je suis l'organisateur", 'id': "isOrganisateur", 'attr': {'onchange': "selectionSite();"}}) }}</p>
-                <p>{{ form_row(form.isInscrit, {"label": "auxquels je suis inscrit", 'id': "isInscrit", 'attr': {'onchange': "selectionSite();"}}) }}</p>
-                <p>{{ form_row(form.isNotInscrit, {"label": "auxquels je ne suis pas inscrit", 'id': "isNotInscrit", 'attr': {'onchange': "selectionSite();"}}) }}</p>
-                <p>{{ form_row(form.archive, {"label": "tous les autres", 'id': "isArchive", 'attr': {'onchange': "selectionSite();"}}) }}</p>
+                <p>{{ form_row(form.sites, {"label": "Site", 'id': "choixSite", 'attr': {'onchange': "selectionSite();"}}) }}</p>
+                <p>{{ form_row(form.organisateur, {"label": "Sorties dont je suis l'organisateur/trice", 'id': "isOrganisateur", 'attr': {'onchange': "selectionSite();"}}) }}</p>
+                <p>{{ form_row(form.isInscrit, {"label": "Sorties auxquelles je suis inscrit/e", 'id': "isInscrit", 'attr': {'onchange': "selectionSite();"}}) }}</p>
+                <p>{{ form_row(form.isNotInscrit, {"label": "Sorties auxquelles je ne suis pas inscrit/e", 'id': "isNotInscrit", 'attr': {'onchange': "selectionSite();"}}) }}</p>
+                <p>{{ form_row(form.archive, {"label": "Sorties passées", 'id': "isArchive", 'attr': {'onchange': "selectionSite();"}}) }}</p>
                 {{ form_end(form) }}
             </div>
         </div>

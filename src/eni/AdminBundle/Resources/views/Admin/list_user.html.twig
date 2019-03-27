@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Gestion Du Site{% endblock %}
-{% block pagetitle %}Gestion du site{% endblock %}
+{% block title %}Gestion des stagiaires{% endblock %}
+{% block pagetitle %}Gestion des stagiaires{% endblock %}
 
 {% block body %}
-    <p><a href="{{ path('admin_createUser') }}">Ajouter un participant</a></p>
+    <p><a href="{{ path('admin_createUser') }}">Ajouter un stagiaire</a></p>
     {%  for participant in listeParticipants %}
     <div>
         <p>{{ participant.username }}</p>
@@ -13,7 +13,7 @@
     <a href="{{  path('admin_updateUser', {"participant": participant.id}) }}">modifier</a>
     <a href="{{ path('admin_deleteUser', {"participant": participant.id}) }}">Supprimer</a>
     {%  else %}
-        <p>Aucun participants... :(</p>
+        <p>Aucuns stagiaires... :(</p>
     {% endfor %}
 
 {% endblock %}
