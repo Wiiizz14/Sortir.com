@@ -191,9 +191,11 @@ class EventController extends Controller
 
         $repoId = $em->getRepository(Sortie::class);
         $detailEvent = $repoId->find($id);
+        $repoParticipant = $detailEvent->getParticipants();
 
         return $this->render("detailEvent.html.twig", [
-            "Detail" => $detailEvent
+            "Detail" => $detailEvent,
+            "TabParticipant"=>$repoParticipant
         ]);
     }
 

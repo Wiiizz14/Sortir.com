@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Entity\Lieu;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,7 +25,7 @@ class SortiesType extends AbstractType{
                 "widget" => "single_text",
             ])
 
-            ->add("dateCloture", DateTimeType::class, [
+            ->add("dateCloture", DateType::class, [
                 "label"=> "Date de clôture :",
                 "widget" => "single_text",
             ])
@@ -46,11 +47,17 @@ class SortiesType extends AbstractType{
                 "label"=> "Lieu :"
             ])
 
-            ->add("Enregistrer", SubmitType::class)
+            ->add("Enregistrer", SubmitType::class,[
+                'attr'=>['id'=>'saveLink']])
+
             ->add("Publier", SubmitType::class,[
+                'attr'=>['id'=>'publishLink'],
                 "label"=>"Publier la sortie"
             ])
-            ->add("Annuler", SubmitType::class);
+            ->add("Annuler", SubmitType::class,[
+            'attr'=>['id'=>'abortLink',
+             'class'=>'btn btn-info'],
+            ]);
 
     }
 }
