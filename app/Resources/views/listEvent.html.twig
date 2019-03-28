@@ -33,17 +33,23 @@
                 {{ form_end(form) }}
             </div>
         </div>
+        <!-- Dates -->
+        <div class="col-md-3" id="searchByDate">
+            <div class="row" id="rowDate">
+            <label for="dateMin">Entre </label>
+            <input class="form-control form-control-sm" id="dateMin" type="date" onchange="selectionSite()">
+            </div>
+            <div class="row" id="rowDate">
+            <label for="dateMax">et </label>
+            <input class="form-control form-control-sm" id="dateMax" type="date" onchange="selectionSite()">
+            </div>
+        </div>
     </div>
 
-    <!-- Barre de recherches -->
+    <!-- Barre de recherche -->
     <form class="search-form col-md-4">
-        <label for="dateMin">Entre : </label>
-        <input class="form-control form-control-sm mr-3"  id="dateMin" type="date" onchange="selectionSite()">
-        <label for="dateMax">et : </label>
-        <input class="form-control form-control-sm mr-3"   id="dateMax" type="date" onchange="selectionSite()">
-        <input class="form-control form-control-sm mr-3" type="text" placeholder="Rechercher par mot clé" aria-label="Search" id="myInput">
+        <input class="form-control form-control-sm" type="text" placeholder="Rechercher par mot clé" aria-label="Search" id="myInput">
         <i class="fas fa-search" aria-hidden="true"></i>
-
     </form>
 
     <div class="table-responsive">
