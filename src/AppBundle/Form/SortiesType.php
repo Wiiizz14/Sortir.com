@@ -44,7 +44,8 @@ class SortiesType extends AbstractType{
 
             ->add("lieu", EntityType::class, [
                 "class"=>Lieu::class,
-                "label"=> "Lieu :"
+                "label"=> "Lieu :",
+                "required" => true
             ])
 
             ->add("Enregistrer", SubmitType::class,[

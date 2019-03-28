@@ -1,5 +1,12 @@
 ﻿@CHARSET "UTF-8";
 
+/* page createEvent pour mise en forme loader */
+
+#lieu {
+    display: none;
+}
+
+
 /* Champs rechercher */
 .search-form
 {

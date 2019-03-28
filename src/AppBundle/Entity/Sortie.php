@@ -69,7 +69,7 @@ class Sortie
      * @Groups({"sortieGroupe"})
      *
      * @Assert\NotBlank(message="Ce champ est obligatoire")
-     * @Assert\lessThan(propertyPath="dateDebut", message="La date de clôture doit-être antérieure à la date de début")
+     * @Assert\LessThan(propertyPath="dateDebut", message="La date de clôture doit-être antérieure à la date de début")
      *
      * @ORM\Column(name="date_cloture", type="datetime")
      */

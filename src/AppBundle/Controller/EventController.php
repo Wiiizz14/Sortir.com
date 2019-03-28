@@ -401,5 +401,55 @@ class EventController extends Controller
         return new Response("La demande n'a pas pu être satisfaite.");
     }
 
+    /**
+     * @Route("/api/getLieux", name="getLieux")
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     */
+    public function getLieuxAction(SerializerInterface $serializer, Request $request,EntityManagerInterface $em)
+    {
+        $villeId = $request->get("villeId");
+
+        $repoVille = $em->getRepository(Ville::class);
+        $ville = $repoVille->findOneById($villeId);
+        dump($ville);
+
+        if ($ville) {
+
+            $lieux = $ville->getLieux();
+            dump($lieux);
+
+            $retour = $serializer->normalize($lieux,
+                null,
+                ["groups" => ["lieuxGroupe"]]);
+
+            return new JsonResponse($retour);
+        }
+    }
+
+    /**
+     * @Route("/api/getLieu", name="getOneLieu")
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     */
+    public function getOneLieuAction(SerializerInterface $serializer, Request $request,EntityManagerInterface $em)
+    {
+        $lieuId = $request->get("lieuId");
+
+        $repoLieu = $em->getRepository(Lieu::class);
+        $lieu = $repoLieu->findOneById($lieuId);
+
+        if ($lieu) {
+            $retour = $serializer->normalize($lieu,
+                null,
+                ["groups" => ["lieuxGroupe"]]);
+
+            return new JsonResponse($retour);
+        }
+    }
 
 }

@@ -19,7 +19,6 @@ getFirstList = () => {
         url: "/api/searchEvent",
         data: {idSite: user.site}
     }).done(function (apiResult) {
-
         // on peut ensuite récupérer les valeurs en invoquant les clés
         for (let sortie of apiResult){
             addToList(sortie);
@@ -226,7 +225,10 @@ var sInscrire = (id) => {
 
 var annulerInscription = (id) => {
     var idSortie = id
-    if (confirm("Etes vous sûr de vouloir annuler cette sortie?\nCette annulation est définitive !"))
+    var comment = prompt("Etes vous sûr de vouloir annuler cette sortie?\nCette annulation est définitive !\n" +
+        "\nMotif de l'annulation (obligatoire):")
+    // confirm("Etes vous sûr de vouloir annuler cette sortie?\nCette annulation est définitive !")
+    if (comment != "")
     {
         $.ajax(
             {
