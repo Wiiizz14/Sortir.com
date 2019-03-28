@@ -4,18 +4,36 @@
 {% block pagetitle %}Gestion des stagiaires{% endblock %}
 
 {% block body %}
-    <p><a href="{{ path('admin_createUser') }}">Ajouter un stagiaire</a></p>
-    {%  for participant in listeParticipants %}
-    <div>
-        <p>{{ participant.username }}</p>
+
+    <script src="{{ asset('js/villeSiteJS.js') }}"></script>
+
+    <!-- Champs rechercher -->
+    <form class="search-form col-md-4">
+        <input class="form-control form-control-sm mr-3" type="text" placeholder="Rechercher un stagiaire" aria-label="Search" id="myInput">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </form>
+
+    <div class="table-responsive" id="tableUser">
+        <table class="table table-hover">
+            <!-- En-tête du tableau -->
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <!-- Corps du tableau -->
+            <tbody id="myTable">
+            {% for participant in listeParticipants %}
+                <tr>
+                    <td scope="row">{{ participant.nom }}</td>
+                    <td scope="row">{{ participant.prenom }}</td>
+                    <td><a href="{{ url('admin_updateUser', {'participant' : participant.id}) }}">Modifier</a> - <a href="{{ url('admin_deleteUser', {'participant' : participant.id}) }}">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <a href="{{  path('admin_detailUser', {"participant": participant.id}) }}">detail</a>
-    <a href="{{  path('admin_updateUser', {"participant": participant.id}) }}">modifier</a>
-    <a href="{{ path('admin_deleteUser', {"participant": participant.id}) }}">Supprimer</a>
-    {%  else %}
-        <p>Aucuns stagiaires... :(</p>
-    {% endfor %}
 
 {% endblock %}
-
-

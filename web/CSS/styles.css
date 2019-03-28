@@ -160,6 +160,12 @@
     height: 300px;
 }
 
+/* Tableau gestion des participants */
+#tableUser
+{
+    margin-bottom: 5%;
+}
+
 /*.btn-info
 {
     margin-left: 1%;
