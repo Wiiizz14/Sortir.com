@@ -343,10 +343,18 @@ class EventController extends Controller
         if ($sortie && $sortie->getOrganisateur() != $user && $sortie->getDateCloture() > new \DateTime("now"))
         {
             if ($sortie->getParticipants()->contains($user)) {
-                dump($sortie);
+
                 $sortie->getParticipants()->removeElement($user);
-                dump($sortie);
                 $em->persist($sortie);
+
+                // utilisatio de SQL en brut, c'est hardcore, mais ça marche !
+                $raw_slq = "DELETE FROM participant_sortie WHERE participant_id = :userId AND sortie_id = :sortieId;";
+                $statement = $em->getConnection()->prepare($raw_slq);
+
+                $statement->bindValue('userId', $user->getId());
+                $statement->bindValue('sortieId', $sortie->getId());
+
+                $statement->execute();
 
                 try
                 {
