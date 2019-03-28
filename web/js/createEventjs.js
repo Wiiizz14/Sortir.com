@@ -31,7 +31,12 @@ var putLieuInSelect = () => {
     console.log(villeId);
     $.get({
         url: "/api/getLieux",
-        data: {villeId: villeId}
+        data: {villeId: villeId},
+        statusCode: {
+            500: function() {
+                document.getElementById("loader").style.display = "none";
+            }
+        }
     })
         .done(function (apiResult) {
             if (apiResult.length > 0) {
