@@ -240,5 +240,8 @@ var annulerInscription = (id) => {
             selectionSite()
         )
 
+    } else
+    {
+        alert("Motif non renseigné.")
     }
 }
