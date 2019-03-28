@@ -5,7 +5,7 @@
 
 {% block body %}
     <script src="{{ asset('js/createEventjs.js') }}"></script>
-    {# Messages Flash #}
+    <!-- Messages Flash -->
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert-{{ label }}">
@@ -14,16 +14,15 @@
         {% endfor %}
     {% endfor %}
 
-    {# Theme du formulaire #}
+    <!-- Thème du formulaire -->
     {% form_theme formCreateEvent 'bootstrap_4_layout.html.twig' %}
 
     <div class="container">
         <br>
-        {# VOLET 1#}
         <div class="#">
+            <!-- Début du formulaire -->
             {{ form_start(formCreateEvent) }}
 
-            {# Champs principaux #}
             {{ form_row(formCreateEvent.nom) }}
             {{ form_row(formCreateEvent.dateDebut) }}
             {{ form_row(formCreateEvent.dateCloture) }}
@@ -32,55 +31,62 @@
             {{ form_row(formCreateEvent.description) }}
         </div>
 
-        {# VOLET 2#}
-        <div class="#">
-            {# Bloc pour la gestion du site du User #}
-            {% if(app.user.site is empty) %}
-                <p>Ville organisatrice : Aucun</p>
-            {% else %}
-                <p>Ville organisatrice : {{ app.user.site.nom }}</p>
-            {% endif %}
+        <!-- COLONNE DE GAUCHE -->
+        <div class="row">
+            <div class="col-md-6 col-xs-12">
+                <!-- Bloc pour la gestion du site du User -->
+                {% if(app.user.site is empty) %}
+                    <p>Ville organisatrice : Aucun</p>
+                {% else %}
+                    <p>Ville organisatrice : {{ app.user.site.nom }}</p>
+                {% endif %}
 
-            {# Select de la ville #}
-            <div class="form-group">
-                <label>Ville :
-                    <select class="form-control" id="ville" onchange="putLieuInSelect();">
-                        {% for ville in villes %}
-                            <option value="{{ ville.id }}">{{ ville.nom }}</option>
-                        {% endfor %}
-                    </select>
-                </label>
-            </div>
-
-            <div class="form-group">
-                <div id="lieuBlock" class="addSpot">
-                    {{ form_row(formCreateEvent.lieu, {"id": "lieu", "attr": {"onchange": "addValuesOfLieu()"}}) }}
-                    <img align="right" id="loader" style="display: none" src="{{ asset('Images/mini-loader.gif') }}">
+                <!-- Select de la ville -->
+                <div class="form-group">
+                    <label>Ville :
+                        <select class="form-control" id="ville" onchange="putLieuInSelect();">
+                            {% for ville in villes %}
+                                <option value="{{ ville.id }}">{{ ville.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
                 </div>
 
-                {#<div class="addSpot">#}
-                {#<button onclick="document.getElementById('mod01').style.display='block'"#}
-                {#class="btn btn-success btn-circle">+</button>#}
-                {#</div>#}
+                <!-- Select du lieu -->
+                <div class="form-group">
+                    <div id="lieuBlock" class="addSpot">
+                        {{ form_row(formCreateEvent.lieu, {"id": "lieu", "attr": {"onchange": "addValuesOfLieu()"}}) }}
+                        <img align="right" id="loader" style="display: none" src="{{ asset('Images/mini-loader.gif') }}">
+                    </div>
+
+                    {#<div class="addSpot">#}
+                    {#<button onclick="document.getElementById('mod01').style.display='block'"#}
+                    {#class="btn btn-success btn-circle">+</button>#}
+                    {#</div>#}
+                </div>
+
+                <!-- Select de la rue -->
+                <div class="form-group">
+                    <p>Rue : <a id="rue"></a>
+                        <img id="rueloader" style="display: none" src="{{ asset('Images/mini-loader.gif') }}"></p>
+                </div>
+
+                <!-- Code postal -->
+                <div class="form-group">
+                    <p>Code postal : <a id="cp"></a>
+                        <img id="cploader" style="display: none" src="{{ asset('Images/mini-loader.gif') }}"></p>
+                </div>
             </div>
 
-            {#Select de la rue #}
-            <div class="form-group">
-                <p>Rue : <a id="rue">
-                    </a><img id="rueloader" style="display: none" src="{{ asset('Images/mini-loader.gif') }}"></p>
+            <!-- COLONNE DE DROITE -->
+            <!-- Carte de géolocalisation -->
+            <div class="col-md-6 col-xs-12">
+                <div id="macarte"></div>
             </div>
-
-            {# Code postal #}
-            <div class="form-group">
-                <p>Code postal : <a id="cp"></a>
-                    <img id="cploader" style="display: none" src="{{ asset('Images/mini-loader.gif') }}"></p>
-            </div>
-
-            <div id="macarte" style="width:545px; height:490px"></div>
         </div>
 
-        {# Boutons Enregistrer + Publier + Annuler #}
-        <span>
+            <!-- Boutons Enregistrer + Publier + Annuler -->
+            <span>
             <div class="row">
                     <div class="col-md-4" id="buttons">
                         {{ form_row(formCreateEvent.Enregistrer) }}
@@ -93,8 +99,9 @@
                     </div>
             </div>
         </span>
-        {{ form_end(formCreateEvent) }}
-    </div>
+            <!-- Fin du formulaire -->
+            {{ form_end(formCreateEvent) }}
+        </div>
 
     <!-- MODALE -->
 

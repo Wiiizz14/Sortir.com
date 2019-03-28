@@ -77,6 +77,28 @@
     width: 80%;
 }
 
+/* MAP */
+/* Taille de la carte et séparation de celle-ci avec le bas de page */
+#macarte
+{
+    width: 545px;
+    height: 490px;
+    margin-bottom: 2%;
+}
+
+/* Réajustement de la taille de la carte en fonction de la taille d'écran afin qu'elle soit
+ * plus cohérente sur la page d'un téléphone portable.
+ */
+@media (max-width: 768px)
+{
+    #macarte
+    {
+        width: 330px;
+        height: 300px;
+
+    }
+}
+
 /* page createEvent pour mise en forme loader */
 
 #lieu {
