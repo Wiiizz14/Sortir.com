@@ -166,8 +166,7 @@ var seDesinscrire = (id) => {
             {
                 url: "api/unRegisterEvent/",
                 type: "POST",
-                data: {"idSortie": idSortie},
-                success: alert("le post est passé")
+                data: {"idSortie": idSortie}
             },
 
 
@@ -186,8 +185,7 @@ var sInscrire = (id) => {
             {
                 url: "api/registerEvent/",
                 type: "POST",
-                data: {"idSortie": idSortie},
-                success: alert("le post est passé")
+                data: {"idSortie": idSortie}
             },
 
 

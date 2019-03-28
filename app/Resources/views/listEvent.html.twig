@@ -50,11 +50,12 @@
             <tbody id="myTable">
             </tbody>
         </table>
+        <div id="loader" style="display: none" align="center"><img src="{{ asset('Images/loader.gif') }}"></div>
     </div>
-    <div id="loader" style="display: none" align="center"><img src="{{ asset('Images/loader.gif') }}"></div>
-    <script src="{{ asset('js/listjs.js') }}"></script>
 
     <div>
         <a href="{{ path('event_createEvent') }}" class="btn btn-primary">Organiser une nouvelle sortie</a>
     </div>
+
+    <script src="{{ asset('js/listjs.js') }}"></script>
 {% endblock %}
