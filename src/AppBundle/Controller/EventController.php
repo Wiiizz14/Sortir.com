@@ -209,9 +209,16 @@ class EventController extends Controller
      */
     public function updateEventAction(Request $request, Sortie $sortie, EntityManagerInterface $em)
     {
-
         $form = $this->createForm(SortiesType::class, $sortie);
         $form->handleRequest($request);
+
+        //Pour choix de la ville -> DYNAMISE le LIEU + CODE POSTAL
+        $repoVille = $em->getRepository(Ville::class);
+        $villes = $repoVille->findAll();
+
+        //Pour choix du lieu -> A DYNAMISER en JS
+        $repoLieu = $em->getRepository(Lieu::class);
+        $lieux = $repoLieu->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -222,7 +229,9 @@ class EventController extends Controller
             return $this->redirectToRoute("event_detailEvent", ["id" => $sortie->getId()]);
         }
         return $this->render("updateEvent.html.twig", [
-            "formUpdateEvent" => $form->createView()
+            "formUpdateEvent" => $form->createView(),
+            "villes" => $villes,
+            "lieux" => $lieux
         ]);
     }
 

@@ -1,12 +1,49 @@
 ﻿@CHARSET "UTF-8";
 
+/* Champs rechercher */
 .search-form
 {
     margin-top: 2%;
     margin-bottom: 2%;
 }
 
-/* Page de login */
+/* PAGE LISTE SORTIES */
+/* Suppression de la date du jour et du nom */
+@media (max-width: 768px)
+{
+    #dateAndName
+    {
+        display: none;
+    }
+    #titleFilter
+    {
+        margin-top: 2%;
+    }
+
+    /* Suppression de certaines colonnes */
+    #dateClotureInscription, #inscriptions, #getInscription, #organisateur
+    {
+        display: none;
+    }
+}
+
+/* Décalage vers la droite */
+#dateAndName
+{
+    margin: 2% 0 5% 70%;
+}
+
+#filtersSorties
+{
+    margin: auto 1%;
+}
+
+#btnCreateNewSortie
+{
+    margin: 2% 0 2% 5%;
+}
+
+/* PAGE DE LOGIN */
 /* Uniquement centrer le formulaire sur la page */
 #formLogin
 {
@@ -14,8 +51,7 @@
     width: 60%;
 }
 
-/* Page de création de sortie */
-
+/* PAGE DE CREATION DE SORTIES */
 .form-group> #sorties_Publier{
     width: 80%;
 }
@@ -71,21 +107,21 @@
     display: inline-block;
 }
 
-/* Page updateCity et updateSite */
+/* PAGE UPDATECITY ET UPDATESITE */
 #formUpdateSite, #formUpdateCity
 {
     margin: 10% auto;
     width: 60%;
 }
 
-/* Page deleteCity et deleteSite */
+/* PAGE DELETECITY ET DELETESITE */
 #formDeleteCity, #formDeleteSite
 {
     margin: 10% auto;
     text-align: center;
 }
 
-/* Page mon profil */
+/* PAGE MON PROFIL */
 #titleProfil
 {
     margin: 2% auto;

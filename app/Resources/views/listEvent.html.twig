@@ -4,7 +4,15 @@
 {% block pagetitle %}Accueil{% endblock %}
 
 {% block body %}
-    <div>
+
+    <!-- Date du jour -->
+    <div id="dateAndName">
+        <p>Date du jour :{{ "now"|date("d/m/Y") }}</p>
+        <p>Participant : {{ app.user.prenom }} {{ app.user.nom }}</p>
+    </div>
+
+    <!-- Filtres de recherches -->
+    <div id="filtersSorties">
         <script>
             user = {
                 id: {{ app.user.id }},
@@ -13,10 +21,11 @@
             };
         </script>
         <div>
-            <h2>Recherche de sorties</h2>
+            <h2 id="titleFilter">Filtrer les sorties</h2>
+            <!-- Checkbox -->
             <div>
                 {{ form_start(form) }}
-                <p>{{ form_row(form.sites, {"label": "Site", 'id': "choixSite", 'attr': {'onchange': "selectionSite();"}}) }}</p>
+                <p>{{ form_row(form.sites, {"label": "Site", 'id': "choixSite", 'attr': {'class': 'col-md-3','onchange': "selectionSite();"}}) }}</p>
                 <p>{{ form_row(form.organisateur, {"label": "Sorties dont je suis l'organisateur/trice", 'id': "isOrganisateur", 'attr': {'onchange': "selectionSite();"}}) }}</p>
                 <p>{{ form_row(form.isInscrit, {"label": "Sorties auxquelles je suis inscrit/e", 'id': "isInscrit", 'attr': {'onchange': "selectionSite();"}}) }}</p>
                 <p>{{ form_row(form.isNotInscrit, {"label": "Sorties auxquelles je ne suis pas inscrit/e", 'id': "isNotInscrit", 'attr': {'onchange': "selectionSite();"}}) }}</p>
@@ -26,6 +35,7 @@
         </div>
     </div>
 
+    <!-- Barre de recherches -->
     <form class="search-form col-md-4">
         <label for="dateMin">Entre : </label>
         <input class="form-control form-control-sm mr-3"  id="dateMin" type="date" onchange="selectionSite()">
@@ -35,27 +45,34 @@
         <i class="fas fa-search" aria-hidden="true"></i>
 
     </form>
+
     <div class="table-responsive">
         <table class="table table-hover">
-
+            <!-- En-tête du tableau des sorties -->
+            <thead>
             <tr>
                 <th scope="col">Nom</th>
                 <th scope="col">Date de la sortie</th>
-                <th scope="col">Date de clôture</th>
-                <th scope="col">Inscrits/Places</th>
+                <th scope="col" id="dateClotureInscription">Date de clôture</th>
+                <th scope="col" id="inscriptions">Inscrits/Places</th>
                 <th scope="col">Etat</th>
-                <th scope="col">Inscrit</th>
-                <th scope="col">Organisateur</th>
+                <th scope="col" id="getInscription">Inscrit</th>
+                <th scope="col" id="organisateur">Organisateur</th>
                 <th scope="col">Actions</th>
             </tr>
+            </thead>
+
+            <!-- Corps du tableau -->
             <tbody id="myTable">
             </tbody>
         </table>
+        <!-- Image de chargement des données -->
         <div id="loader" style="display: none" align="center"><img src="{{ asset('Images/loader.gif') }}"></div>
     </div>
 
+    <!-- Bouton créer une nouvelle sortie -->
     <div>
-        <a href="{{ path('event_createEvent') }}" class="btn btn-primary">Organiser une nouvelle sortie</a>
+        <a href="{{ path('event_createEvent') }}" class="btn btn-primary" id="btnCreateNewSortie">Créer une sortie</a>
     </div>
 
     <script src="{{ asset('js/listjs.js') }}"></script>
