@@ -1,13 +1,19 @@
 {% extends 'base.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
-{% block title %}Gestion Du Site{% endblock %}
-{% block pagetitle %}Gestion du site{% endblock %}
+
+{% block title %}Confirmer suppression{% endblock %}
+
+{% block pagetitle %}Supprimer un stagiaire{% endblock %}
 
 {% block body %}
-    <p>Etes vous sur de vouloir supprimer le compte de {{ participant.username }}?</p>
 
-    {{ form(form) }}
-
-    <div><a href="{{ path('admin_listUser') }}">Retour</a></div>
+    <div class="row" id="formDeleteUser">
+        <div class="col-12">
+            <p>Etes-vous sûr de vouloir supprimer : <strong>{{ participant.prenom }} {{ participant.nom }}</strong> ?</p>
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_widget(form.supprimer) }} <a href="{{ path('admin_listUser') }}" class="btn btn-info">Annuler</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
 
 {% endblock %}

@@ -174,7 +174,7 @@ class AdminController extends Controller
     public function deleteUserAction(Request $request, Participant $participant)
     {
         $deleteForm = $this->createFormBuilder()
-            ->add('Confirmer', SubmitType::class);
+            ->add('supprimer', SubmitType::class);
         $form = $deleteForm->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
