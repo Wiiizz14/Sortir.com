@@ -67,15 +67,19 @@ selectionSite = () => {
 function addToList(sortie) {
     var isInscrit = 0;
     //bloc tr
-    var bloc = document.createElement("tr");
+    var bloc = document.createElement('tr');
     // liste des éléments du tableau
     var nom = document.createElement('td');
     var dateDebut = document.createElement('td');
     var dateCloture = document.createElement('td');
+    dateCloture.setAttribute('id', 'dateClotureInscription');
     var inscriptions = document.createElement('td');
+    inscriptions.setAttribute('id', 'inscriptions')
     var etat = document.createElement('td');
     var getInscription = document.createElement('td');
+    getInscription.setAttribute('id', 'getInscription');
     var organisateur = document.createElement('td');
+    organisateur.setAttribute('id', 'organisateur');
     var action = document.createElement('td');
 
     // insersion des données dans les éléments
