@@ -121,8 +121,8 @@
     width: 60%;
 }
 
-/* PAGE DELETECITY ET DELETESITE */
-#formDeleteCity, #formDeleteSite
+/* PAGE DELETECITY ET DELETESITE et DELETEUSER */
+#formDeleteCity, #formDeleteSite, #formDeleteUser
 {
     margin: 10% auto;
     text-align: center;
@@ -165,6 +165,12 @@
 .table-responsive
 {
     height: 300px;
+}
+
+/* Tableau gestion des participants */
+#tableUser
+{
+    margin-bottom: 5%;
 }
 
 /*.btn-info
