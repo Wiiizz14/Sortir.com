@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Sortie
 {
+
     /**
      * @var int
      *
@@ -69,7 +71,7 @@ class Sortie
      * @Groups({"sortieGroupe"})
      *
      * @Assert\NotBlank(message="Ce champ est obligatoire")
-     * @Assert\lessThan(propertyPath="dateDebut", message="La date de clôture doit-être antérieure à la date de début")
+     * @Assert\LessThan(propertyPath="dateDebut", message="La date de clôture doit-être antérieure à la date de début")
      *
      * @ORM\Column(name="date_cloture", type="datetime")
      */
@@ -114,7 +116,8 @@ class Sortie
     private $organisateur;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Participant", mappedBy="sorties", cascade={"persist"})
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Participant", mappedBy="sorties")
      * @Groups({"sortieGroupe"})
      */
     private $participants;
@@ -308,7 +311,7 @@ class Sortie
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getParticipants()
     {
