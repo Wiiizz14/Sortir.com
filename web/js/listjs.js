@@ -74,7 +74,7 @@ function addToList(sortie) {
     var dateCloture = document.createElement('td');
     dateCloture.setAttribute('id', 'dateClotureInscription');
     var inscriptions = document.createElement('td');
-    inscriptions.setAttribute('id', 'inscriptions')
+    inscriptions.setAttribute('id', 'inscriptions');
     var etat = document.createElement('td');
     var getInscription = document.createElement('td');
     getInscription.setAttribute('id', 'getInscription');
