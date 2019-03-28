@@ -4,7 +4,6 @@
 {% block pagetitle %}Accueil{% endblock %}
 
 {% block body %}
-
     <div>
         <script>
             user = {
@@ -27,12 +26,14 @@
         </div>
     </div>
 
-
-
-
     <form class="search-form col-md-4">
-        <input class="form-control form-control-sm mr-3" type="text" placeholder="Rechercher une sortie" aria-label="Search" id="myInput">
+        <label for="dateMin">Entre : </label>
+        <input class="form-control form-control-sm mr-3"  id="dateMin" type="date" onchange="selectionSite()">
+        <label for="dateMax">et : </label>
+        <input class="form-control form-control-sm mr-3"   id="dateMax" type="date" onchange="selectionSite()">
+        <input class="form-control form-control-sm mr-3" type="text" placeholder="Rechercher par mot clé" aria-label="Search" id="myInput">
         <i class="fas fa-search" aria-hidden="true"></i>
+
     </form>
     <div class="table-responsive">
         <table class="table table-hover">

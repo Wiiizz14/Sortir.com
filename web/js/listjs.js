@@ -10,8 +10,6 @@ $(document).ready(function(){
         });
     });
 
-
-
 });
 
 getFirstList = () => {
@@ -21,6 +19,7 @@ getFirstList = () => {
         url: "/api/searchEvent",
         data: {idSite: user.site}
     }).done(function (apiResult) {
+
         // on peut ensuite récupérer les valeurs en invoquant les clés
         for (let sortie of apiResult){
             addToList(sortie);
@@ -52,12 +51,26 @@ selectionSite = () => {
             isArchive: isArchive}
     })
         .done(function (apiResult) {
+            //va chercher les valeurs entrées dans les inputs de date
+            var dateMin = document.getElementById("dateMin").value;
+            var dateMax = document.getElementById("dateMax").value;
+            //check dates se suivent
+            if (dateMin > dateMax && dateMax != "" && dateMin != "") {
+                alert("la date de début doit être inférieur ou égale\nà celle de fin !")
+            }
 
-            console.log(apiResult);
-
-            // on peut ensuite récupérer les valeurs en invoquant les clés
             for (let sortie of apiResult){
-                addToList(sortie);
+                // tri en fonction des dates
+                if (dateMin != "" && dateMax !="")
+                {
+                    if (sortie.dateDebut >= dateMin && sortie.dateDebut <= dateMax)
+                    {
+                        addToList(sortie);
+                    }
+                } else
+                {
+                    addToList(sortie);
+                }
             }
             document.getElementById("loader").style.display = "none";
         });
@@ -79,7 +92,13 @@ function addToList(sortie) {
     var action = document.createElement('td');
 
     // insersion des données dans les éléments
-    nom.innerText = sortie.nom;
+
+    //spécial : créer un lien vers détails avec le nom
+    var lienDetail = document.createElement("a");
+    lienDetail.setAttribute("href", "/detailEvent/" + sortie.id);
+    lienDetail.innerText = sortie.nom;
+    nom.appendChild(lienDetail);
+
     sortie.dateDebut = new Date(sortie.dateDebut);
     dateDebut.innerText = (sortie.dateDebut.getDate() + 1) + '/' + (sortie.dateDebut.getMonth() + 1) + '/'
         +  sortie.dateDebut.getFullYear()
@@ -106,15 +125,26 @@ function addToList(sortie) {
     {
         if (sortie.organisateur.username == user.username)
         {
+            if (sortie.etat.libelle != "Annulée")
+            {
             // creation d'un element a et insertion attribut href
             var httpModifier = document.createElement("a");
             httpModifier.setAttribute("href", "/updateEvent/" + sortie.id);
             httpModifier.innerText = "Modifier";
             action.appendChild(httpModifier);
 
+            // creation d'un element pour afficher un tiret intermédaire entre les liens
+            var tiret = document.createElement("a");
+            tiret.innerText = " - ";
+            action.appendChild(tiret);
+
             // creation d'un element a et insertion attribut href et onClick pour invoquer la methode js
             var httpAnnuler = document.createElement("a");
-
+            httpAnnuler.setAttribute("href", "#");
+            httpAnnuler.setAttribute("onclick", "annulerInscription("+ sortie.id +")");
+            httpAnnuler.innerText = "Annuler";
+            action.appendChild(httpAnnuler);
+            }
         }
         else
         {
@@ -161,15 +191,12 @@ var seDesinscrire = (id) => {
     if (confirm("Etes-vous sûr de vouloir vous désister ?"))
     {
         var idSortie = id
-        console.log(idSortie);
         $.ajax(
             {
                 url: "api/unRegisterEvent/",
                 type: "POST",
                 data: {"idSortie": idSortie}
             },
-
-
         ).done(
             selectionSite()
     )
@@ -178,7 +205,6 @@ var seDesinscrire = (id) => {
 
 var sInscrire = (id) => {
     var idSortie = id
-    console.log(idSortie);
     if (confirm("Confirmez votre inscription"))
     {
         $.ajax(
@@ -186,9 +212,7 @@ var sInscrire = (id) => {
                 url: "api/registerEvent/",
                 type: "POST",
                 data: {"idSortie": idSortie}
-            },
-
-
+            }
         ).done(
             selectionSite()
         )
@@ -196,3 +220,19 @@ var sInscrire = (id) => {
     }
 }
 
+var annulerInscription = (id) => {
+    var idSortie = id
+    if (confirm("Etes vous sûr de vouloir annuler cette sortie?\nCette annulation est définitive !"))
+    {
+        $.ajax(
+            {
+                url: "api/cancelEvent/",
+                type: "POST",
+                data: {"idSortie": idSortie}
+            }
+        ).done(
+            selectionSite()
+        )
+
+    }
+}

@@ -316,14 +316,14 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/api/unRegisterEvent/", name="cancelEvent")
+     * @Route("/api/unRegisterEvent/", name="unRegisterEvent")
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @return Response
      * @throws \Exception
      */
-    public function cancelEventAction(Request $request,EntityManagerInterface $em, UserInterface $user)
+    public function unRegisterEventAction(Request $request,EntityManagerInterface $em, UserInterface $user)
     {
         $id = $request->get("idSortie");
         $repoSortie = $em->getRepository(Sortie::class);
@@ -353,4 +353,44 @@ class EventController extends Controller
         return new Response("La demande n'a pas pu être satisfaite.");
     }
 
+    /**
+     * @Route("/api/cancelEvent/", name="cancelEvent")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param UserInterface $user
+     * @return Response
+     * @throws \Exception
+     */
+    public function cancelEventAction(Request $request,EntityManagerInterface $em, UserInterface $user)
+    {
+        $id = $request->get("idSortie");
+        $repoSortie = $em->getRepository(Sortie::class);
+        /** @var Sortie $sortie */
+        $sortie = $repoSortie->findOneById($id);
+
+
+        if ($sortie && $sortie->getOrganisateur() == $user && $sortie->getDateCloture() > new \DateTime("now"))
+        {
+            // 1 et 2 sont "Créée" et "Annulée", attention aux changements de bdd
+            if ($sortie->getEtat()->getId() != 1 || $sortie->getEtat()->getId() != 1)
+                dump($sortie);
+                $repoEtat = $em->getRepository(Etat::class);
+                $etat = $repoEtat->findOneById(6);
+                $sortie->setEtat($etat);
+                dump($sortie);
+                $em->persist($sortie);
+                try
+                {
+                    $em->flush();
+                    return new Response("true");
+                } catch (\Exception $e) {
+                    return new Response("error");
+                }
+
+
+        }
+        return new Response("La demande n'a pas pu être satisfaite.");
     }
+
+
+}
