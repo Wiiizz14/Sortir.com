@@ -69,7 +69,8 @@ class Participant implements UserInterface
     /**
      * @var string
      *
-     * @Assert\Regex(pattern="#^0[1-9]{1}\d{8}$#", message="Votre numéro de téléphone doit comporter 10 chiffres sans espaces ni points.")
+     * @Assert\Length(max="10", maxMessage="Votre numéro de téléphone doit comporter 10 chiffres sans espaces ni points.")
+     * @Assert\Regex(pattern="#^0[1-9]{1}\d{8}$#", message="Le format de téléphone doit commencer par 01-09.")
      *
      * @ORM\Column(name="telephone", type="integer", length=10, nullable=true)
      */

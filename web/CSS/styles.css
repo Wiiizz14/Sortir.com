@@ -1,12 +1,5 @@
 ﻿@CHARSET "UTF-8";
 
-/* page createEvent pour mise en forme loader */
-
-#lieu {
-    display: none;
-}
-
-
 /* Champs rechercher */
 .search-form
 {
@@ -40,9 +33,22 @@
     margin: 2% 0 5% 70%;
 }
 
+/* Recentrage de la div des filtres d'une sortie */
 #filtersSorties
 {
     margin: auto 1%;
+}
+
+/* Suppression padding pour la div contenant la recherche par date */
+#searchByDate
+{
+    padding: 0px;
+}
+
+/* Suppression des margin pour les row des champs dates */
+#rowDate
+{
+    margin: 0px;
 }
 
 #btnCreateNewSortie
@@ -71,11 +77,15 @@
     width: 80%;
 }
 
+/* page createEvent pour mise en forme loader */
+
+#lieu {
+    display: none;
+}
+
 #buttons{
     text-align: center;
 }
-
-
 
 /* Déclencheur modal "Ajout Lieu" */
 .btn-circle {
@@ -172,10 +182,5 @@
 {
     margin-bottom: 5%;
 }
-
-/*.btn-info
-{
-    margin-left: 1%;
-}*/
 
 /* Fin */
