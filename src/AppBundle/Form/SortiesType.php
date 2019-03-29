@@ -54,10 +54,6 @@ class SortiesType extends AbstractType{
             ->add("Publier", SubmitType::class,[
                 'attr'=>['id'=>'publishLink'],
                 "label"=>"Publier la sortie"
-            ])
-            ->add("Annuler", SubmitType::class,[
-            'attr'=>['id'=>'abortLink',
-             'class'=>'btn btn-info'],
             ]);
 
     }

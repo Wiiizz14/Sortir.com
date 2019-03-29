@@ -394,11 +394,9 @@ class EventController extends Controller
         {
             // 1 et 2 sont "Créée" et "Annulée", attention aux changements de bdd
             if ($sortie->getEtat()->getId() != 1 || $sortie->getEtat()->getId() != 1)
-                dump($sortie);
                 $repoEtat = $em->getRepository(Etat::class);
                 $etat = $repoEtat->findOneById(6);
                 $sortie->setEtat($etat);
-                dump($sortie);
                 $em->persist($sortie);
                 try
                 {
@@ -426,7 +424,6 @@ class EventController extends Controller
 
         $repoVille = $em->getRepository(Ville::class);
         $ville = $repoVille->findOneById($villeId);
-        dump($ville);
 
         if ($ville) {
 
