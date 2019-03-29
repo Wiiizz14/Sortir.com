@@ -41,10 +41,14 @@ class EventController extends Controller
      * @param EntityManagerInterface $em
      * @param UserInterface $user
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function createEventAction(Request $request, EntityManagerInterface $em, UserInterface $user)
     {
         $sortie = new Sortie();
+        // TODO $sortie->gqetDateDebut(new \DateTime('now + 1 day'));
+        // TODO $sortie->setDateCloture(new \DateTime('now'));
+
         $form = $this->createForm(SortiesType::class, $sortie);
 
         /* A RE-INSERER SI MEP DE LA MODALE

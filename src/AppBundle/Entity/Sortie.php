@@ -141,19 +141,6 @@ class Sortie
     private $site;
 
     /**
-     * Permet d'initialiser la date de clôture des inscriptions à aujourd'hui
-     * et celle de début de la sortie à J + 1.
-     *
-     * Sortie constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->dateCloture = new \DateTime('now');
-        $this->dateDebut = new \DateTime('now +1 day');
-    }
-
-    /**
      * Get id
      *
      * @return int
