@@ -89,13 +89,12 @@
 /* Réajustement de la taille de la carte en fonction de la taille d'écran afin qu'elle soit
  * plus cohérente sur la page d'un téléphone portable.
  */
-@media (max-width: 768px)
+@media (max-width: 1200px)
 {
     #macarte
     {
         width: 330px;
         height: 300px;
-
     }
 }
 
