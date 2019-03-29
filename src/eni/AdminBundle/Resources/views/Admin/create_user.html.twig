@@ -1,15 +1,46 @@
 {% extends 'base.html.twig' %}
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block title %}Gestion Du Site{% endblock %}
-{% block pagetitle %}Gestion du site{% endblock %}
+{% block title %}Créer un stagiaire{% endblock %}
+{% block pagetitle %}Créer un stagiaire{% endblock %}
 
 {% block body %}
-    <p>je suis dans le createUser du bundle admin</p>
+    <div class="container" id="containerPrincipal">
+        <!-- Début du formulaire -->
+        <div id="containerMyProfil">
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_row(form.nom) }}
+            {{ form_row(form.prenom) }}
+            {{ form_row(form.username) }}
+            {{ form_row(form.telephone) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
+            <small id="emailHelp" class="form-text text-muted">Votre mot de passe doit contenir entre 8 et 50 caractères avec au moins :
+                <ul>
+                    <li>une minuscule (a-z)</li>
+                    <li>une majsucule (A-Z)</li>
+                    <li>un chiffre (0-9)</li>
+                    <li>un caractère spécial (#, @, &...)</li>
+                </ul>
+            </small>
+            {{ form_row(form.isAdministrateur) }}
+            {{ form_row(form.site) }}
+            {{ form_row(form.urlPhoto) }}
+        </div>
 
-    {{ form(form) }}
-
-    <div><a href="{{ path('admin_listUser') }}">Retour</a></div>
+        <!-- Boutons enregistrer ou annuler -->
+        <div class="row" id="btnsMyProfil">
+            <div class="col-6">
+                {{ form_widget(form.enregistrer) }}
+            </div>
+            <div class="col-6" id="btnBack">
+                <a href="{{ path('admin_listUser') }}" class="btn btn-info" id="btnAnnuler">Annuler</a>
+            </div>
+        </div>
+        <!-- Fin du formulaire -->
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
 
 {% block retour %}{{ path('admin_listUser') }}{% endblock %}

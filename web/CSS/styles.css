@@ -199,6 +199,12 @@
     }
 }
 
+/* PAGE CREER UN NOUVEAU STAGIAIRE */
+#btnCreateNewUser
+{
+    margin: 0 0 2% 2%;
+}
+
 /* Réduction de la hauteur d'affichage des tableaux pour le scroll */
 .table-responsive
 {
