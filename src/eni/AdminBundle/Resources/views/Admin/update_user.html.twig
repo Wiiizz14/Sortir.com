@@ -6,49 +6,54 @@
 
 {% block body %}
 
-    <div id="titleProfil">
-        <h5>Mon profil</h5>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-xs-12" id="photoProfil">
-            {% if app.user.urlPhoto is not null%}
-                <img src="{{ app.user.urlPhoto }}" alt="photoDeProfil">
-            {% else %}
-                <img src="{{ asset('Images/logoLaGarderie.png') }}" alt="logoProfilDefaut">
-            {% endif %}
+    <div class="container" id="containerPrincipal">
+        <!-- PARTIE 1 -->
+        <div class="row">
+            <!-- Photo de profil -->
+            <div class="col-lg-3 col-12" id="photoProfil">
+                {% if app.user.urlPhoto is not null%}
+                    <img src="{{ app.user.urlPhoto }}" alt="photoDeProfil">
+                {% else %}
+                    <!-- Photo par défaut -->
+                    <img src="{{ asset('Images/logoLaGarderie.png') }}" alt="logoProfilDefaut">
+                {% endif %}
+            </div>
+            <!-- PARTIE 2 -->
+            <!-- Début du formulaire -->
+            <div id="containerMyProfil" class="col-lg-9 col-12">
+                {% form_theme form 'bootstrap_4_layout.html.twig' %}
+                {{ form_start(form) }}
+                {{ form_row(form.nom) }}
+                {{ form_row(form.prenom) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.telephone) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.password) }}
+                <small id="emailHelp" class="form-text text-muted">Votre mot de passe doit contenir entre 8 et 50 caractères avec au moins :
+                    <ul>
+                        <li>une minuscule (a-z)</li>
+                        <li>une majsucule (A-Z)</li>
+                        <li>un chiffre (0-9)</li>
+                        <li>un caractère spécial (#, @, &...)</li>
+                    </ul>
+                </small>
+                {{ form_row(form.isAdministrateur) }}
+                {{ form_row(form.site) }}
+                {{ form_row(form.urlPhoto) }}
+            </div>
         </div>
 
-        <div id="containerMyProfil" class="col-md-4 col-xs-12">
-            {% form_theme form 'bootstrap_4_layout.html.twig' %}
-            {{ form_start(form) }}
-            {{ form_row(form.nom) }}
-            {{ form_row(form.prenom) }}
-            {{ form_row(form.username) }}
-            {{ form_row(form.telephone) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.password) }}
-            <small id="emailHelp" class="form-text text-muted">Votre mot de passe doit contenir entre 8 et 50 caractères avec au moins :
-                <ul>
-                    <li>une minuscule (a-z)</li>
-                    <li>une majsucule (A-Z)</li>
-                    <li>un chiffre (0-9)</li>
-                    <li>un caractère spécial (#, @, &...)</li>
-                </ul>
-            </small>
-            {{ form_row(form.isAdministrateur) }}
-            {{ form_row(form.site) }}
-            {{ form_row(form.urlPhoto) }}
-
+        <!-- Boutons enregistrer ou annuler -->
+        <div class="row" id="btnsMyProfil">
+            <div class="col-6">
+                {{ form_widget(form.enregistrer) }}
+            </div>
+            <div class="col-6" id="btnBack">
+                <a href="{{ path('admin_listUser') }}" class="btn btn-info" id="btnAnnuler">Annuler</a>
+            </div>
         </div>
+        <!-- Fin du formulaire -->
+        {{ form_end(form) }}
     </div>
-    <div class="row" id="btnsMyProfil">
-        <div class="col-md-6">
-            {{ form_widget(form.enregistrer) }}
-        </div>
-        <div class="col-md-6" id="btnBack">
-            <a href="{{ path('admin_listUser') }}" class="btn btn-info" id="btnAnnuler">Annuler</a>
-        </div>
-    </div>
-    {{ form_end(form) }}
 
 {% endblock %}

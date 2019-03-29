@@ -64,7 +64,7 @@
     width: 60%;
 }
 
-/* PAGE DE CREATION DE SORTIES */
+/* PAGE DE CREATION DE SORTIE */
 .form-group> #sorties_Publier{
     width: 80%;
 }
@@ -161,12 +161,6 @@
 }
 
 /* PAGE MON PROFIL */
-#titleProfil
-{
-    margin: 2% auto;
-    text-align: center;
-}
-
 /* Ajustement marge du haut sur div principal */
 #containerPrincipal
 {
@@ -174,9 +168,13 @@
 }
 
 /* Photo de profil */
-#photoProfil
+@media (max-width: 992px)
 {
-    margin-left: 5%;
+    /* Centrer la photo sur la page */
+    #photoProfil
+    {
+        text-align: center;
+    }
 }
 
 /* Boutons du profil */
@@ -190,10 +188,19 @@
 #btnAnnuler, #appbundle_participant_enregistrer
 {
     margin-bottom: 1%;
-    width: 30%;
+    width: 40%;
 }
 
-/* Réduction de la taille d'affichage des tableaux pour le scroll */
+@media (max-width: 768px)
+{
+    #btnAnnuler, #appbundle_participant_enregistrer
+    {
+        margin-bottom: 1%;
+        width: 70%;
+    }
+}
+
+/* Réduction de la hauteur d'affichage des tableaux pour le scroll */
 .table-responsive
 {
     height: 300px;
@@ -204,5 +211,3 @@
 {
     margin-bottom: 5%;
 }
-
-/* Fin */
